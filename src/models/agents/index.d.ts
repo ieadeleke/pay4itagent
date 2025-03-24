@@ -1,4 +1,5 @@
 type WalletType = {
+    availableBalance?: string;
     accountName: string;
     accountNumber: string;
     bankName: string;

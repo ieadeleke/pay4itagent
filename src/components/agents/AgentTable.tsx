@@ -107,6 +107,7 @@ export const AgentTableList = (props: AgentTableProps) => {
                                             <TableHead className="text-white">Name</TableHead>
                                             <TableHead className="text-white">Email Address</TableHead>
                                             <TableHead className="text-white">Phone Number</TableHead>
+                                            <TableHead className="text-white">Wallet Balance</TableHead>
                                             <TableHead className="text-white">Verified</TableHead>
                                             <TableHead className="text-white"></TableHead>
                                         </TableRow>
@@ -118,6 +119,7 @@ export const AgentTableList = (props: AgentTableProps) => {
                                                 <TableCell className="text-sm">{`${item.firstName} ${item.lastName}`}</TableCell>
                                                 <TableCell className="text-sm">{item.email}</TableCell>
                                                 <TableCell className="text-sm">{item.phoneNumber}</TableCell>
+                                                {item?.wallet?.availableBalance && formatAmount(item?.wallet?.availableBalance)}
                                                 <TableCell className="text-sm">{item?.wallet?.accountName ? <div className="w-3 h-3 rounded-full bg-[#00ff00]"></div> : <div className="w-3 h-3 rounded-full bg-[#ff0000]"></div>}</TableCell>
                                                 <TableCell>
                                                     <div>

@@ -8,6 +8,9 @@ import { useContext, useEffect, useState } from "react";
 import Button from "@/components/buttons";
 import { RegularTextInput } from "@/components/input/RegularTextInput";
 import { useAddAgents } from "@/utils/apiHooks/agents/useAddNewAgent";
+import Link from "next/link";
+import { FaArrowLeftLong } from "react-icons/fa6";
+
 
 interface AddNewAgentInterface {
     firstName: string;
@@ -73,6 +76,11 @@ export default function AgentsDashboard() {
             <div className="flex flex-col px-4 py-8 gap-8">
                 <div>
                     <div className="flex flex-col justify-center gap-5">
+                        <div>
+                            <Link href="/agents" className="flex gap-5 bg-transparent items-center text-base md:text-xl">
+                                <FaArrowLeftLong /> <h4>Go Back</h4>
+                            </Link>
+                        </div>
                         <div className="w-full md:w-[50%] mx-auto bg-white p-10 md-px-10 rounded-[16px]">
                             <div className="mb-10 text-center">
                                 <h3 className="font-bold text-xl">Add New Agent</h3>
