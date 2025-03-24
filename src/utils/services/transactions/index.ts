@@ -75,7 +75,7 @@ export function TransactionService() {
 
     async function downloadSubAgentWalletTransactionsReport(payload: DownloadReportParams) {
         const data = await request({
-            path: `v1/subAgent/DownloadWalletTransaction?&startDate=${payload.startDate}&endDate=${payload.endDate}&format=${payload.format}&category=${payload.category}&type=${payload.type}`,
+            path: `v1/subAgent/DownloadWalletTransaction?&startDate=${payload.startDate}&endDate=${payload.endDate}&format=${payload.format}&category=${payload.category}&type=${payload.type}&walletId=${payload.walletId}`,
             body: payload,
             headers: {
                 Accept: 'text/csv'
@@ -87,7 +87,7 @@ export function TransactionService() {
 
     async function downloadAgentWalletTransactionsReport(payload: DownloadReportParams) {
         const data = await request({
-            path: `v1/agent/DownloadWalletTransaction?&startDate=${payload.startDate}&endDate=${payload.endDate}&format=${payload.format}&category=${payload.category}&type=${payload.type}`,
+            path: `v1/agent/DownloadWalletTransaction?&startDate=${payload.startDate}&endDate=${payload.endDate}&format=${payload.format}&category=${payload.category}&type=${payload.type}&walletId=${payload.walletId}`,
             body: payload,
             headers: {
                 Accept: 'text/csv'

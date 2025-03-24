@@ -203,7 +203,7 @@ export const TransactionTable = (props: TransactionTableProps) => {
                 label: "Category",
                 children: [
                     {
-                        key: "type-all",
+                        key: "category-all",
                         label: <Button
                             variant="text"
                             className="px-6 py-0"
@@ -220,7 +220,7 @@ export const TransactionTable = (props: TransactionTableProps) => {
                                 setFilterEnabled(true);
                             }}
                         >
-                            All
+                            All Transactions
                         </Button>
                     }
                     , {
