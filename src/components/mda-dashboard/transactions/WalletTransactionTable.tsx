@@ -223,30 +223,29 @@ export const TransactionTable = (props: TransactionTableProps) => {
                             All Transactions
                         </Button>
                     }
-                    , {
-                        ...props.categoryEnum.map((type: string, index: number) => ({
-                            key: `${index}-${index}`,
-                            label: <Button
-                                variant="text"
-                                className="px-6 py-0"
-                                onClick={() => {
-                                    type = type === "ALL" ? "" : type;
-                                    fetchTransactions({
-                                        walletId: props.walletId ? props.walletId : "",
-                                        startDate: convertDateToSecondFormat(date.from),
-                                        endDate: convertDateToSecondFormat(date.to ?? new Date()),
-                                        type: selectedType,
-                                        category: type
-                                    })
-                                    setSelectedCategory(type);
-                                    selectedCategory = type;
-                                    setFilterEnabled(true);
-                                }}
-                            >
-                                {type.split("_").join(" ")}
-                            </Button>
-                        }))
-                    }]
+                    , props.categoryEnum.map((type: string, index: number) => ({
+                        key: `${index}-${index}`,
+                        label: <Button
+                            variant="text"
+                            className="px-6 py-0"
+                            onClick={() => {
+                                type = type === "ALL" ? "" : type;
+                                fetchTransactions({
+                                    walletId: props.walletId ? props.walletId : "",
+                                    startDate: convertDateToSecondFormat(date.from),
+                                    endDate: convertDateToSecondFormat(date.to ?? new Date()),
+                                    type: selectedType,
+                                    category: type
+                                })
+                                setSelectedCategory(type);
+                                selectedCategory = type;
+                                setFilterEnabled(true);
+                            }}
+                        >
+                            {type.split("_").join(" ")}
+                        </Button>
+                    }))
+                ]
             }
             setCategoryEnum(typeData);
         }
