@@ -192,19 +192,19 @@ export default function MdaDashboard() {
                 <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
                     <TransactionPill data={{
                         title: "All Transactions",
-                        description: data.AllTransaction.toString()
+                        description: data.AllTransaction && data.AllTransaction.toString() 
                     }} />
                     <TransactionPill data={{
                         title: "Successful Transactions",
-                        description: data.SuccessfulTransaction.toString()
+                        description: data.SuccessfulTransaction && data.SuccessfulTransaction.toString()
                     }} />
                     <TransactionPill data={{
                         title: "Pending Transactions",
-                        description: data.PendingTransaction.toString()
+                        description: data.PendingTransaction && data.PendingTransaction.toString()
                     }} />
                     <TransactionPill data={{
                         title: "Failed Transactions",
-                        description: data.FailTransaction.toString()
+                        description: data.FailTransaction && data.FailTransaction.toString()
                     }} />
                 </div>
                 {/* <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
