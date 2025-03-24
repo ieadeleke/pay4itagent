@@ -20,6 +20,8 @@ import { Modal } from "antd";
 import { useContext, useEffect, useState } from "react";
 
 
+
+
 function distributeCounts(data: DayData[]): { dayOfWeek: string; count: number }[] {
     const counts: { [key: string]: number } = {
         Sunday: 0,
