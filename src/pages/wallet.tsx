@@ -100,7 +100,7 @@ export default function MdaDashboard() {
     const [displayWalletActivationModal, setDisplayWalletActivationModal] = useState(false);
     const [displayWalletWithdrawalModal, setDisplayWalletWithdrawalModal] = useState(false);
     const [refreshCount, setRefreshCount] = useState(0);
-    const [hideAmount, setHideAmount] = useState(localStorage.getItem("displayAmount") ? localStorage.getItem("displayAmount") : true);
+    const [hideAmount, setHideAmount] = useState(localStorage && localStorage.getItem("displayAmount") ? localStorage.getItem("displayAmount") : true);
 
     const [walletActivationForm, setWalletActivationForm] = useState({
         bvn: "",
@@ -308,7 +308,9 @@ export default function MdaDashboard() {
 
     const controlWalletAmountVisibility = (status: string) => {
         setHideAmount(status);
-        localStorage.setItem("displayAmount", status);
+        if (localStorage) {
+            localStorage.setItem("displayAmount", status);
+        }
     }
 
     return <DashboardLayout>
