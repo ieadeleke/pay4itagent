@@ -68,22 +68,22 @@ export const AgentTableList = (props: AgentTableProps) => {
 
     return (
         <div className="flex flex-col gap-4">
-            <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-                <TransactionPill style={{ header: "text-lg", body: "text-2xl" }} data={{
+            <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
+                <TransactionPill data={{
                     title: "All Transactions",
-                    description: props?.summaryData?.AllTransaction && String(props?.summaryData?.AllTransaction)
+                    description: props?.summaryData?.AllTransaction ? String(props?.summaryData?.AllTransaction) : ""
                 }} />
-                <TransactionPill style={{ header: "text-lg", body: "text-2xl" }} data={{
+                <TransactionPill data={{
                     title: "Total Transacted Amount",
-                    description: props?.summaryData?.TotalAmount && formatAmount(+props?.summaryData?.TotalAmount)
+                    description: props?.summaryData?.TotalAmount ? formatAmount(+props?.summaryData?.TotalAmount) : ""
                 }} />
-                <TransactionPill style={{ header: "text-lg", body: "text-2xl" }} data={{
+                <TransactionPill data={{
                     title: "Today's Transactions",
-                    description: props?.summaryData?.TodayTransactionCount && String(props?.summaryData?.TodayTransactionCount)
+                    description: props?.summaryData?.TodayTransactionCount ? String(props?.summaryData?.TodayTransactionCount) : ""
                 }} />
-                <TransactionPill style={{ header: "text-lg", body: "text-2xl" }} data={{
+                <TransactionPill data={{
                     title: "Today's Transacted Amount",
-                    description: props?.summaryData?.TodayTransactionAmount && formatAmount(+props?.summaryData?.TodayTransactionAmount)
+                    description: props?.summaryData?.TodayTransactionAmount ? formatAmount(+props?.summaryData?.TodayTransactionAmount) : ""
                 }} />
             </div>
             <div className="mt-10">
