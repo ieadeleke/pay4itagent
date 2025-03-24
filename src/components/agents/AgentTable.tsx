@@ -68,20 +68,20 @@ export const AgentTableList = (props: AgentTableProps) => {
 
     return (
         <div className="flex flex-col gap-4">
-            <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
-                <TransactionPill data={{
+            <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+                <TransactionPill style={{ header: "text-lg", body: "text-2xl" }} data={{
                     title: "All Transactions",
                     description: props?.summaryData?.AllTransaction && String(props?.summaryData?.AllTransaction)
                 }} />
-                <TransactionPill data={{
+                <TransactionPill style={{ header: "text-lg", body: "text-2xl" }} data={{
                     title: "Total Transacted Amount",
                     description: props?.summaryData?.TotalAmount && formatAmount(+props?.summaryData?.TotalAmount)
                 }} />
-                <TransactionPill data={{
+                <TransactionPill style={{ header: "text-lg", body: "text-2xl" }} data={{
                     title: "Today's Transactions",
                     description: props?.summaryData?.TodayTransactionCount && String(props?.summaryData?.TodayTransactionCount)
                 }} />
-                <TransactionPill data={{
+                <TransactionPill style={{ header: "text-lg", body: "text-2xl" }} data={{
                     title: "Today's Transacted Amount",
                     description: props?.summaryData?.TodayTransactionAmount && formatAmount(+props?.summaryData?.TodayTransactionAmount)
                 }} />

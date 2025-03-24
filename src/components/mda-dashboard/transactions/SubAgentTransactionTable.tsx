@@ -369,7 +369,7 @@ export const TransactionTable = (props: TransactionTableProps) => {
                 <TransactionDetails ref={transactionDetailsRef} />
                 <LoadingModal isVisible={isDownloadReportLoading} />
                 <div className="flex flex-col md:flex-row md:items-end gap-5 md:gap-0 justify-between">
-                    <h1 className="text-xl font-bold">{props.name}ee</h1>
+                    <h1 className="text-xl font-bold">{props.name}</h1>
                     {
                         props.loadHistory ? <Spin indicator={<LoadingOutlined spin />} /> : ""
                     }
