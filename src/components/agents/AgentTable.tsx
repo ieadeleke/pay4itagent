@@ -74,16 +74,16 @@ export const AgentTableList = (props: AgentTableProps) => {
                     description: String(props?.summaryData?.AllTransaction)
                 }} />
                 <TransactionPill data={{
-                    title: "Successful Transactions",
-                    description: String(props?.summaryData?.SuccessfulTransaction)
-                }} />
-                <TransactionPill data={{
                     title: "Total Transacted Amount",
                     description: formatAmount(+props?.summaryData?.TotalAmount)
                 }} />
                 <TransactionPill data={{
-                    title: "Failed Transactions",
-                    description: String(props?.summaryData?.FailTransaction)
+                    title: "Today's Transactions",
+                    description: String(props?.summaryData?.TodayTransactionCount)
+                }} />
+                <TransactionPill data={{
+                    title: "Today's Transacted Amount",
+                    description: formatAmount(+props?.summaryData?.TodayTransactionAmount)
                 }} />
             </div>
             <div className="mt-10">
@@ -119,7 +119,9 @@ export const AgentTableList = (props: AgentTableProps) => {
                                                 <TableCell className="text-sm">{`${item.firstName} ${item.lastName}`}</TableCell>
                                                 <TableCell className="text-sm">{item.email}</TableCell>
                                                 <TableCell className="text-sm">{item.phoneNumber}</TableCell>
-                                                {item?.wallet?.availableBalance && formatAmount(item?.wallet?.availableBalance)}
+                                                <TableCell className="text-sm">
+                                                    {item?.wallet?.availableBalance ? formatAmount(item?.wallet?.availableBalance) : ""}
+                                                </TableCell>
                                                 <TableCell className="text-sm">{item?.wallet?.accountName ? <div className="w-3 h-3 rounded-full bg-[#00ff00]"></div> : <div className="w-3 h-3 rounded-full bg-[#ff0000]"></div>}</TableCell>
                                                 <TableCell>
                                                     <div>
@@ -153,6 +155,12 @@ export const AgentTableList = (props: AgentTableProps) => {
                                                     <li className="flex justify-between items-center mb-2">
                                                         <p className="text-sm">Phone number:</p>
                                                         <p className="text-sm">{item?.phoneNumber}</p>
+                                                    </li>
+                                                    <li className="flex justify-between items-center mb-2">
+                                                        <p className="text-sm">Available Balance:</p>
+                                                        <p className="text-sm">
+                                                            {item?.wallet?.availableBalance ? formatAmount(item?.wallet?.availableBalance) : ""}
+                                                        </p>
                                                     </li>
                                                 </ul>
                                                 <Button onClick={() => handleClick(item)}
