@@ -34,6 +34,8 @@ import { TbReload } from "react-icons/tb";
 import { useRefreshWallet } from "@/utils/apiHooks/profile/useRefreshWallet";
 import { LoadingOutlined } from '@ant-design/icons';
 import TransferToWallet from "@/components/agents/transfertowallet";
+import { IoEyeSharp } from "react-icons/io5";
+import { HiEyeSlash } from "react-icons/hi2";
 
 
 function distributeCounts(data: DayData[]): { dayOfWeek: string; count: number }[] {
@@ -98,6 +100,7 @@ export default function MdaDashboard() {
     const [displayWalletActivationModal, setDisplayWalletActivationModal] = useState(false);
     const [displayWalletWithdrawalModal, setDisplayWalletWithdrawalModal] = useState(false);
     const [refreshCount, setRefreshCount] = useState(0);
+    const [hideAmount, setHideAmount] = useState(localStorage.getItem("displayAmount") ? localStorage.getItem("displayAmount") : true);
 
     const [walletActivationForm, setWalletActivationForm] = useState({
         bvn: "",
@@ -303,6 +306,11 @@ export default function MdaDashboard() {
         }
     ]
 
+    const controlWalletAmountVisibility = (status: string) => {
+        setHideAmount(status);
+        localStorage.setItem("displayAmount", status);
+    }
+
     return <DashboardLayout>
         <NetworkRequestContainer isLoading={isLoading} error={error}>
             <div>
@@ -316,16 +324,43 @@ export default function MdaDashboard() {
                                             <div className="flex gap-10 items-center">
                                                 <div>
                                                     <h5 className="text-base text-white">Current Balance</h5>
-                                                    <h2 className="text-4xl text-white font-bold leading-relaxed">{formatAmount(userData?.wallet?.availableBalance ? userData?.wallet?.availableBalance : "0.00")}</h2>
+                                                    <h2 className="text-4xl text-white font-bold leading-relaxed">{
+                                                        hideAmount === "hide" ? "****" :
+                                                            formatAmount(userData?.wallet?.availableBalance ? userData?.wallet?.availableBalance : "0.00")}</h2>
                                                 </div>
-                                                {
+
+                                                <div className="flex gap-3 items-center">
+                                                    {
+                                                        hideAmount === "hide" ?
+                                                            <div onClick={() => {
+                                                                controlWalletAmountVisibility("show");
+                                                            }}>
+                                                                <IoEyeSharp className="text-white cursor-pointer" />
+                                                            </div> :
+                                                            <div onClick={() => {
+                                                                controlWalletAmountVisibility("hide")
+                                                            }}>
+                                                                <HiEyeSlash className="text-white cursor-pointer" />
+                                                            </div>
+                                                    }
+                                                    {
+                                                        !isLoadingWalletRefresh ?
+                                                            <div className="cursor-pointer" onClick={handleWalletBalanceRefresh}>
+                                                                <TbReload className="text-white text-3xl" />
+                                                            </div>
+                                                            :
+                                                            <Spin indicator={<LoadingOutlined spin className="text-white font-black" />} />
+                                                    }
+                                                </div>
+                                                {/* </div> */}
+                                                {/* {
                                                     !isLoadingWalletRefresh ?
                                                         <div className="cursor-pointer" onClick={handleWalletBalanceRefresh}>
                                                             <TbReload className="text-white text-3xl" />
                                                         </div>
                                                         :
                                                         <Spin indicator={<LoadingOutlined spin className="text-white font-black" />} />
-                                                }
+                                                } */}
                                             </div>
                                             <div>
                                                 {/* <h5 className="text-white text-sm mb-2">Current Balance</h5>
@@ -471,5 +506,5 @@ export default function MdaDashboard() {
                 </Modal>
             </div>
         </NetworkRequestContainer>
-    </DashboardLayout>
+    </DashboardLayout >
 }
