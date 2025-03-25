@@ -157,7 +157,7 @@ export const AgentTransactionTable = (props: TransactionTableProps) => {
                             setFilterEnabled(true);
                         }}
                     >
-                        {type.split("_").join(" ")}
+                        {type?.split("_")?.join(" ")}
                     </Button>
                 }))
             }
@@ -189,7 +189,7 @@ export const AgentTransactionTable = (props: TransactionTableProps) => {
                             selectedCategory = type;
                         }}
                     >
-                        {type.split("_").join(" ")}
+                        {type?.split("_")?.join(" ")}
                     </Button>
                 }))
             }

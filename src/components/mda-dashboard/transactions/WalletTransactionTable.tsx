@@ -188,7 +188,7 @@ export const TransactionTable = (props: TransactionTableProps) => {
                             setFilterEnabled(true);
                         }}
                     >
-                        {type.split("_").join(" ")}
+                        {type?.split("_")?.join(" ")}
                     </Button>
                 }))
             }
@@ -220,7 +220,7 @@ export const TransactionTable = (props: TransactionTableProps) => {
                             setFilterEnabled(true);
                         }}
                     >
-                        {type.split("_").join(" ")}
+                        {type?.split("_")?.join(" ")}
                     </Button>
                 }))
             }
