@@ -34,13 +34,13 @@ export const TransactionHistory = (props: TransactionHistoryProps) => {
     useEffect(() => {
         if (data?.Transaction?.length) {
             let category = ["ALL"];
-            category.push(data?.categoryEnum);
-            console.log(category)
-            setCategoryEnum(category);
+            let newCat = category.concat(data?.categoryEnum);
+            console.log(newCat)
+            setCategoryEnum(newCat);
             let type = ["ALL"];
-            type.push(data?.typeEnum);
-            console.log(type)
-            setTypeEnum(type);
+            let newType = type.concat(data?.typeEnum);
+            console.log(newType)
+            setTypeEnum(newType);
             // setTypeEnum(data?.typeEnum);
             setContentData(data?.Transaction);
         }
