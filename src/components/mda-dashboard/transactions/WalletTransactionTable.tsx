@@ -165,7 +165,6 @@ export const TransactionTable = (props: TransactionTableProps) => {
 
 
     useEffect(() => {
-        console.log(props)
         if (props.typeEnum) {
             let typeData = {
                 key: "transiton",
@@ -286,7 +285,6 @@ export const TransactionTable = (props: TransactionTableProps) => {
 
     useEffect(() => {
         if (data.Transaction && filterEnabled) {
-            console.log(data, data.count)
             setCount(data.count);
             setFilteredTransactions(data.Transaction);
         }
@@ -512,6 +510,7 @@ export const TransactionTable = (props: TransactionTableProps) => {
                                 <TableRow>
                                     <TableHead className="font-black text-white rounded-tl-xl">Date</TableHead>
                                     <TableHead className="font-black text-white">Amount</TableHead>
+                                    <TableHead className="font-black text-white">Balance After</TableHead>
                                     <TableHead className="font-black text-white">Payment Category</TableHead>
                                     <TableHead className="font-black text-white">Type</TableHead>
                                     <TableHead className="font-black text-white">Status</TableHead>
@@ -525,6 +524,7 @@ export const TransactionTable = (props: TransactionTableProps) => {
                                             <TableRow>
                                                 <TableCell className="text-left">{formatDateWithoutTime(item.createdAt)}</TableCell>
                                                 <TableCell className="text-left">{formatAmount(item.amount)}</TableCell>
+                                                <TableCell className="text-left">{formatAmount(item.balance_after)}</TableCell>
                                                 <TableCell className="text-left">{item.category}</TableCell>
                                                 <TableCell>
                                                     <p className={`py-3 px-4 w-max ${item.type === "CREDIT" ? "bg-[#007C00] text-white" : "bg-red-600 text-white"} rounded-lg text-left`}>{item.type}</p>

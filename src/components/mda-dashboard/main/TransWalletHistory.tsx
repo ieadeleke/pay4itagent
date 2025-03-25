@@ -35,11 +35,9 @@ export const TransactionHistory = (props: TransactionHistoryProps) => {
         if (data?.Transaction?.length) {
             let category = ["ALL"];
             let newCat = category.concat(data?.categoryEnum);
-            console.log(newCat)
             setCategoryEnum(newCat);
             let type = ["ALL"];
             let newType = type.concat(data?.typeEnum);
-            console.log(newType)
             setTypeEnum(newType);
             // setTypeEnum(data?.typeEnum);
             setContentData(data?.Transaction);

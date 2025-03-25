@@ -429,6 +429,7 @@ export const AgentTransactionTable = (props: TransactionTableProps) => {
                                     <TableHead className="text-white rounded-tl-xl">Date</TableHead>
                                     <TableHead className="text-white">Category</TableHead>
                                     <TableHead className="text-white">Amount</TableHead>
+                                    <TableHead className="text-white">Balance After</TableHead>
                                     <TableHead className="text-white">Type</TableHead>
                                     <TableHead className="text-white">Status</TableHead>
                                     {/* <TableHead className="text-white">Description</TableHead> */}
@@ -444,6 +445,7 @@ export const AgentTransactionTable = (props: TransactionTableProps) => {
                                                 <TableCell className="text-base">{item.category}</TableCell>
                                                 {/* <TableCell className="text-base">{item.paymentDetails ? capitalizeFirstLetter(item.paymentDetails.data.payment_type) : "-"}</TableCell> */}
                                                 <TableCell className="text-base">{formatAmount(item.amount)}</TableCell>
+                                                <TableCell className="text-base">{formatAmount(item.balance_after)}</TableCell>
                                                 <TableCell className="text-base">
                                                     {
                                                         item.type === "CREDIT" ?
