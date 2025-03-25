@@ -165,6 +165,7 @@ export const TransactionTable = (props: TransactionTableProps) => {
 
 
     useEffect(() => {
+        console.log(props)
         if (props.typeEnum) {
             let typeData = {
                 key: "transiton",
