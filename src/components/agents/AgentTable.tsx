@@ -85,6 +85,10 @@ export const AgentTableList = (props: AgentTableProps) => {
                     title: "Today's Transacted Amount",
                     description: props?.summaryData?.TodayTransactionAmount ? formatAmount(+props?.summaryData?.TodayTransactionAmount) : ""
                 }} />
+                <TransactionPill data={{
+                    title: "Total Agent Wallet Balance",
+                    description: props?.summaryData?.totalWalletBalance ? formatAmount(+props?.summaryData?.totalWalletBalance) : ""
+                }} />
             </div>
             <div className="mt-10">
                 <Link className="bg-primary px-4 py-4 text-white rounded-lg" href="/agents/new">Add New Agent</Link>

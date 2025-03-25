@@ -33,8 +33,13 @@ export const TransactionHistory = (props: TransactionHistoryProps) => {
     }, [isLoading])
     useEffect(() => {
         if (data?.Transaction?.length) {
-            setCategoryEnum(data?.categoryEnum);
-            setTypeEnum(data?.typeEnum);
+            let category = ["ALL"];
+            category.push(data?.categoryEnum);
+            setCategoryEnum(category);
+            let type = ["ALL"];
+            type.push(data?.typeEnum);
+            setTypeEnum(type);
+            // setTypeEnum(data?.typeEnum);
             setContentData(data?.Transaction);
         }
     }, [data])

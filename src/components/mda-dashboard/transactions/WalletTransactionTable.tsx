@@ -168,7 +168,7 @@ export const TransactionTable = (props: TransactionTableProps) => {
         if (props.typeEnum) {
             let typeData = {
                 key: "transiton",
-                label: "Transition Type",
+                label: "Transaction Type",
                 children: props.typeEnum.map((type: string, index: number) => ({
                     key: `${index}-${index}`,
                     label: <Button
