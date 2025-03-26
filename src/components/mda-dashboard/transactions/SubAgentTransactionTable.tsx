@@ -394,20 +394,19 @@ export const TransactionTable = (props: TransactionTableProps) => {
                                 </div>
                             </div>
                             <div>
-                                <Dropdown
+                                {/* <Dropdown
                                     menu={{
                                         items: downloadOptionMenu,
                                     }}
                                     placement="bottom"
-                                // getPopupContainer={triggerNode => {
-                                //   // Ensure it's returning an HTMLElement, fallback to document.body if null
-                                //   return (triggerNode.parentNode as HTMLElement) || document.body;
-                                // }}
-                                >
-                                    <div className="cursor-pointer bg-primary w-12 h-12 rounded-full flex items-center justify-center">
-                                        <FiDownload className="text-white text-2xl" />
-                                    </div>
-                                </Dropdown>
+                                > */}
+                                <div onClick={() => {
+                                    setDownloadFormat("csv")
+                                    handleDownloadReport("csv")
+                                }} className="cursor-pointer bg-primary w-12 h-12 rounded-full flex items-center justify-center">
+                                    <FiDownload className="text-white text-2xl" />
+                                </div>
+                                {/* </Dropdown> */}
                             </div>
                         </div>
                     </div>

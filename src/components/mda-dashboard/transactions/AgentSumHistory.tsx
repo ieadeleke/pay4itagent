@@ -498,16 +498,20 @@ export const TransactionTable = (props: TransactionTableProps) => {
                                 </DatePicker>
                             </div>
                             <div>
-                                <Dropdown
+                                {/* <Dropdown
                                     menu={{
                                         items: downloadOptionMenu,
                                     }}
                                     placement="bottom"
-                                >
-                                    <div className="cursor-pointer bg-primary w-12 h-12 rounded-full flex items-center justify-center">
-                                        <FiDownload className="text-white text-2xl" />
-                                    </div>
-                                </Dropdown>
+                                > */}
+                                <div
+                                    onClick={() => {
+                                        setDownloadFormat("csv")
+                                        handleDownloadReport("csv")
+                                    }} className="cursor-pointer bg-primary w-12 h-12 rounded-full flex items-center justify-center">
+                                    <FiDownload className="text-white text-2xl" />
+                                </div>
+                                {/* </Dropdown> */}
                             </div>
                         </div>
                     </div>
