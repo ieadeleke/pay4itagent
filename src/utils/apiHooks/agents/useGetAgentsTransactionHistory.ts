@@ -13,6 +13,7 @@ export const useGetAgentsTransactionHistory = () => {
         if (response) {
             setData({
                 ...response,
+                
                 Transaction: data?.transactions
             });
         }
