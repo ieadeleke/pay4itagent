@@ -5,6 +5,9 @@ import AuthLayout from "@/components/mda-dashboard/layout/AuthLayout";
 import Link from "next/link";
 import { ChangeEvent, useContext, useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import { IconButton } from "@/components/buttons/IconButton";
+import { EyeIcon, EyeOffIcon } from "lucide-react";
+
 import { GlobalActionContext } from "@/context/GlobalActionContext";
 import { isEmail } from "@/utils/validation/validation";
 import { useLogin } from "@/utils/apiHooks/auth/useLogin";
@@ -14,6 +17,8 @@ export default function Login() {
     const { isLoading, data, login, error } = useLogin();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [isPasswordRevealed, setIsPasswordRevealed] = useState(false);
+
     const [loadLoginAction, setLoadLoginAction] = useState(false);
     const { showSnackBar } = useContext(GlobalActionContext);
     const router = useRouter();
@@ -61,6 +66,10 @@ export default function Login() {
         setPassword(event.target.value);
     }
 
+    function revealPassword() {
+        setIsPasswordRevealed((value) => !value);
+    }
+
     return <AuthLayout>
         <>
             <Navigation />
@@ -83,6 +92,14 @@ export default function Login() {
 
                                 <div className="flex flex-col gap-2">
                                     <label className="text-sm">Password</label>
+                                    <TextField.Container className="mt-1">
+                                        <TextField.Input value={password} onChange={onPasswordEntered} type={isPasswordRevealed ? "text" : "password"} placeholder="e.g password" className="text-xs px-4 rounded-xl" />
+
+                                        <IconButton onClick={revealPassword}>
+                                            {isPasswordRevealed ? <EyeOffIcon className="text-gray-500 w-4 h-4" /> : <EyeIcon className="text-gray-500 w-4 h-4" />}
+                                            {/* <EyeIcon className="text-gray-500 w-4 h-4" /> */}
+                                        </IconButton>
+                                    </TextField.Container>
                                     <TextField.Input type="password" value={password}
                                         onChange={onPasswordEntered} className="rounded-lg px-2 text-sm" />
                                 </div>
