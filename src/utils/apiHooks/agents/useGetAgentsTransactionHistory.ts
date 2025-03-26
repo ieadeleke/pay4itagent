@@ -11,8 +11,6 @@ export const useGetAgentsTransactionHistory = () => {
         setData(null)
         const response = await execute(async () => await AgentService().getAllAgentsTransactionHistory(param));
         if (response) {
-            console.log(response?.Transaction)
-            console.log(response?.transactions)
             setData({
                 ...response,
                 Transaction: response?.transactions
