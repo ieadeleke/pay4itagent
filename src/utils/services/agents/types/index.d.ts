@@ -55,7 +55,8 @@ export type ReversePaymentResponse = {
 
 export type GetAllAgentsTransactionHistoryResponse = ApiResponse & {
     message: any,
-    Transaction: any,
+    transactions: any,
+    Transaction?: any,
     count: number,
 }
 
