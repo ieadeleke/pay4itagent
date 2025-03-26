@@ -100,8 +100,6 @@ export default function Login() {
                                             {/* <EyeIcon className="text-gray-500 w-4 h-4" /> */}
                                         </IconButton>
                                     </TextField.Container>
-                                    <TextField.Input type="password" value={password}
-                                        onChange={onPasswordEntered} className="rounded-lg px-2 text-sm" />
                                 </div>
 
                                 <div className="flex justify-end">
