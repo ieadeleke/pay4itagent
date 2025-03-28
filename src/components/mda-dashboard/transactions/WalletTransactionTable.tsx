@@ -114,6 +114,7 @@ export const TransactionTable = (props: TransactionTableProps) => {
         to: new Date(),
     });
 
+    console.log(item)
     const [currentSelectedTransaction, setCurrentSelectedTransaction] = useState<any>({
         _id: ""
     });
@@ -522,6 +523,7 @@ export const TransactionTable = (props: TransactionTableProps) => {
                                 filteredTransactions.map((item, index) => (
                                     <>
                                         <TableBody onClick={() => {
+                                            console.log(item)
                                             setCurrentSelectedTransaction(item);
                                             showTransactionDetails(item)
                                         }} key={index} className="bg-[#FAFAFA] mb-5 rounded-2xl cursor-pointer">
@@ -572,6 +574,7 @@ export const TransactionTable = (props: TransactionTableProps) => {
                                             </li>
                                         </ul>
                                         <Button onClick={() => {
+                                            console.log(item)
                                             setCurrentSelectedTransaction(item);
                                             showTransactionDetails(item)
                                         }}
