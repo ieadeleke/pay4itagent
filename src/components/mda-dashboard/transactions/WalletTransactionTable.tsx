@@ -239,11 +239,6 @@ export const TransactionTable = (props: TransactionTableProps) => {
 
 
     useEffect(() => {
-        if (reversePaymentData) {
-            // setFilteredTransactions(reversePaymentData.Transaction);
-        }
-    }, [reversePaymentData]);
-    useEffect(() => {
         if (reversePaymentError) {
             showSnackBar({
                 severity: 'error',
@@ -522,7 +517,6 @@ export const TransactionTable = (props: TransactionTableProps) => {
                                 filteredTransactions.map((item, index) => (
                                     <>
                                         <TableBody onClick={() => {
-                                            console.log(item)
                                             setCurrentSelectedTransaction(item);
                                             showTransactionDetails(item)
                                         }} key={index} className="bg-[#FAFAFA] mb-5 rounded-2xl cursor-pointer">
@@ -573,7 +567,6 @@ export const TransactionTable = (props: TransactionTableProps) => {
                                             </li>
                                         </ul>
                                         <Button onClick={() => {
-                                            console.log(item)
                                             setCurrentSelectedTransaction(item);
                                             showTransactionDetails(item)
                                         }}

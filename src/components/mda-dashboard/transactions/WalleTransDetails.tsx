@@ -148,25 +148,20 @@ export const TransactionDetails = forwardRef<
 
                     {/* {transaction.paymentDetails && transaction.paymentDetails.data.status == 'successful' ? <Button variant="outlined" onClick={handlePrintReceipt} type="submit">Print Receipt</Button> : <Button variant="outlined" onClick={handleGenerateReceipt} type="submit">Generate Receipt</Button>} */}
                     {/* <Button onClick={props.reprocessPayment} type="submit">Reprocess Payment</Button> */}
-                    {
+                    {/* {
                         transaction?.status?.toLowerCase() === "pending" &&
                         <Button onClick={() => {
                             props.reversePayment && props.reversePayment();
                             closeModal();
                         }} type="submit" variant="outlined">Reverse Payment</Button>
-                    }
-                    
-                    <Button onClick={() => {
-                            props.reversePayment && props.reversePayment();
-                            closeModal();
-                        }} type="submit" variant="outlined">Reverse Paymentsss</Button>
+                    }                    
                     {
                         transaction?.status?.toLowerCase() === "pending" &&
                         <Button onClick={() => {
                             props.reprocessPayment && props.reprocessPayment();
                             closeModal();
                         }} type="submit" variant="outlined">Reprocess Payment</Button>
-                    }
+                    } */}
                     <Button onClick={closeModal} type="submit">Done</Button>
                 </DialogFooter>
             </DialogContent>}

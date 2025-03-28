@@ -38,6 +38,8 @@ import dayjs from "dayjs";
 import { useFetchTotalTransactions } from "@/utils/apiHooks/agents/subagents/useFetchTotalTransactions";
 import { FiDownload } from "react-icons/fi";
 import { BASE_URL } from "@/utils/constants";
+import { useReprocessPayment } from "@/utils/apiHooks/agents/useReprocessPayment";
+import { useReversePayment } from "@/utils/apiHooks/agents/useReversePayment";
 
 
 type TransactionTableProps = {
@@ -68,11 +70,20 @@ export const TransactionTable = (props: TransactionTableProps) => {
     const { isLoading: isDownloadReportLoading, error: downloadReportError, downloadReport, data } = useDownloadReport();
     const { isLoading: isFetchLoading, error: fetchError, data: allTransactions, fetchTransactions, count: countTotalTransactions } = useFetchTotalTransactions()
     const transactionDetailsRef = useRef<TransactionDetailsRef>(null);
+    const [currentSelectedTransaction, setCurrentSelectedTransaction] = useState<any>({
+        _id: "",
+        paymentRef: ""
+    });
+    const { isLoading: loadingReversePaymentError, error: reversePaymentError, data: reversePaymentData, reReversePayment } = useReversePayment();
+    const { isLoading: loadingReprocess, error: reprocessPaymentError, data: reprocessPaymentData, reProcessPayment } = useReprocessPayment();
+
 
     const [page, setPage] = useState<number>(1);
     const [count, setCount] = useState<number>(1);
     const [filterByDate, setFilterByDate] = useState(false);
     const [downloadFormat, setDownloadFormat] = useState("csv");
+    const [loadPage, setLoadPage] = useState<boolean>(false);
+
     const [date, setDate] = useState<DateRange>(dateRange ? {
         from: convertToDate(dateRange.startDate),
         to: convertToDate(dateRange.endDate),
@@ -109,6 +120,44 @@ export const TransactionTable = (props: TransactionTableProps) => {
     }
 
     useEffect(() => {
+        if (reprocessPaymentError) {
+            showSnackBar({
+                severity: 'error',
+                message: reprocessPaymentError
+            })
+        }
+    }, [reprocessPaymentError])
+
+    useEffect(() => {
+        if (reversePaymentError) {
+            showSnackBar({
+                severity: 'error',
+                message: reversePaymentError
+            })
+        }
+    }, [reversePaymentError])
+
+    const handleReversePayment = () => {
+        reReversePayment({
+            paymentRef: currentSelectedTransaction?.paymentRef
+        });
+    }
+
+    const handleReprocessPayment = () => {
+        reProcessPayment({
+            paymentRef: currentSelectedTransaction?.paymentRef
+        });
+    }
+
+    useEffect(() => {
+        if (isFetchLoading || loadingReversePaymentError || loadingReprocess) {
+            setLoadPage(true);
+        } else {
+            setLoadPage(false);
+        }
+    }, [isFetchLoading, loadingReversePaymentError, loadingReprocess])
+
+    useEffect(() => {
         if (data) {
             // Create a blob from the response
             const blob = downloadFormat === "csv" ? new Blob([data], { type: 'text/csv' }) : new Blob([data], { type: 'application/pdf' });
@@ -142,6 +191,24 @@ export const TransactionTable = (props: TransactionTableProps) => {
             })
         }
     }, [downloadReportError])
+    useEffect(() => {
+        if (reversePaymentData?.Wallet) {
+            showSnackBar({
+                severity: 'success',
+                message: "Payment reversed successfully"
+            })
+            window.location.reload();
+        }
+    }, [reversePaymentData]);
+    useEffect(() => {
+        if (reprocessPaymentData?.data) {
+            showSnackBar({
+                severity: 'success',
+                message: "Payment reprocessed successfully"
+            })
+            window.location.reload();
+        }
+    }, [reprocessPaymentData]);
 
     function handleDownloadReport(format: string) {
         const dateRange = ({
@@ -363,10 +430,15 @@ export const TransactionTable = (props: TransactionTableProps) => {
         setPage(selectedItem.selected + 1)
     }
 
+    const handleSelectedTransDetail = (item: any) => {
+        setCurrentSelectedTransaction(item);
+        showTransactionDetails(item);
+    }
+
     return (
-        <Spin spinning={isFetchLoading} indicator={<LoadingOutlined spin />}>
+        <Spin spinning={loadPage} indicator={<LoadingOutlined spin />}>
             <div className="flex flex-col gap-4 pt-8 pb-0 px-4">
-                <TransactionDetails ref={transactionDetailsRef} />
+                <TransactionDetails ref={transactionDetailsRef} reprocessPayment={handleReprocessPayment} reversePayment={handleReversePayment} />
                 <LoadingModal isVisible={isDownloadReportLoading} />
                 <div className="flex flex-col md:flex-row md:items-end gap-5 md:gap-0 justify-between">
                     <h1 className="text-xl font-bold">{props.name}</h1>
@@ -429,7 +501,7 @@ export const TransactionTable = (props: TransactionTableProps) => {
                             {
                                 filteredTransactions.map((item) => (
                                     <>
-                                        <TableBody onClick={() => showTransactionDetails(item)} key={item.AgencyName} className="bg-[#FAFAFA] mb-5 rounded-2xl cursor-pointer">
+                                        <TableBody onClick={() => handleSelectedTransDetail(item)} key={item.AgencyName} className="bg-[#FAFAFA] mb-5 rounded-2xl cursor-pointer">
                                             <TableRow>
                                                 <TableCell>{formatDateWithoutTime(item.createdAt)}</TableCell>
                                                 <TableCell>{item.PayerName}</TableCell>
@@ -480,7 +552,7 @@ export const TransactionTable = (props: TransactionTableProps) => {
                                                 <TransactionStatusChip status={item.Status} />
                                             </li>
                                         </ul>
-                                        <Button onClick={() => showTransactionDetails(item)}
+                                        <Button onClick={() => handleSelectedTransDetail(item)}
                                             className="text-sm w-max py-2 h-max px-5 border-solid border-primary border-2 bg-transparent text-primary font-black text-sm">View Details</Button>
                                     </Collapse.Panel>
                                 ))

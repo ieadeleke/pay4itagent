@@ -23,7 +23,10 @@ type TransactionDetailsPayload = {
     data: Transaction;
 };
 
-type TransactionDetailsProps = {};
+type TransactionDetailsProps = {
+    reprocessPayment?: () => void
+    reversePayment?: () => void
+};
 
 export type TransactionDetailsRef = {
     open: (payload: TransactionDetailsPayload) => void;
@@ -49,7 +52,7 @@ const DetailItem = (props: DetailItemProps) => {
 export const TransactionDetails = forwardRef<
     TransactionDetailsRef,
     TransactionDetailsProps
->((_, ref) => {
+>((props, ref) => {
     const [isVisible, setIsVisible] = useState(false);
     const [transaction, setTransaction] = useState<Transaction>();
     const [receiptBox, setReceiptBox] = useState<MenuProps["items"]>([]);
@@ -317,7 +320,7 @@ export const TransactionDetails = forwardRef<
                                 }} />
                             </div>
                         })}
-                    </div>
+                    </div>l
                 </div>}
                 <DialogFooter className="gap-4">
                     {
@@ -348,6 +351,24 @@ export const TransactionDetails = forwardRef<
 
                     {/* <Button variant="outlined" onClick={handlePrintReceipt} type="submit">Print Receipt</Button> */}
                     {/* {transaction.paymentDetails && transaction.paymentDetails.data.status == 'successful' ? <Button variant="outlined" onClick={handlePrintReceipt} type="submit">Print Receipt</Button> : <Button variant="outlined" onClick={handleGenerateReceipt} type="submit">Generate Receipt</Button>} */}
+                    {
+                        transaction?.Status?.toLowerCase() === "pending" &&
+                        <Button onClick={() => {
+                            props.reversePayment && props.reversePayment();
+                            closeModal();
+                        }} type="submit" variant="outlined">Reverse Payment</Button>
+                    }
+                    <Button onClick={() => {
+                        props.reversePayment && props.reversePayment();
+                        closeModal();
+                    }} type="submit" variant="outlined">Reverse Payment</Button>
+                    {
+                        transaction?.Status?.toLowerCase() === "pending" &&
+                        <Button onClick={() => {
+                            props.reprocessPayment && props.reprocessPayment();
+                            closeModal();
+                        }} type="submit" variant="outlined">Reprocess Payment</Button>
+                    }
                     <Button onClick={closeModal} type="submit">Done</Button>
                 </DialogFooter>
             </DialogContent>}
