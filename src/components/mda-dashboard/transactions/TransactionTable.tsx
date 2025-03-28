@@ -38,6 +38,8 @@ import dayjs from "dayjs";
 import { useFetchTranscations } from "@/utils/apiHooks/transactions/useFetchTransactions";
 import { FiDownload } from "react-icons/fi";
 import { BASE_URL } from "@/utils/constants";
+import { useReprocessPayment } from "@/utils/apiHooks/agents/useReprocessPayment";
+import { useReversePayment } from "@/utils/apiHooks/agents/useReversePayment";
 
 
 type TransactionTableProps = {
@@ -65,6 +67,10 @@ export const TransactionTable = (props: TransactionTableProps) => {
   const { transactions, dateRange } = props;
   const { isLoading: isDownloadReportLoading, error: downloadReportError, downloadReport, data } = useDownloadReport();
   const { isLoading: isFetchLoading, error: fetchError, data: allTransactions, fetchTransactions, count } = useFetchTranscations()
+  const { isLoading: loadingReversePaymentError, error: reversePaymentError, data: reversePaymentData, reReversePayment } = useReversePayment();
+  const { isLoading: loadingReprocess, error: reprocessPaymentError, data: reprocessPaymentData, reProcessPayment } = useReprocessPayment();
+
+
   const transactionDetailsRef = useRef<TransactionDetailsRef>(null);
   const [filterByDate, setFilterByDate] = useState(false);
   const [downloadFormat, setDownloadFormat] = useState("csv");
@@ -74,6 +80,11 @@ export const TransactionTable = (props: TransactionTableProps) => {
   } : {
     from: new Date(),
     to: new Date(),
+  });
+  const [loadPage, setLoadPage] = useState<boolean>(false);
+  const [currentSelectedTransaction, setCurrentSelectedTransaction] = useState<any>({
+    _id: "",
+    paymentRef: ""
   });
   const [defaultDate, setDefaultDate] = useState(dateRange ? [dateRange.startDate, dateRange.endDate] : [new Date(), new Date()]);
   const { showSnackBar } = useContext(GlobalActionContext)
@@ -339,10 +350,72 @@ export const TransactionTable = (props: TransactionTableProps) => {
       ),
     }]
 
+  useEffect(() => {
+    if (reprocessPaymentError) {
+      showSnackBar({
+        severity: 'error',
+        message: reprocessPaymentError
+      })
+    }
+  }, [reprocessPaymentError])
+
+  useEffect(() => {
+    if (reversePaymentError) {
+      showSnackBar({
+        severity: 'error',
+        message: reversePaymentError
+      })
+    }
+  }, [reversePaymentError])
+
+  const handleReversePayment = () => {
+    reReversePayment({
+      paymentRef: currentSelectedTransaction?.paymentRef
+    });
+  }
+
+  const handleReprocessPayment = () => {
+    reProcessPayment({
+      paymentRef: currentSelectedTransaction?.paymentRef
+    });
+  }
+
+  useEffect(() => {
+    if (isFetchLoading || loadingReversePaymentError || loadingReprocess) {
+      setLoadPage(true);
+    } else {
+      setLoadPage(false);
+    }
+  }, [isFetchLoading, loadingReversePaymentError, loadingReprocess])
+  useEffect(() => {
+    if (reversePaymentData?.Wallet) {
+      showSnackBar({
+        severity: 'success',
+        message: "Payment reversed successfully"
+      })
+      window.location.reload();
+    }
+  }, [reversePaymentData]);
+  useEffect(() => {
+    if (reprocessPaymentData?.data) {
+      showSnackBar({
+        severity: 'success',
+        message: "Payment reprocessed successfully"
+      })
+      window.location.reload();
+    }
+  }, [reprocessPaymentData]);
+
+  const handleSelectedTransDetail = (item: any) => {
+    setCurrentSelectedTransaction(item);
+    showTransactionDetails(item);
+  }
+
   return (
-    <Spin spinning={isFetchLoading} indicator={<LoadingOutlined spin />}>
+    <Spin spinning={loadPage} indicator={<LoadingOutlined spin />}>
       <div className="flex flex-col gap-4 pt-8 pb-0 px-4">
-        <TransactionDetails ref={transactionDetailsRef} />
+        {/* <TransactionDetails ref={transactionDetailsRef} /> */}
+        <TransactionDetails ref={transactionDetailsRef} reprocessPayment={handleReprocessPayment} reversePayment={handleReversePayment} />
         <LoadingModal isVisible={isDownloadReportLoading} />
         <div className="flex flex-col md:flex-row md:items-end gap-5 md:gap-0 justify-between">
           <h1 className="text-xl font-bold">{props.name}</h1>
@@ -406,7 +479,7 @@ export const TransactionTable = (props: TransactionTableProps) => {
               {
                 filteredTransactions.map((item) => (
                   <>
-                    <TableBody onClick={() => showTransactionDetails(item)} key={item.AgencyName} className="bg-[#FAFAFA] mb-5 rounded-2xl cursor-pointer">
+                    <TableBody onClick={() => handleSelectedTransDetail(item)} key={item.AgencyName} className="bg-[#FAFAFA] mb-5 rounded-2xl cursor-pointer">
                       <TableRow>
                         <TableCell>{formatDateWithoutTime(item.createdAt)}</TableCell>
                         <TableCell>{item.PayerName}</TableCell>
@@ -457,7 +530,7 @@ export const TransactionTable = (props: TransactionTableProps) => {
                         <TransactionStatusChip status={item.Status} />
                       </li>
                     </ul>
-                    <Button onClick={() => showTransactionDetails(item)}
+                    <Button onClick={() => handleSelectedTransDetail(item)}
                       className="text-sm w-max py-2 h-max px-5 border-solid border-primary border-2 bg-transparent text-primary font-black text-sm">View Details</Button>
                   </Collapse.Panel>
                 ))
