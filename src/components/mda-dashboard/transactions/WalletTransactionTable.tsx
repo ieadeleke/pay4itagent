@@ -114,7 +114,7 @@ export const TransactionTable = (props: TransactionTableProps) => {
         to: new Date(),
     });
 
-    const [currentSelectedTransaction, setCurrentSelectedTransaction] = useState({
+    const [currentSelectedTransaction, setCurrentSelectedTransaction] = useState<any>({
         _id: ""
     });
     const { showSnackBar } = useContext(GlobalActionContext);
@@ -521,7 +521,10 @@ export const TransactionTable = (props: TransactionTableProps) => {
                             {
                                 filteredTransactions.map((item, index) => (
                                     <>
-                                        <TableBody onClick={() => showTransactionDetails(item)} key={index} className="bg-[#FAFAFA] mb-5 rounded-2xl cursor-pointer">
+                                        <TableBody onClick={() => {
+                                            setCurrentSelectedTransaction(item);
+                                            showTransactionDetails(item)
+                                        }} key={index} className="bg-[#FAFAFA] mb-5 rounded-2xl cursor-pointer">
                                             <TableRow>
                                                 <TableCell className="text-left">{formatDateWithoutTime(item.createdAt)}</TableCell>
                                                 <TableCell className="text-left">{formatAmount(item.amount)}</TableCell>
@@ -568,7 +571,10 @@ export const TransactionTable = (props: TransactionTableProps) => {
                                                 <p className={`py-3 px-4 text-sm w-max ${item.type === "CREDIT" ? "bg-[#007C00] text-white" : "bg-red-600 text-white"} rounded-lg text-center`}>{item.type}</p>
                                             </li>
                                         </ul>
-                                        <Button onClick={() => showTransactionDetails(item)}
+                                        <Button onClick={() => {
+                                            setCurrentSelectedTransaction(item);
+                                            showTransactionDetails(item)
+                                        }}
                                             className="w-max py-3 h-max px-5 border-solid border-primary border-2 bg-transparent text-primary font-black text-sm">View Details</Button>
                                     </Collapse.Panel>
                                 ))
