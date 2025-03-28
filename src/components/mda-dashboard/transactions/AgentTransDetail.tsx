@@ -158,6 +158,10 @@ export const TransactionDetails = forwardRef<
                             closeModal();
                         }} type="submit" variant="outlined">Reverse Payment</Button>
                     }
+                    <Button onClick={() => {
+                            props.reversePayment && props.reversePayment();
+                            closeModal();
+                        }} type="submit" variant="outlined">Reverse Payment</Button>
                     {
                         transaction?.Status?.toLowerCase() === "pending" &&
                         <Button onClick={() => {
