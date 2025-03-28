@@ -114,7 +114,6 @@ export const TransactionTable = (props: TransactionTableProps) => {
         to: new Date(),
     });
 
-    console.log(item)
     const [currentSelectedTransaction, setCurrentSelectedTransaction] = useState<any>({
         _id: ""
     });
