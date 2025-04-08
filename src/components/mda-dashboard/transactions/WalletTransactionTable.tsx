@@ -518,7 +518,7 @@ export const TransactionTable = (props: TransactionTableProps) => {
                                     <>
                                         <TableBody onClick={() => {
                                             setCurrentSelectedTransaction(item);
-                                            showTransactionDetails(item)
+                                            showTransactionDetails(item);
                                         }} key={index} className="bg-[#FAFAFA] mb-5 rounded-2xl cursor-pointer">
                                             <TableRow>
                                                 <TableCell className="text-left">{formatDateWithoutTime(item.createdAt)}</TableCell>

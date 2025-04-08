@@ -129,7 +129,7 @@ export const TransactionTable = (props: TransactionTableProps) => {
         to: new Date(),
     });
 
-    const [currentSelectedTransaction, setCurrentSelectedTransaction] = useState({
+    const [currentSelectedTransaction, setCurrentSelectedTransaction] = useState<any>({
         _id: ""
     });
     const { showSnackBar } = useContext(GlobalActionContext);
@@ -202,12 +202,14 @@ export const TransactionTable = (props: TransactionTableProps) => {
     }, [reversePaymentError])
 
     const handleReversePayment = () => {
+        console.log(currentSelectedTransaction);
         reReversePayment({
             paymentRef: currentSelectedTransaction?._id
         });
     }
 
     const handleReprocessPayment = () => {
+        console.log(currentSelectedTransaction);
         reProcessPayment({
             paymentRef: currentSelectedTransaction?._id
         });
@@ -242,6 +244,7 @@ export const TransactionTable = (props: TransactionTableProps) => {
     }, [date])
 
     function showTransactionDetails(transaction: TransactionTabType) {
+        setCurrentSelectedTransaction(transaction);
         transactionDetailsRef.current?.open?.({
             data: transaction
         })
@@ -535,7 +538,9 @@ export const TransactionTable = (props: TransactionTableProps) => {
                             {
                                 filteredTransactions.map((item, index) => (
                                     <>
-                                        <TableBody onClick={() => showTransactionDetails(item)} key={index} className="bg-[#FAFAFA] mb-5 rounded-2xl cursor-pointer">
+                                        <TableBody onClick={() => {
+                                            showTransactionDetails(item)
+                                        }} key={index} className="bg-[#FAFAFA] mb-5 rounded-2xl cursor-pointer">
                                             <TableRow>
                                                 <TableCell className="text-left">{formatDateWithoutTime(item.createdAt)}</TableCell>
                                                 <TableCell className="text-left">{item.amountPaid ? formatAmount(String(item?.amountPaid)) : ""}</TableCell>

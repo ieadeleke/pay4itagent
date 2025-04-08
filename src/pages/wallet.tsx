@@ -410,7 +410,6 @@ export default function MdaDashboard() {
                                             description: userData?.wallet?.maxBalance ? userData?.wallet?.maxBalance : ""
                                         }} />
                                     </div>
-
                                     <div className="flex items-start gap-8 mt-5">
                                         <div className="flex-1 border bg-white rounded-[16px] px-2 py-2">
                                             <TransactionHistory walletId={profile?.wallet?._id ? profile.wallet._id : ""} refreshCount={refreshCount} />
