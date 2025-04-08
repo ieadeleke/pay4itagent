@@ -130,7 +130,8 @@ export const TransactionTable = (props: TransactionTableProps) => {
     });
 
     const [currentSelectedTransaction, setCurrentSelectedTransaction] = useState<any>({
-        _id: ""
+        _id: "",
+        paymentRef: ""
     });
     const { showSnackBar } = useContext(GlobalActionContext);
 
@@ -202,16 +203,14 @@ export const TransactionTable = (props: TransactionTableProps) => {
     }, [reversePaymentError])
 
     const handleReversePayment = () => {
-        console.log(currentSelectedTransaction);
         reReversePayment({
-            paymentRef: currentSelectedTransaction?._id
+            paymentRef: currentSelectedTransaction?.paymentRef
         });
     }
 
     const handleReprocessPayment = () => {
-        console.log(currentSelectedTransaction);
         reProcessPayment({
-            paymentRef: currentSelectedTransaction?._id
+            paymentRef: currentSelectedTransaction?.paymentRef
         });
     }
 
