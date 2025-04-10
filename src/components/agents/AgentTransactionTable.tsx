@@ -137,12 +137,12 @@ export const AgentTransactionTable = (props: TransactionTableProps) => {
         if (props.typeEnum) {
             let typeData = {
                 key: "transiton",
-                label: "Transition Type",
+                label: "Transaction Type",
                 children: props.typeEnum.map((type: string, index: number) => ({
                     key: `${index}-${index}`,
                     label: <Button
                         variant="text"
-                        className="px-6 py-0"
+                        className="px-6 py-2 h-[max]"
                         onClick={() => {
                             type = type === "ALL" ? "" : type;
                             fetchTransactionsByDateRange({
@@ -174,7 +174,7 @@ export const AgentTransactionTable = (props: TransactionTableProps) => {
                     key: `${index}-${index}`,
                     label: <Button
                         variant="text"
-                        className="px-6 py-0"
+                        className="px-6 py-2 h-[max]"
                         onClick={() => {
                             type = type === "ALL" ? "" : type;
                             fetchTransactionsByDateRange({

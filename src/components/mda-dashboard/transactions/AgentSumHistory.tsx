@@ -476,7 +476,6 @@ export const TransactionTable = (props: TransactionTableProps) => {
     const pageOptions = Array.from({ length: filterEnabled ? pageCount : props.count }, (_, index) => index + 1);
 
     const handlePerPageChange = (e: number) => {
-        console.log(e)
         getAgentTransactionHistory({
             startDate: dayjs(date.from).format('YYYY-MM-DD'),
             endDate: dayjs(date.to).format('YYYY-MM-DD'),
