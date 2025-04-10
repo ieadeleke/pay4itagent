@@ -37,6 +37,7 @@ export type GetAllAgentsTransactionHistoryParams = {
     page?: string;
     startDate: string;
     endDate: string;
+    perPage?: number
 }
 
 export type ReprocessPaymentParams = {

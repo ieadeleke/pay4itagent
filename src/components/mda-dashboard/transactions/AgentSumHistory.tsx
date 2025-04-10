@@ -139,6 +139,7 @@ export const TransactionTable = (props: TransactionTableProps) => {
     const [filteredTransactions, setFilteredTransactions] = useState<TransactionTabType[]>([]);
     const [transactionFilter, setTransactionFilter] = useState("");
     const [selectedType, setSelectedType] = useState("");
+    const [selectedPerPage, setSelectedPerPage] = useState(20);
     const [selectedCategory, setSelectedCategory] = useState("");
     const [defaultDate, setDefaultDate] = useState(dateRange ? [dateRange.startDate, dateRange.endDate] : [new Date(), new Date()]);
 
@@ -466,7 +467,21 @@ export const TransactionTable = (props: TransactionTableProps) => {
         getAgentTransactionHistory({
             startDate: dayjs(date.from).format('YYYY-MM-DD'),
             endDate: dayjs(date.to).format('YYYY-MM-DD'),
-            page: e?.selected + 1
+            page: e?.selected + 1,
+            perPage: selectedPerPage
+        });
+        setFilterEnabled(true);
+    }
+
+    const pageOptions = Array.from({ length: filterEnabled ? pageCount : props.count }, (_, index) => index + 1);
+
+    const handlePerPageChange = (e: number) => {
+        console.log(e)
+        getAgentTransactionHistory({
+            startDate: dayjs(date.from).format('YYYY-MM-DD'),
+            endDate: dayjs(date.to).format('YYYY-MM-DD'),
+            page: String(currPage),
+            perPage: e
         });
         setFilterEnabled(true);
     }
@@ -493,6 +508,15 @@ export const TransactionTable = (props: TransactionTableProps) => {
                             </Dropdown>
                         </div> */}
                         <div className="flex items-end gap-5">
+                            <div>
+                                <Select onChange={handlePerPageChange} className="py-4 border-2 border-black border-solid">
+                                    {pageOptions.map((page) => (
+                                        <option key={page} value={page}>
+                                            {page}
+                                        </option>
+                                    ))}
+                                </Select>
+                            </div>
                             <div>
                                 <DatePicker datePickerType="range" onChange={handleDateChange} value={defaultDate}>
                                     <DatePickerInput id="date-picker-input-id-start" placeholder="mm/dd/yyyy" labelText="Start date" size="lg" />
