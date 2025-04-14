@@ -507,7 +507,7 @@ export const TransactionTable = (props: TransactionTableProps) => {
                             </Dropdown>
                         </div> */}
                         <div className="flex items-end gap-5">
-                            <div>
+                            {/* <div>
                                 <Select onChange={handlePerPageChange} className="py-4 border-2 border-black border-solid">
                                     {pageOptions.map((page) => (
                                         <option key={page} value={page}>
@@ -515,7 +515,7 @@ export const TransactionTable = (props: TransactionTableProps) => {
                                         </option>
                                     ))}
                                 </Select>
-                            </div>
+                            </div> */}
                             <div>
                                 <DatePicker datePickerType="range" onChange={handleDateChange} value={defaultDate}>
                                     <DatePickerInput id="date-picker-input-id-start" placeholder="mm/dd/yyyy" labelText="Start date" size="lg" />
