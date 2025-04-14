@@ -173,7 +173,7 @@ export const TransactionTable = (props: TransactionTableProps) => {
                     key: `${index}-${index}`,
                     label: <Button
                         variant="text"
-                        className="px-6 py-2 h-[max]"
+                        className="px-6 py-2 h-[max] text-left"
                         onClick={() => {
                             type = type === "ALL" ? "" : type;
                             fetchTransactions({
@@ -205,7 +205,7 @@ export const TransactionTable = (props: TransactionTableProps) => {
                     key: `${index}-${index}`,
                     label: <Button
                         variant="text"
-                        className="px-6 py-2 h-[max]"
+                        className="px-6 py-2 h-[max] text-left"
                         onClick={() => {
                             type = type === "ALL" ? "" : type;
                             fetchTransactions({

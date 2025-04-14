@@ -330,7 +330,6 @@ export default function MdaDashboard() {
                                                         hideAmount === "hide" ? "****" :
                                                             formatAmount(userData?.wallet?.availableBalance ? userData?.wallet?.availableBalance : "0.00")}</h2>
                                                 </div>
-
                                                 <div className="flex gap-3 items-center">
                                                     {
                                                         hideAmount === "hide" ?

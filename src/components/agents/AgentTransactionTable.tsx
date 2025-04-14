@@ -142,7 +142,7 @@ export const AgentTransactionTable = (props: TransactionTableProps) => {
                     key: `${index}-${index}`,
                     label: <Button
                         variant="text"
-                        className="px-6 py-2 h-[max]"
+                        className="px-6 py-2 h-[max] text-left"
                         onClick={() => {
                             type = type === "ALL" ? "" : type;
                             fetchTransactionsByDateRange({
@@ -174,7 +174,7 @@ export const AgentTransactionTable = (props: TransactionTableProps) => {
                     key: `${index}-${index}`,
                     label: <Button
                         variant="text"
-                        className="px-6 py-2 h-[max]"
+                        className="px-6 py-2 h-[max] text-left"
                         onClick={() => {
                             type = type === "ALL" ? "" : type;
                             fetchTransactionsByDateRange({
