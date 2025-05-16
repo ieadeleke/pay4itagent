@@ -23,9 +23,13 @@ import { formatDate } from "@/utils/formatters/formatDate";
 import { TablePagination } from "../pagination/TablePagination";
 import Link from "next/link";
 import { AllAgentType } from "@/models/agents";
-import { Collapse, Tabs } from "antd";
+import { Collapse, Modal, Tabs } from "antd";
 import { TransactionPill } from "../mda-dashboard/main/TransactionPill";
 import { AgentTransactionHistory } from "../mda-dashboard/main/AgentTransHistory";
+import { Dropdown } from "antd";
+import TransferToWallet from "./transfertowallet";
+import DefundWalletModal from "./defundwallet";
+
 
 type WalletType = {
     accountName: string;
@@ -61,10 +65,41 @@ export const AgentTableList = (props: AgentTableProps) => {
     const { mdaList } = props;
     const [isDateModalOpen, setIsDateModalOpen] = useState(false);
     const { showSnackBar } = useContext(GlobalActionContext);
+    const [displayTransferModal, setDisplayTransferModal] = useState(false);
+    const [selectedAgent, setSelectedAgent] = useState<any>({});
+    const [openModal, setOpenModal] = useState<boolean>(false);
+
 
     const handleClick = (e: any) => {
         props.handleClick(e);
     }
+
+    const toggleTransferModal = () => {
+        setDisplayTransferModal(!displayTransferModal);
+    }
+
+    const toggleWithdrawalModal = () => {
+        setOpenModal(!openModal);
+    }
+
+    const items = [
+        {
+            key: '1',
+            label: (
+                <button onClick={toggleTransferModal} className="bg-transparent py-3">
+                    Fund Wallet
+                </button>
+            ),
+        },
+        {
+            key: '2',
+            label: (
+                <button onClick={toggleWithdrawalModal} className="bg-transparent py-3">
+                    Defund Wallet
+                </button>
+            ),
+        }
+    ]
 
     return (
         <div className="flex flex-col gap-4">
@@ -97,7 +132,7 @@ export const AgentTableList = (props: AgentTableProps) => {
                 <h1 className="font-medium text-xl">{props.name}</h1>
             </div> */}
             <div className="mt-10">
-                <Tabs type="card">
+                <Tabs type="card" defaultActiveKey="2">
                     <Tabs.TabPane tab="Agent Transactions" key="1">
                         <AgentTransactionHistory />
                     </Tabs.TabPane>
@@ -107,26 +142,40 @@ export const AgentTableList = (props: AgentTableProps) => {
                                 <Table>
                                     <TableHeader className="bg-primary rounded-xl">
                                         <TableRow>
-                                            <TableHead className="text-white">Date Added</TableHead>
+                                            {/* <TableHead className="text-white">Date Added</TableHead> */}
                                             <TableHead className="text-white">Name</TableHead>
-                                            <TableHead className="text-white">Email Address</TableHead>
-                                            <TableHead className="text-white">Phone Number</TableHead>
+                                            <TableHead className="text-white">Contact</TableHead>
+                                            {/* <TableHead className="text-white">Phone Number</TableHead> */}
                                             <TableHead className="text-white">Wallet Balance</TableHead>
                                             <TableHead className="text-white">Verified</TableHead>
+                                            <TableHead className="text-white"></TableHead>
                                             <TableHead className="text-white"></TableHead>
                                         </TableRow>
                                     </TableHeader>
                                     {mdaList.map((item, index) => (
                                         <TableBody key={index} className="bg-white cursor-pointer">
                                             <TableRow>
-                                                <TableCell className="text-sm">{formatDate(item.createdAt)}</TableCell>
+                                                {/* <TableCell className="text-sm">{formatDate(item.createdAt)}</TableCell> */}
                                                 <TableCell className="text-sm">{`${item.firstName} ${item.lastName}`}</TableCell>
-                                                <TableCell className="text-sm">{item.email}</TableCell>
-                                                <TableCell className="text-sm">{item.phoneNumber}</TableCell>
+                                                <TableCell className="text-sm">{item.email} <br /> {item.phoneNumber}</TableCell>
+                                                {/* <TableCell className="text-sm"></TableCell> */}
                                                 <TableCell className="text-sm">
                                                     {item?.wallet?.availableBalance ? formatAmount(item?.wallet?.availableBalance) : ""}
                                                 </TableCell>
-                                                <TableCell className="text-sm">{item?.wallet?.accountName ? <div className="w-3 h-3 rounded-full bg-[#00ff00]"></div> : <div className="w-3 h-3 rounded-full bg-[#ff0000]"></div>}</TableCell>
+                                                <TableCell className="text-sm">{item?.wallet?.accountName ? <div className="size-3 rounded-full bg-[#00ff00]"></div> : <div className="size-3 rounded-full bg-[#ff0000]"></div>}</TableCell>
+                                                <TableCell>
+                                                    <div>
+                                                        <Dropdown
+                                                            menu={{
+                                                                items,
+                                                            }} trigger={['click']}
+                                                            placement="bottomLeft"
+                                                        >
+                                                            <button onClick={() => setSelectedAgent(item)}
+                                                                className="block bg-transparent border-2 border-[#6A22B2] text-sm border-solid py-3 px-6 rounded-lg bg-gray-800">Funding Options</button>
+                                                        </Dropdown>
+                                                    </div>
+                                                </TableCell>
                                                 <TableCell>
                                                     <div>
                                                         <button onClick={() => handleClick(item)}
@@ -194,6 +243,14 @@ export const AgentTableList = (props: AgentTableProps) => {
                                 />
                             </div>
                             {props.isLoading ? <Loading /> : props.error && <Error onRetry={props.fetchData} message={props.error} />}
+                            <Modal open={displayTransferModal} onCancel={() => setDisplayTransferModal(false)} footer={null}>
+                                <div className="md:w-[80%] mx-auto pt-10">
+                                    <h3 className="font-bold text-center text-xl mb-10">Fund Agent Wallet</h3>
+                                    <TransferToWallet status="agent" accNum={selectedAgent?.wallet?.accountNumber} firstName={selectedAgent?.firstName} hideDescription={true}
+                                        lastName={selectedAgent?.lastName} closeAction={toggleTransferModal} />
+                                </div>
+                            </Modal>
+                            <DefundWalletModal openModal={openModal} closeModal={toggleWithdrawalModal} userData={selectedAgent} hideDescription={true} />
                         </div>
                     </Tabs.TabPane>
                 </Tabs>

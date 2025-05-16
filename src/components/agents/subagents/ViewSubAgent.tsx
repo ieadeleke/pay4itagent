@@ -56,9 +56,7 @@ const ViewSubAgent = (props: AgentDataInterface) => {
     })
     const [agentWalletData, setAgentWalletData] = useState<any>("");
     const [agentSuspensionStatus, setAgentSuspensionStatus] = useState<boolean>(false);
-    const [singleSubAgentSummaryData, setSingleSubAgentSummaryData] = useState<any>({});
 
-    const [userOTPValue, setUserOTPValue] = useState("");
     const [displayFundModal, setDisplayFundModal] = useState(false);
     const [loadingWithdrawalButton, setLoadingWithdrawalButton] = useState<boolean>(false);
     const [refreshCount, setRefreshCount] = useState(0);
@@ -208,21 +206,21 @@ const ViewSubAgent = (props: AgentDataInterface) => {
     }, [userFetchedFundData])
 
     const completePaymentWithdrawal = (e: React.ChangeEvent<HTMLFormElement>) => {
+        e.preventDefault();
         if (!withdrawalFormInput.amount.length) {
             return showSnackBar({
                 message: "Please enter amount to transfer",
                 severity: 'error'
             })
         }
-        if (!withdrawalFormInput.description.length) {
-            return showSnackBar({
-                message: "Please enter transfer description",
-                severity: 'error'
-            })
-        }
-        e.preventDefault();
+        // if (!withdrawalFormInput.description.length) {
+        //     return showSnackBar({
+        //         message: "Please enter transfer description",
+        //         severity: 'error'
+        //     })
+        // }
         let { amount, description } = withdrawalFormInput;
-        if (amount.length && description.length) {
+        if (amount.length) {
             withdrawWallet({
                 userId: props.agentID,
                 amount: +withdrawalFormInput.amount,
@@ -428,7 +426,7 @@ const ViewSubAgent = (props: AgentDataInterface) => {
                                         className="w-full py-5 text-white bg-primary border-primary border-2 rounded-lg">Fund Wallet</button>
                                     <button
                                         onClick={toggleDisplayWithdrawModal}
-                                        className="w-full py-5 text-white bg-danger border-danger border-2 rounded-lg">Withdraw from Wallet</button>
+                                        className="w-full py-5 text-white bg-danger border-danger border-2 rounded-lg">Defund Wallet</button>
                                     {
                                         agentSuspensionStatus ?
                                             <button disabled={isLoadingSuspendUser ? true : false} onClick={handleSuspendAgent}
@@ -492,7 +490,7 @@ const ViewSubAgent = (props: AgentDataInterface) => {
             </div>
             <Modal open={displayWithdrawModal} onCancel={toggleDisplayWithdrawModal} footer={null}>
                 <div className="pt-5 mb-5">
-                    <h3 className="font-bold text-center text-xl mb-10">Withdraw From Sub-Agent Wallet</h3>
+                    <h3 className="font-bold text-center text-xl mb-10">Defund Sub-Agent Wallet</h3>
                 </div>
                 <form action="" onSubmit={completePaymentWithdrawal} autoComplete="false">
                     <div className="mb-5">
@@ -507,7 +505,7 @@ const ViewSubAgent = (props: AgentDataInterface) => {
                     </div>
 
                     <div className="mt-10">
-                        <Button isLoading={loadingWithdrawalButton} className="w-full">Complete Withdrawal</Button>
+                        <Button isLoading={loadingWithdrawalButton} className="w-full">Complete Defund</Button>
                     </div>
                 </form>
             </Modal>

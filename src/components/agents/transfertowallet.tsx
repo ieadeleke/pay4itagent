@@ -24,6 +24,7 @@ interface PropType {
     status?: string
     firstName?: string
     lastName?: string,
+    hideDescription?: boolean
     closeAction?: () => void
 }
 
@@ -213,10 +214,11 @@ const TransferToWallet = (props: PropType) => {
         }
     }, [completeWalletTransferData]);
 
-    const completeTransferToWallet = () => {
+    const completeTransferToWallet = (e: any) => {
+        e.preventDefault();
         let { amount,
             description, settlementAccountNumber } = consultantData;
-        if ((settlementAccountNumber.length) && (description.length) && (amount.length)) {
+        if ((settlementAccountNumber.length) && (amount.length)) {
             let formData = {
                 amount, accountNumber: settlementAccountNumber, description, pin: userOTPValue
             }
@@ -292,12 +294,15 @@ const TransferToWallet = (props: PropType) => {
                             </div>
                             : ""
                     }
-                    <div className="form-group mb-5">
-                        <h1>Description</h1>
-                        <TextField.TextArea rows={4}
-                            onChange={updateFormData} name="description"
-                            className="outline-none px-2 py-2 rounded-lg" />
-                    </div>
+                    {
+                        props?.hideDescription ? '' :
+                        <div className="form-group mb-5">
+                            <h1>Description</h1>
+                            <TextField.TextArea rows={4}
+                                onChange={updateFormData} name="description"
+                                className="outline-none px-2 py-2 rounded-lg" />
+                        </div>
+                    }
                     <div>
                         <Button isLoading={loadingCreditButton} onClick={handleCurrentView} className="w-full block mb-5 py-5 text-white rounded-lg">Continue</Button>
                     </div>

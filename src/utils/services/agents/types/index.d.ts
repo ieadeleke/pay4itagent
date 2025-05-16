@@ -133,7 +133,7 @@ export type TransactionHistoryResponse = ApiResponse & {
 export type WithdrawWalletParams = {
     userId: string,
     amount: number,
-    description: string
+    description?: string
 }
 
 export type SubAgentTransactionHistoryParams = {
@@ -208,7 +208,7 @@ export type UpdateWalletResponse = ApiResponse & {
 export type TransferToWalletParams = {
     accountNumber: string
     amount: number
-    description: string;
+    description?: string;
     pin: string
 }
 
