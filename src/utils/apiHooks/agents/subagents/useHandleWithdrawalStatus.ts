@@ -5,7 +5,7 @@ import { GetSingleAgentParams, GetSingleAgentResponse, WithdrawalStatusParams } 
 import UserContext from "@/context/UserContext";
 
 export const useHandleUserWithdrawalStatus = () => {
-    const [data, setData] = useState<GetSingleAgentResponse | null>(null);
+    const [data, setData] = useState<any>(null);
     const { isLoading, error, execute } = useApi();
     const { updateUser, user } = useContext(UserContext)
 
@@ -15,9 +15,8 @@ export const useHandleUserWithdrawalStatus = () => {
         const response = await execute(async () => await SubAgentService().handleWithdrawalStatus(params));
         // console.log(response);
         if (response) {
-            console.log(response.user)
             setData(response.user);
-            updateUser(response.user);
+            // updateUser(response.user);
         }
     }
 

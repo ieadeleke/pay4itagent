@@ -65,6 +65,7 @@ const ViewSubAgent = (props: AgentDataInterface) => {
     const [displayFundModal, setDisplayFundModal] = useState(false);
     const [loadingWithdrawalButton, setLoadingWithdrawalButton] = useState<boolean>(false);
     const [refreshCount, setRefreshCount] = useState(0);
+    const [userWithdrawalStatus, setUserWithdrawalStatus] = useState<boolean>(false);
 
 
     const [fundFormInput, setFundFormInput] = useState({
@@ -81,6 +82,7 @@ const ViewSubAgent = (props: AgentDataInterface) => {
                 message: 'Withdrawal status updated successfully',
                 severity: 'success'
             })
+            setUserWithdrawalStatus(withdrawalStatusData?.allowBankTransfer)
         }
     }, [withdrawalStatusData]);
 
@@ -169,6 +171,10 @@ const ViewSubAgent = (props: AgentDataInterface) => {
             [e.target.name]: e.target.value
         })
     }
+
+    useEffect(() => {
+        setUserWithdrawalStatus(props?.agentData?.allowBankTransfer)
+    }, [props.agentData])
 
     useEffect(() => {
         if (userWithdrawError) {
@@ -456,7 +462,7 @@ const ViewSubAgent = (props: AgentDataInterface) => {
                                             </button>
                                     }
                                     {
-                                        userData?.allowBankTransfer ?
+                                        userWithdrawalStatus ?
                                             <Button onClick={() => handleUserWithdrawalStatus('disallow')}
                                                 isLoading={isLoadingWithdrawalStatus}
                                                 className="w-full py-5 px-5 text-white bg-danger border-danger border-2 rounded-lg">Disallow Withdrawal Status</Button>

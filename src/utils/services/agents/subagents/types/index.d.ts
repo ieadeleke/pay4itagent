@@ -33,6 +33,7 @@ export type GetSingleAgentResponse = ApiResponse & {
     message: string,
     Agent?: {
         _id: string,
+        allowBankTransfer?: boolean
         name: string,
         email: string,
         createdAt: string,
