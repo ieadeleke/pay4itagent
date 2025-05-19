@@ -219,12 +219,12 @@ const ViewSubAgent = (props: AgentDataInterface) => {
         //         severity: 'error'
         //     })
         // }
-        let { amount, description } = withdrawalFormInput;
+        let { amount } = withdrawalFormInput;
         if (amount.length) {
             withdrawWallet({
                 userId: props.agentID,
                 amount: +withdrawalFormInput.amount,
-                description: withdrawalFormInput.description
+                description: ''
             });
             setLoadingWithdrawalButton(true);
         } else {
@@ -271,12 +271,12 @@ const ViewSubAgent = (props: AgentDataInterface) => {
     }, [userFundError])
     const completeFundWalletWithdrawal = (e: React.ChangeEvent<HTMLFormElement>) => {
         e.preventDefault();
-        let { amount, description } = fundFormInput;
-        if (amount.length && description.length) {
+        let { amount } = fundFormInput;
+        if (amount.length) {
             fundWallet({
                 // userId: props.agentID,
                 amount: +fundFormInput.amount,
-                description: fundFormInput.description,
+                description: '',
                 accountNumber: "", fee: 0, vat: 0
             });
         } else {
@@ -498,11 +498,11 @@ const ViewSubAgent = (props: AgentDataInterface) => {
                         <TextField.Input type="tel" name="amount" value={withdrawalFormInput.amount} className="outline-none px-2 text-sm rounded-lg"
                             onChange={handleFormInput} />
                     </div>
-                    <div>
+                    {/* <div>
                         <h5 className="text-base">Description</h5>
                         <TextField.TextArea rows={4} name="description" value={withdrawalFormInput.description} className="outline-none px-2 py-2 text-sm rounded-lg"
                             onChange={handleTextAreaInput} />
-                    </div>
+                    </div> */}
 
                     <div className="mt-10">
                         <Button isLoading={loadingWithdrawalButton} className="w-full">Complete Defund</Button>
@@ -519,11 +519,11 @@ const ViewSubAgent = (props: AgentDataInterface) => {
                         <TextField.Input type="tel" name="amount" value={fundFormInput.amount} className="outline-none px-2 text-sm rounded-lg"
                             onChange={handleFundWalletFormInput} />
                     </div>
-                    <div>
+                    {/* <div>
                         <h5 className="text-base">Description</h5>
                         <TextField.TextArea rows={4} name="description" value={fundFormInput.description} className="outline-none px-2 py-2 text-sm rounded-lg"
                             onChange={handleFundWalletTextAreaInput} />
-                    </div>
+                    </div> */}
 
                     <div className="mt-10">
                         <Button isLoading={isLoadingFundUser} className="w-full">Complete Fund Wallet</Button>
@@ -535,7 +535,7 @@ const ViewSubAgent = (props: AgentDataInterface) => {
                 <div className="md:w-[80%] mx-auto pt-10">
                     <h3 className="font-bold text-center text-xl mb-10">Fund Agent Wallet</h3>
                     <TransferToWallet status="agent" accNum={props?.agentData?.wallet?.accountNumber} firstName={props.agentData.firstName}
-                        lastName={props.agentData.lastName} closeAction={closeTransferModal} />
+                        lastName={props.agentData.lastName} closeAction={closeTransferModal} hideDescription={true} />
                     {/* <p className="text-center mb-5 text-base md:w-[80%] mx-auto">Copy the account number below and transfer funds from any bank.</p>
                     <div className="mb-8 bg-[#F2F2F2] px-5 h-[12rem] rounded-[8px] flex flex-col items-center justify-center">
                         <p className="text-lg mb-5">{capitalizeText(props.agentData?.wallet?.bankName ? props.agentData?.wallet?.bankName : "")}</p>
