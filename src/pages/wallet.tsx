@@ -368,17 +368,17 @@ export default function MdaDashboard() {
                             <h2 className="text-white text-3xl mb-3">{formatAmount(userData?.wallet?.availableBalance ? userData?.wallet?.availableBalance : "")}</h2> */}
                                                 <div className="flex gap-5">
                                                     <button onClick={toggleDisplayModal} className="bg-white px-8 py-3 text-base rounded-xl">Fund Wallet</button>
-                                                    {
-                                                        userData?.profileType === "superAgent" ?
-                                                            <Dropdown
-                                                                menu={{
-                                                                    items,
-                                                                }}
-                                                                placement="bottomLeft"
-                                                            >
-                                                                <button className="bg-white px-8 py-3 text-base rounded-xl">Withdraw</button>
-                                                            </Dropdown>
-                                                            : ""}
+                                                    {/* {
+                                                        userData?.profileType === "superAgent" ? */}
+                                                    <Dropdown
+                                                        menu={{
+                                                            items,
+                                                        }}
+                                                        placement="bottomLeft"
+                                                    >
+                                                        <button className="bg-white px-8 py-3 text-base rounded-xl">Withdraw</button>
+                                                    </Dropdown>
+                                                    {/* : ""} */}
                                                 </div>
                                             </div>
                                         </div>

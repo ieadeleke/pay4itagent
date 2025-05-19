@@ -1,6 +1,6 @@
 import { request } from "@/utils/request";
 import { ApiResponse } from "@/models";
-import { GetSingleAgentParams, GetSingleAgentResponse, GetSingleAgentSummaryParams, GetSingleAgentSummaryResponse, WalletToWalletParams, WalletToWalletResponse } from "./types";
+import { GetSingleAgentParams, GetSingleAgentResponse, GetSingleAgentSummaryParams, GetSingleAgentSummaryResponse, WalletToWalletParams, WalletToWalletResponse, WithdrawalStatusParams, WithdrawalStatusResponse } from "./types";
 import {
     AddAgentParams, AddAgentResponse, FreezeAgentParam, FreezeAgentResponse, FundWalletParams,
     FundWalletResponse, GetAllAgentsParams, GetAllAgentsResponse, SuspendAgentParams, SuspendAgentResponse,
@@ -17,6 +17,15 @@ export function SubAgentService() {
             body: params
         })
         return response as GetSingleAgentResponse
+    }
+
+    async function handleWithdrawalStatus(params: WithdrawalStatusParams) {
+        const response = await request({
+            path: `v1/subAgent/${params.action === 'approve' ? 'ApproveBankTransfer' : 'DisallowBankTransfer'}`,
+            method: "POST",
+            body: params
+        })
+        return response as WithdrawalStatusResponse
     }
 
     async function getSubAgentSummary(params: GetSingleAgentSummaryParams) {
@@ -120,6 +129,7 @@ export function SubAgentService() {
         fundWallet,
         upgradeWallet,
         walletToWalletTransfer,
-        getSubAgentSummary
+        getSubAgentSummary,
+        handleWithdrawalStatus
     };
 }

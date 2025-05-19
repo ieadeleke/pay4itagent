@@ -12,6 +12,7 @@ export type Profile = {
     userName: string
     imgUrl: string
     profileType?: string
+    allowBankTransfer?: string
     wallet?: {
         _id: string
         accountName: string

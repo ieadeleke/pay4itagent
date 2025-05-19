@@ -4,6 +4,16 @@ export type GetSingleAgentParams = {
     userId: string
 }
 
+export type WithdrawalStatusParams = {
+    userId: string
+    action: string
+}
+
+export type WithdrawalStatusResponse = ApiResponse & {
+    message: string,
+    user: any
+}
+
 export type GetSingleAgentSummaryParams = {
     agentId: string
 }

@@ -27,6 +27,9 @@ import { useRefreshWallet } from "@/utils/apiHooks/profile/useRefreshWallet";
 import { OTPInputBoxes } from "@/components/auth/OTPInput";
 import { generateUUID } from "@/utils/data/generateUUID";
 import { useGetSubAgentSummary } from "@/utils/apiHooks/agents/subagents/useSubAgentSummary";
+import { Profile } from "@/models/profile";
+import { useHandleUserWithdrawalStatus } from "@/utils/apiHooks/agents/subagents/useHandleWithdrawalStatus";
+import UserContext from "@/context/UserContext";
 
 interface AgentDataInterface {
     agentID: string;
@@ -41,7 +44,9 @@ const ViewSubAgent = (props: AgentDataInterface) => {
     const [userTransactionData, setUserTransactionData] = useState<any>({});
     const [displayWithdrawModal, setDisplayWithdrawModal] = useState(false);
     const [payWithWalletModal, setPayWithWalletModal] = useState(false);
+    const { user: userData } = useContext(UserContext)
     const { isLoading: isLoadingUser, error: userError, data: userFetchedData, getSubAgentData } = useGetSubAgent();
+    const { isLoading: isLoadingWithdrawalStatus, error: withdrawalStatusError, data: withdrawalStatusData, changeUserWithdrawalStatus } = useHandleUserWithdrawalStatus();
     const { isLoading: isLoadingSubAgentSummary, error: subAgentSummaryError, data: subAgentSummaryData, getSubAgentSummaryData } = useGetSubAgentSummary();
 
     const { isLoading: isLoadingSuspendUser, error: userSuspendError, data: userFetchedSuspendData, suspendAgent } = useSuspendAgents();
@@ -69,17 +74,15 @@ const ViewSubAgent = (props: AgentDataInterface) => {
     // const [displayWithdrawModal, setDisplayWithdrawModal] = useState(false);
     // const { isLoading: isLoadingSuspendUser, error: userSuspendError, data: userFetchedSuspendData, suspendAgent } = useSuspendAgents();
 
-    // useEffect(() => {
-    //     if (userFetchedData) {
-    //         setUserTransactionData(userFetchedData);
-    //     }
-    // }, [userFetchedData]);
-
-    // useEffect(() => {
-    //     if (subAgentSummaryData) {
-    //         setSingleSubAgentSummaryData(subAgentSummaryData);
-    //     }
-    // }, [subAgentSummaryData]);
+    useEffect(() => {
+        if (withdrawalStatusData) {
+            // console.log(withdrawalStatusData);
+            showSnackBar({
+                message: 'Withdrawal status updated successfully',
+                severity: 'success'
+            })
+        }
+    }, [withdrawalStatusData]);
 
     useEffect(() => {
         let id = props.agentID;
@@ -92,6 +95,13 @@ const ViewSubAgent = (props: AgentDataInterface) => {
             // });
         }
     }, [props.agentID]);
+
+    const handleUserWithdrawalStatus = (e: string) => {
+        changeUserWithdrawalStatus({
+            userId: props.agentID,
+            action: e
+        });
+    }
 
     // start freeze agent
 
@@ -106,6 +116,14 @@ const ViewSubAgent = (props: AgentDataInterface) => {
             })
         }
     }, [userSuspendError])
+    useEffect(() => {
+        if (withdrawalStatusError) {
+            showSnackBar({
+                message: withdrawalStatusError,
+                severity: 'error'
+            })
+        }
+    }, [withdrawalStatusError])
     useEffect(() => {
         if (userFetchedSuspendData) {
             setAgentSuspensionStatus(!agentSuspensionStatus);
@@ -310,14 +328,8 @@ const ViewSubAgent = (props: AgentDataInterface) => {
     const [page, setPage] = useState(0);
 
     // useEffect(() => {
-    //     function fetchData() {
-    //         fetchTransactions({
-    //             ...date,
-    //             page: page + 1
-    //         });
-    //     }
-    //     fetchData()
-    // }, [page])
+    //     console.log(userData);
+    // }, [userData])
 
     function onDateApplied(date: DateRange) {
         setDate({
@@ -420,13 +432,13 @@ const ViewSubAgent = (props: AgentDataInterface) => {
                                             <Spin indicator={<LoadingOutlined spin className="text-black font-black" />} />
                                     }
                                 </div>
-                                <div className="flex flex-col md:flex-row items-center gap-2 md:gap-5 w-full md:w-[70%] block mx-auto mt-10">
-                                    <button
+                                <div className="flex flex-col md:flex-row items-center gap-2 md:gap-5 w-full md:w-[90%] block mx-auto mt-10">
+                                    {/* <button
                                         onClick={() => setDisplayTransferModal(true)}
                                         className="w-full py-5 text-white bg-primary border-primary border-2 rounded-lg">Fund Wallet</button>
                                     <button
                                         onClick={toggleDisplayWithdrawModal}
-                                        className="w-full py-5 text-white bg-danger border-danger border-2 rounded-lg">Defund Wallet</button>
+                                        className="w-full py-5 text-white bg-danger border-danger border-2 rounded-lg">Defund Wallet</button> */}
                                     {
                                         agentSuspensionStatus ?
                                             <button disabled={isLoadingSuspendUser ? true : false} onClick={handleSuspendAgent}
@@ -442,6 +454,16 @@ const ViewSubAgent = (props: AgentDataInterface) => {
                                                     isLoadingSuspendUser ? <Spin indicator={spinIcon} size="small" /> : "Unsuspend Account"
                                                 }
                                             </button>
+                                    }
+                                    {
+                                        userData?.allowBankTransfer ?
+                                            <Button onClick={() => handleUserWithdrawalStatus('disallow')}
+                                                isLoading={isLoadingWithdrawalStatus}
+                                                className="w-full py-5 px-5 text-white bg-danger border-danger border-2 rounded-lg">Disallow Withdrawal Status</Button>
+                                            :
+                                            <Button onClick={() => handleUserWithdrawalStatus('approve')}
+                                                isLoading={isLoadingWithdrawalStatus}
+                                                className="w-full py-5 px-5 text-white bg-primary border-primary border-2 rounded-lg">Approve Withdrawal Status</Button>
                                     }
                                 </div>
                                 <Tabs type="card" size="large" className="mt-10 w-full">
