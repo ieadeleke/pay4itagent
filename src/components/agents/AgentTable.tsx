@@ -216,6 +216,17 @@ export const AgentTableList = (props: AgentTableProps) => {
                                                         </p>
                                                     </li>
                                                 </ul>
+                                                <div className="mb-3">
+                                                    <Dropdown
+                                                        menu={{
+                                                            items,
+                                                        }} trigger={['click']}
+                                                        placement="bottomLeft"
+                                                    >
+                                                        <button onClick={() => setSelectedAgent(item)}
+                                                            className="block bg-transparent border-2 border-[#6A22B2] text-base border-solid py-3 px-6 rounded-lg text-primary bg-gray-800">Funding Options</button>
+                                                    </Dropdown>
+                                                </div>
                                                 <Button onClick={() => handleClick(item)}
                                                     className="text-sm w-max py-2 h-max px-5 border-solid border-primary border-2 bg-transparent text-primary font-black text-sm">View Details</Button>
                                             </Collapse.Panel>
