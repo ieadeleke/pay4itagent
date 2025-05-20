@@ -253,12 +253,12 @@ const TransferToWallet = (props: PropType) => {
                 severity: 'error'
             })
         }
-        if (!consultantData.description.length) {
-            return showSnackBar({
-                message: "Please enter transfer description",
-                severity: 'error'
-            })
-        }
+        // if (!consultantData.description.length) {
+        //     return showSnackBar({
+        //         message: "Please enter transfer description",
+        //         severity: 'error'
+        //     })
+        // }
         setDisplayWalletPaymentInfo(!displayWalletPaymentInfo);
     }
 
