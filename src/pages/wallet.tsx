@@ -312,6 +312,9 @@ export default function MdaDashboard() {
             localStorage.setItem("displayAmount", status);
         }
     }
+    const handlePageReload = (e: any) => {
+        window.location.reload();
+    }
 
     return <DashboardLayout>
         <NetworkRequestContainer isLoading={isLoading} error={error}>
@@ -500,7 +503,7 @@ export default function MdaDashboard() {
                             withDrawalType === "bank" ?
                                 <WithdrawToBank closeAction={toggleDisplayWithdrawalModal} />
                                 :
-                                <TransferToWallet closeAction={toggleDisplayWithdrawalModal} />
+                                <TransferToWallet closeAction={toggleDisplayWithdrawalModal} updateAgentData={handlePageReload} agent={userData} />
                         }
                     </div>
                 </Modal>
