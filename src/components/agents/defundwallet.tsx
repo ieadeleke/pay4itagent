@@ -10,6 +10,8 @@ import Button from "../buttons";
 import { useCompleteTransfer } from "@/utils/apiHooks/agents/useCompleteTransfer";
 import { OTPInputBoxes } from "../auth/OTPInput";
 import { useWithdrawWallet } from "@/utils/apiHooks/agents/subagents/useWithdrawWallet";
+import { useGetAgents } from "@/utils/apiHooks/agents/useGetAgents";
+import { useRefreshWallet } from "@/utils/apiHooks/profile/useRefreshWallet";
 
 
 interface BankListInterface {
@@ -26,16 +28,22 @@ interface PropType {
     userData?: any
     hideDescription?: boolean
     closeAction?: () => void
+    updateAgentData: (props: any) => void
 }
 
 const DefundWalletModal = (props: PropType) => {
 
     const { isLoading: isLoadingWithdrawUser, error: userWithdrawError, data: userFetchedWithdrawData, withdrawWallet } = useWithdrawWallet();
+    const { getAgentList, isLoading: loadingAgentSummary, error: errorSummary, data: dataSummary } = useGetAgents();
+    const { isLoading: isLoadingWalletRefresh, error: userWalletRefreshError, data: userRefreshData, refreshWallet } = useRefreshWallet();
+
 
     const [userOTPValue, setUserOTPValue] = useState("");
     const [loadingCreditButton, setLoadingCreditButton] = useState<boolean>(false);
     const { showSnackBar } = useContext(GlobalActionContext);
     const [displayWalletPaymentInfo, setDisplayWalletPaymentInfo] = useState<boolean>(true);
+    const [currentFetchState, setCurrentFetchState] = useState<boolean>(false);
+
 
     const [withdrawalFormInput, setWithdrawalFormInput] = useState({
         amount: "",
@@ -43,24 +51,51 @@ const DefundWalletModal = (props: PropType) => {
     })
 
     useEffect(() => {
-        if (userFetchedWithdrawData) {
+        if (dataSummary?.Agents && currentFetchState) {
+            props.updateAgentData(dataSummary?.Agents);
+            setCurrentFetchState(false);
             showSnackBar({
-                message: userFetchedWithdrawData.message,
+                message: "Account defunded successfully",
                 severity: 'success'
             })
-            let obj = {
-                message: userFetchedWithdrawData.message,
-                amount: +withdrawalFormInput.amount,
-                transfersettlementSecondName: props.userData?.lastName,
-                transfersettlementFirstName: props.userData?.firstName
-            }
-            localStorage.setItem("transferStatus", obj.message === "Transfer Queued Successfully" ? "queue" : "success");
-            localStorage.setItem("transferMessage", obj.message);
-            localStorage.setItem("transferAmount", String(obj.amount));
-            localStorage.setItem("transferKeyWord", "from");
-            localStorage.setItem("transfersettlementFirstName", obj.transfersettlementFirstName);
-            localStorage.setItem("transfersettlementSecondName", obj.transfersettlementSecondName);
-            window.location.href = "/agents/summary";
+            setLoadingCreditButton(false);
+            setWithdrawalFormInput({
+                amount: '',
+                description: ''
+            })
+        }
+    }, [dataSummary])
+    const fetchAgentTransDetail = () => {
+        getAgentList({
+            page: 1
+        });
+        refreshWallet({
+            providerCustomerId: props?.userData?.wallet?.providerCustomerId
+        });
+        setCurrentFetchState(true);
+    }
+
+    useEffect(() => {
+        if (userFetchedWithdrawData) {
+            fetchAgentTransDetail();
+
+            // showSnackBar({
+            //     message: userFetchedWithdrawData.message,
+            //     severity: 'success'
+            // })
+            // let obj = {
+            //     message: userFetchedWithdrawData.message,
+            //     amount: +withdrawalFormInput.amount,
+            //     transfersettlementSecondName: props.userData?.lastName,
+            //     transfersettlementFirstName: props.userData?.firstName
+            // }
+            // localStorage.setItem("transferStatus", obj.message === "Transfer Queued Successfully" ? "queue" : "success");
+            // localStorage.setItem("transferMessage", obj.message);
+            // localStorage.setItem("transferAmount", String(obj.amount));
+            // localStorage.setItem("transferKeyWord", "from");
+            // localStorage.setItem("transfersettlementFirstName", obj.transfersettlementFirstName);
+            // localStorage.setItem("transfersettlementSecondName", obj.transfersettlementSecondName);
+            // window.location.href = "/agents/summary";
         }
     }, [userFetchedWithdrawData])
 
@@ -73,6 +108,14 @@ const DefundWalletModal = (props: PropType) => {
             setLoadingCreditButton(false);
         }
     }, [userWithdrawError])
+    useEffect(() => {
+        if (userWalletRefreshError) {
+            showSnackBar({
+                message: userWalletRefreshError,
+                severity: 'error'
+            })
+        }
+    }, [userWalletRefreshError]);
 
     const updateOTPValue = (e: string) => {
         setUserOTPValue(e);

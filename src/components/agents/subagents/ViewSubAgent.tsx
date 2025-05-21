@@ -560,18 +560,11 @@ const ViewSubAgent = (props: AgentDataInterface) => {
             </Modal>
 
             <Modal open={displayTransferModal} onCancel={() => setDisplayTransferModal(false)} footer={null}>
-                <div className="md:w-[80%] mx-auto pt-10">
+                {/* <div className="md:w-[80%] mx-auto pt-10">
                     <h3 className="font-bold text-center text-xl mb-10">Fund Agent Wallet</h3>
                     <TransferToWallet status="agent" accNum={props?.agentData?.wallet?.accountNumber} firstName={props.agentData.firstName}
                         lastName={props.agentData.lastName} closeAction={closeTransferModal} hideDescription={true} />
-                    {/* <p className="text-center mb-5 text-base md:w-[80%] mx-auto">Copy the account number below and transfer funds from any bank.</p>
-                    <div className="mb-8 bg-[#F2F2F2] px-5 h-[12rem] rounded-[8px] flex flex-col items-center justify-center">
-                        <p className="text-lg mb-5">{capitalizeText(props.agentData?.wallet?.bankName ? props.agentData?.wallet?.bankName : "")}</p>
-                        <h2 className="text-4xl font-black mb-5">{props.agentData?.wallet?.accountNumber ? props.agentData?.wallet?.accountNumber : ""}</h2>
-                        <p className="text-lg">{capitalizeText(props.agentData?.wallet?.accountName ? props.agentData?.wallet?.accountName : "")}</p>
-                    </div>
-                    <button onClick={copyToClipboard} className="bg-primary text-white rounded-lg py-4 w-full">Copy Account Number</button> */}
-                </div>
+                </div> */}
             </Modal>
 
             {/* <Modal footer={null} open={payWithWalletModal} onClose={closeWalletModal} className="payment-modal">

@@ -9,6 +9,9 @@ import { useAddConsultant } from "@/utils/apiHooks/consultants/useAddConsultant"
 import Button from "../buttons";
 import { useCompleteTransfer } from "@/utils/apiHooks/agents/useCompleteTransfer";
 import { OTPInputBoxes } from "../auth/OTPInput";
+import { useRefreshWallet } from "@/utils/apiHooks/profile/useRefreshWallet";
+import { useGetAgentsSummary } from "@/utils/apiHooks/agents/useGetAgentSummary";
+import { useGetAgents } from "@/utils/apiHooks/agents/useGetAgents";
 
 
 interface BankListInterface {
@@ -23,8 +26,10 @@ interface PropType {
     accNum?: string
     status?: string
     firstName?: string
-    lastName?: string,
+    lastName?: string
     hideDescription?: boolean
+    agent: any
+    updateAgentData: (props: any) => void
     closeAction?: () => void
 }
 
@@ -34,10 +39,15 @@ const TransferToWallet = (props: PropType) => {
     const { isLoading: isLoadingBankList, data: fetchBankListData, error: fetchBankListError, fetchBankList } = useFetchBankList();
     const { isLoading: isLoadingWalletTransfer, data: completeWalletTransferData, error: errorWalletTransfer, completeWalletTransfer } = useCompleteTransfer();
 
+    const { isLoading: isLoadingWalletRefresh, error: userWalletRefreshError, data: userRefreshData, refreshWallet } = useRefreshWallet();
+    const { getAgentList, isLoading: loadingAgentSummary, error: errorSummary, data: dataSummary } = useGetAgents();
+
+
     const { isLoading: isLoadingVerifyDataList, data: verifyBankDataData, error: VerifyBankDataError, verifyBankData } = useVerifyBankList();
 
     const [bankData, setBankData] = useState<BankListInterface[]>([]);
     const [userOTPValue, setUserOTPValue] = useState("");
+    const [currentFetchState, setCurrentFetchState] = useState<boolean>(false);
     const [loadAccountVerificationData, setLoadAccountVerificationData] = useState(false);
     const [loadingCreditButton, setLoadingCreditButton] = useState<boolean>(false);
     const { showSnackBar } = useContext(GlobalActionContext);
@@ -106,6 +116,15 @@ const TransferToWallet = (props: PropType) => {
             })
         }
     }, [error])
+
+    useEffect(() => {
+        if (userWalletRefreshError) {
+            showSnackBar({
+                message: userWalletRefreshError,
+                severity: 'error'
+            })
+        }
+    }, [userWalletRefreshError]);
 
     useEffect(() => {
         if (consultantData.settlementBankName && consultantData.settlementAccountNumber.length === 10) {
@@ -185,12 +204,41 @@ const TransferToWallet = (props: PropType) => {
             setLoadingCreditButton(false);
         }
     }, [errorWalletTransfer]);
+
     useEffect(() => {
-        if (completeWalletTransferData?.message?.length) {
+        if (dataSummary?.Agents && currentFetchState) {
+            props.updateAgentData(dataSummary?.Agents);
+            setCurrentFetchState(false);
             showSnackBar({
-                message: completeWalletTransferData.message,
+                message: "Account funded successfully",
                 severity: 'success'
             })
+            setLoadingCreditButton(false);
+            setConsultantData({
+                ...consultantData,
+                amount: '',
+                description: ''
+            })
+        }
+    }, [dataSummary])
+
+    const fetchAgentTransDetail = () => {
+        getAgentList({
+            page: 1
+        });
+        refreshWallet({
+            providerCustomerId: props?.agent?.wallet?.providerCustomerId
+        });
+        setCurrentFetchState(true);
+    }
+    useEffect(() => {
+        if (completeWalletTransferData?.message?.length) {
+            // showSnackBar({
+            //     message: completeWalletTransferData.message,
+            //     severity: 'success'
+            // })
+            fetchAgentTransDetail();
+
             let obj = {
                 message: completeWalletTransferData.message,
                 amount: consultantData?.amount,
@@ -198,19 +246,19 @@ const TransferToWallet = (props: PropType) => {
                 transfersettlementSecondName: props.lastName,
                 transfersettlementFirstName: props.firstName
             }
-            localStorage.setItem("transferStatus", obj.message === "Transfer Queued Successfully" ? "queue" : "success");
-            localStorage.setItem("transferMessage", obj.message);
-            localStorage.setItem("transferAmount", obj.amount);
-            localStorage.setItem("transfersettlementAccountNumber", obj.settlementAccountNumber);
+            // localStorage.setItem("transferStatus", obj.message === "Transfer Queued Successfully" ? "queue" : "success");
+            // localStorage.setItem("transferMessage", obj.message);
+            // localStorage.setItem("transferAmount", obj.amount);
+            // localStorage.setItem("transfersettlementAccountNumber", obj.settlementAccountNumber);
 
-            if (props.status === "agent") {
-                localStorage.setItem("transferKeyWord", "to");
-                localStorage.setItem("transfersettlementFirstName", obj.transfersettlementFirstName ?? "");
-                localStorage.setItem("transfersettlementSecondName", obj.transfersettlementSecondName ? obj.transfersettlementSecondName : "");
-                window.location.href = "/agents/summary";
-            } else {
-                window.location.href = "/wallet/summary";
-            }
+            // if (props.status === "agent") {
+            //     localStorage.setItem("transferKeyWord", "to");
+            //     localStorage.setItem("transfersettlementFirstName", obj.transfersettlementFirstName ?? "");
+            //     localStorage.setItem("transfersettlementSecondName", obj.transfersettlementSecondName ? obj.transfersettlementSecondName : "");
+            //     window.location.href = "/agents/summary";
+            // } else {
+            //     window.location.href = "/wallet/summary";
+            // }
         }
     }, [completeWalletTransferData]);
 
@@ -296,12 +344,12 @@ const TransferToWallet = (props: PropType) => {
                     }
                     {
                         props?.hideDescription ? '' :
-                        <div className="form-group mb-5">
-                            <h1>Description</h1>
-                            <TextField.TextArea rows={4}
-                                onChange={updateFormData} name="description"
-                                className="outline-none px-2 py-2 rounded-lg" />
-                        </div>
+                            <div className="form-group mb-5">
+                                <h1>Description</h1>
+                                <TextField.TextArea rows={4}
+                                    onChange={updateFormData} name="description"
+                                    className="outline-none px-2 py-2 rounded-lg" />
+                            </div>
                     }
                     <div>
                         <Button isLoading={loadingCreditButton} onClick={handleCurrentView} className="w-full block mb-5 py-5 text-white rounded-lg">Continue</Button>

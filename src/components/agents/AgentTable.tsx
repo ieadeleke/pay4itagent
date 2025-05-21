@@ -68,6 +68,7 @@ export const AgentTableList = (props: AgentTableProps) => {
     const [displayTransferModal, setDisplayTransferModal] = useState(false);
     const [selectedAgent, setSelectedAgent] = useState<any>({});
     const [openModal, setOpenModal] = useState<boolean>(false);
+    const [agentData, setAgentData] = useState<AllAgentType[]>([]);
 
 
     const handleClick = (e: any) => {
@@ -78,8 +79,18 @@ export const AgentTableList = (props: AgentTableProps) => {
         setDisplayTransferModal(!displayTransferModal);
     }
 
+    useEffect(() => {
+        setAgentData(mdaList);
+    }, [mdaList]);
+
     const toggleWithdrawalModal = () => {
         setOpenModal(!openModal);
+    }
+
+    const handleAgentDataFromTable = (props: AllAgentType[]) => {
+        setAgentData(props);
+        setDisplayTransferModal(false)
+        setOpenModal(false);
     }
 
     const items = [
@@ -152,7 +163,7 @@ export const AgentTableList = (props: AgentTableProps) => {
                                             <TableHead className="text-white"></TableHead>
                                         </TableRow>
                                     </TableHeader>
-                                    {mdaList.map((item, index) => (
+                                    {agentData.map((item, index) => (
                                         <TableBody key={index} className="bg-white cursor-pointer">
                                             <TableRow>
                                                 {/* <TableCell className="text-sm">{formatDate(item.createdAt)}</TableCell> */}
@@ -190,7 +201,7 @@ export const AgentTableList = (props: AgentTableProps) => {
                             <div className="block md:hidden">
                                 <Collapse defaultActiveKey={['0']}>
                                     {
-                                        mdaList.map((item, index) => (
+                                        agentData.map((item, index) => (
                                             <Collapse.Panel header={`${item.firstName} ${item.lastName} added on ${formatDate(item.createdAt)}`} key={index}>
                                                 <ul>
                                                     <li className="flex justify-between items-center mb-2">
@@ -258,10 +269,10 @@ export const AgentTableList = (props: AgentTableProps) => {
                                 <div className="md:w-[80%] mx-auto pt-10">
                                     <h3 className="font-bold text-center text-xl mb-10">Fund Agent Wallet</h3>
                                     <TransferToWallet status="agent" accNum={selectedAgent?.wallet?.accountNumber} firstName={selectedAgent?.firstName} hideDescription={true}
-                                        lastName={selectedAgent?.lastName} closeAction={toggleTransferModal} />
+                                        lastName={selectedAgent?.lastName} closeAction={toggleTransferModal} agent={selectedAgent} updateAgentData={handleAgentDataFromTable} />
                                 </div>
                             </Modal>
-                            <DefundWalletModal openModal={openModal} closeModal={toggleWithdrawalModal} userData={selectedAgent} hideDescription={true} />
+                            <DefundWalletModal openModal={openModal} closeModal={toggleWithdrawalModal} userData={selectedAgent} hideDescription={true} updateAgentData={handleAgentDataFromTable} />
                         </div>
                     </Tabs.TabPane>
                 </Tabs>
