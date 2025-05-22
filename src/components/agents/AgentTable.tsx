@@ -164,7 +164,8 @@ export const AgentTableList = (props: AgentTableProps) => {
                                         </TableRow>
                                     </TableHeader>
                                     {agentData.map((item, index) => (
-                                        <TableBody key={index} className="bg-white cursor-pointer">
+                                        // onClick={() => handleClick(item)}
+                                        <TableBody key={index} className="bg-white cursor-pointer" onClick={() => handleClick(item)}>
                                             <TableRow>
                                                 {/* <TableCell className="text-sm">{formatDate(item.createdAt)}</TableCell> */}
                                                 <TableCell className="text-sm">{`${item.firstName} ${item.lastName}`}</TableCell>
@@ -182,15 +183,25 @@ export const AgentTableList = (props: AgentTableProps) => {
                                                             }} trigger={['click']}
                                                             placement="bottomLeft"
                                                         >
-                                                            <button onClick={() => setSelectedAgent(item)}
-                                                                className="block bg-transparent border-2 border-[#6A22B2] text-sm border-solid py-3 px-6 rounded-lg bg-gray-800">Funding Options</button>
+                                                            {/* <button onClick={() => setSelectedAgent(item)}
+                                                                className="block bg-transparent border-2 border-[#6A22B2] text-sm border-solid py-3 px-6 rounded-lg bg-gray-800">Funding Options</button> */}
+                                                            <button onClick={() => {
+                                                                setSelectedAgent(item)
+                                                                toggleTransferModal();
+                                                            }}
+                                                                className="block bg-transparent border-2 border-[#6A22B2] text-sm border-solid py-3 px-6 rounded-lg bg-gray-800">Fund Wallet</button>
                                                         </Dropdown>
                                                     </div>
                                                 </TableCell>
                                                 <TableCell>
                                                     <div>
-                                                        <button onClick={() => handleClick(item)}
-                                                            className="block bg-transparent border-2 border-[#6A22B2] text-sm border-solid py-3 px-6 rounded-lg bg-gray-800">View Details</button>
+                                                        {/* <button onClick={() => handleClick(item)}
+                                                            className="block bg-transparent border-2 border-[#6A22B2] text-sm border-solid py-3 px-6 rounded-lg bg-gray-800">View Details</button> */}
+                                                        <button onClick={() => {
+                                                            setSelectedAgent(item)
+                                                            toggleWithdrawalModal();
+                                                        }}
+                                                            className="block bg-transparent border-2 border-[#6A22B2] text-sm border-solid py-3 px-6 rounded-lg bg-gray-800">Defund Wallet</button>
                                                     </div>
                                                 </TableCell>
                                             </TableRow>
@@ -228,18 +239,30 @@ export const AgentTableList = (props: AgentTableProps) => {
                                                     </li>
                                                 </ul>
                                                 <div className="mb-3">
-                                                    <Dropdown
+                                                    <div className="grid grid-cols-2 gap-4">
+                                                        <button onClick={() => {
+                                                            setSelectedAgent(item)
+                                                            toggleTransferModal();
+                                                        }}
+                                                            className="block bg-[#6A22B2] border-2 border-[#6A22B2] text-sm border-solid py-3 px-6 rounded-lg bg-gray-800">Fund Wallet</button>
+                                                        <button onClick={() => {
+                                                            setSelectedAgent(item)
+                                                            toggleWithdrawalModal();
+                                                        }}
+                                                            className="block bg-[#ff0000] border-2 border-[#ff0000] text-sm border-solid py-3 px-6 rounded-lg bg-gray-800">Defund Wallet</button>
+                                                    </div>
+                                                    {/* <Dropdown
                                                         menu={{
                                                             items,
                                                         }} trigger={['click']}
                                                         placement="bottomLeft"
                                                     >
                                                         <button onClick={() => setSelectedAgent(item)}
-                                                            className="block bg-transparent border-2 border-[#6A22B2] text-base border-solid py-3 px-6 rounded-lg text-primary bg-gray-800">Funding Options</button>
-                                                    </Dropdown>
+                                                            className="block bg-transparent border-2 border-[#6A22B2] text-base border-solid py-3 px-6 rounded-lg text-primary w-full bg-gray-800">Funding Options</button>
+                                                    </Dropdown> */}
                                                 </div>
                                                 <Button onClick={() => handleClick(item)}
-                                                    className="text-sm w-max py-2 h-max px-5 border-solid border-primary border-2 bg-transparent text-primary font-black text-sm">View Details</Button>
+                                                    className="text-sm w-full py-2 h-max px-5 border-solid border-primary border-2 bg-transparent text-primary font-black text-sm">View Details</Button>
                                             </Collapse.Panel>
                                         ))
                                     }
