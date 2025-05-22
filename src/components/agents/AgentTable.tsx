@@ -165,16 +165,16 @@ export const AgentTableList = (props: AgentTableProps) => {
                                     </TableHeader>
                                     {agentData.map((item, index) => (
                                         // onClick={() => handleClick(item)}
-                                        <TableBody key={index} className="bg-white cursor-pointer" onClick={() => handleClick(item)}>
+                                        <TableBody key={index} className="bg-white cursor-pointer">
                                             <TableRow>
                                                 {/* <TableCell className="text-sm">{formatDate(item.createdAt)}</TableCell> */}
-                                                <TableCell className="text-sm">{`${item.firstName} ${item.lastName}`}</TableCell>
-                                                <TableCell className="text-sm">{item.email} <br /> {item.phoneNumber}</TableCell>
-                                                {/* <TableCell className="text-sm"></TableCell> */}
-                                                <TableCell className="text-sm">
+                                                <TableCell onClick={() => handleClick(item)} className="text-sm">{`${item.firstName} ${item.lastName}`}</TableCell>
+                                                <TableCell onClick={() => handleClick(item)} className="text-sm">{item.email} <br /> {item.phoneNumber}</TableCell>
+                                                {/* <TableCell onClick={() => handleClick(item)} className="text-sm"></TableCell> */}
+                                                <TableCell onClick={() => handleClick(item)} className="text-sm">
                                                     {item?.wallet?.availableBalance ? formatAmount(item?.wallet?.availableBalance) : ""}
                                                 </TableCell>
-                                                <TableCell className="text-sm">{item?.wallet?.accountName ? <div className="w-3 h-3 rounded-full bg-[#00ff00]"></div> : <div className="w-3 h-3 rounded-full bg-[#ff0000]"></div>}</TableCell>
+                                                <TableCell onClick={() => handleClick(item)} className="text-sm">{item?.wallet?.accountName ? <div className="w-3 h-3 rounded-full bg-[#00ff00]"></div> : <div className="w-3 h-3 rounded-full bg-[#ff0000]"></div>}</TableCell>
                                                 <TableCell>
                                                     <div>
                                                         <Dropdown
@@ -186,7 +186,7 @@ export const AgentTableList = (props: AgentTableProps) => {
                                                             {/* <button onClick={() => setSelectedAgent(item)}
                                                                 className="block bg-transparent border-2 border-[#6A22B2] text-sm border-solid py-3 px-6 rounded-lg bg-gray-800">Funding Options</button> */}
                                                             <button onClick={() => {
-                                                                setSelectedAgent(item)
+                                                                setSelectedAgent(item);
                                                                 toggleTransferModal();
                                                             }}
                                                                 className="block bg-transparent border-2 border-[#6A22B2] text-sm border-solid py-3 px-6 rounded-lg bg-gray-800">Fund Wallet</button>
@@ -198,7 +198,7 @@ export const AgentTableList = (props: AgentTableProps) => {
                                                         {/* <button onClick={() => handleClick(item)}
                                                             className="block bg-transparent border-2 border-[#6A22B2] text-sm border-solid py-3 px-6 rounded-lg bg-gray-800">View Details</button> */}
                                                         <button onClick={() => {
-                                                            setSelectedAgent(item)
+                                                            setSelectedAgent(item);
                                                             toggleWithdrawalModal();
                                                         }}
                                                             className="block bg-transparent border-2 border-[#6A22B2] text-sm border-solid py-3 px-6 rounded-lg bg-gray-800">Defund Wallet</button>
@@ -244,12 +244,12 @@ export const AgentTableList = (props: AgentTableProps) => {
                                                             setSelectedAgent(item)
                                                             toggleTransferModal();
                                                         }}
-                                                            className="block bg-[#6A22B2] border-2 border-[#6A22B2] text-sm border-solid py-3 px-6 rounded-lg bg-gray-800">Fund Wallet</button>
+                                                            className="block bg-[#6A22B2] border-2 border-[#6A22B2] text-sm border-solid py-3 px-6 rounded-lg text-white">Fund Wallet</button>
                                                         <button onClick={() => {
                                                             setSelectedAgent(item)
                                                             toggleWithdrawalModal();
                                                         }}
-                                                            className="block bg-[#ff0000] border-2 border-[#ff0000] text-sm border-solid py-3 px-6 rounded-lg bg-gray-800">Defund Wallet</button>
+                                                            className="block bg-[#ff0000] border-2 border-[#ff0000] text-sm border-solid py-3 px-6 rounded-lg text-white">Defund Wallet</button>
                                                     </div>
                                                     {/* <Dropdown
                                                         menu={{
