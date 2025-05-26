@@ -221,11 +221,18 @@ const TransferToWallet = (props: PropType) => {
             })
         }
     }, [dataSummary])
+    useEffect(() => {
+        if (userRefreshData?.found) {
+            getAgentList({
+                page: 1
+            });
+        }
+    }, [userRefreshData])
 
     const fetchAgentTransDetail = () => {
-        getAgentList({
-            page: 1
-        });
+        // getAgentList({
+        //     page: 1
+        // });
         refreshWallet({
             providerCustomerId: props?.agent?.wallet?.providerCustomerId
         });

@@ -15,7 +15,10 @@ export const useRefreshWallet = () => {
         // setData(null)
         const response = await execute(async () => await ProfileService().refreshAgentWallet(props))
         if (response) {
-            setData(response);
+            setData({
+                found: true,
+                ...response
+            });
         }
     }
 

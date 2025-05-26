@@ -159,7 +159,7 @@ export const AgentTableList = (props: AgentTableProps) => {
                                             {/* <TableHead className="text-white">Phone Number</TableHead> */}
                                             <TableHead className="text-white">Wallet Balance</TableHead>
                                             <TableHead className="text-white">Verified</TableHead>
-                                            <TableHead className="text-white"></TableHead>
+                                            {/* <TableHead className="text-white"></TableHead> */}
                                             <TableHead className="text-white"></TableHead>
                                         </TableRow>
                                     </TableHeader>
@@ -175,7 +175,7 @@ export const AgentTableList = (props: AgentTableProps) => {
                                                     {item?.wallet?.availableBalance ? formatAmount(item?.wallet?.availableBalance) : ""}
                                                 </TableCell>
                                                 <TableCell onClick={() => handleClick(item)} className="text-sm">{item?.wallet?.accountName ? <div className="w-3 h-3 rounded-full bg-[#00ff00]"></div> : <div className="w-3 h-3 rounded-full bg-[#ff0000]"></div>}</TableCell>
-                                                <TableCell>
+                                                {/* <TableCell>
                                                     <div>
                                                         <Dropdown
                                                             menu={{
@@ -183,8 +183,6 @@ export const AgentTableList = (props: AgentTableProps) => {
                                                             }} trigger={['click']}
                                                             placement="bottomLeft"
                                                         >
-                                                            {/* <button onClick={() => setSelectedAgent(item)}
-                                                                className="block bg-transparent border-2 border-[#6A22B2] text-sm border-solid py-3 px-6 rounded-lg bg-gray-800">Funding Options</button> */}
                                                             <button onClick={() => {
                                                                 setSelectedAgent(item);
                                                                 toggleTransferModal();
@@ -192,9 +190,14 @@ export const AgentTableList = (props: AgentTableProps) => {
                                                                 className="block bg-transparent border-2 border-[#6A22B2] text-sm border-solid py-3 px-6 rounded-lg bg-gray-800">Fund Wallet</button>
                                                         </Dropdown>
                                                     </div>
-                                                </TableCell>
+                                                </TableCell> */}
                                                 <TableCell>
-                                                    <div>
+                                                    <div className="flex items-center gap-2">
+                                                        <button onClick={() => {
+                                                            setSelectedAgent(item);
+                                                            toggleTransferModal();
+                                                        }}
+                                                            className="block bg-transparent border-2 border-[#6A22B2] text-sm border-solid py-3 px-6 rounded-lg bg-gray-800">Fund Wallet</button>
                                                         {/* <button onClick={() => handleClick(item)}
                                                             className="block bg-transparent border-2 border-[#6A22B2] text-sm border-solid py-3 px-6 rounded-lg bg-gray-800">View Details</button> */}
                                                         <button onClick={() => {
