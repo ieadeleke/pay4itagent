@@ -68,6 +68,7 @@ const RequestLoanModal = (props: PropType) => {
                 severity: 'success'
             })
             closeModal();
+            window.location.reload();
         }
     }, [data])
 
@@ -95,7 +96,6 @@ const RequestLoanModal = (props: PropType) => {
         })
         setLoadingLoanButton(true);
     }
-
 
     return (
         <div>

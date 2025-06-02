@@ -131,12 +131,15 @@ export const LoanRequestTable = (props: TransactionTableProps) => {
     }
 
     useEffect(() => {
-        console.log(data);
-        if (cancelLoanData?.found) {
-            setCount(data.count);
-            setFilteredTransactions(data.Transaction);
+        if (cancelLoanData?.fetched) {
+            showSnackBar({
+                severity: 'success',
+                message: 'Transaction cancelled successfully'
+            })
+            setLoadPage(false);
+            window.location.reload();
         }
-    }, [data])
+    }, [cancelLoanData])
 
 
     useEffect(() => {

@@ -13,7 +13,7 @@ export const useCancelLoanRequests = () => {
         if (response) {
             setData({
                 fetched: true,
-                loanRequests: response.loanRequests
+                loanRequests: response.LoanRequest
             });
         }
     }
