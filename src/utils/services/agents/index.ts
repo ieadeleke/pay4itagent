@@ -1,12 +1,13 @@
 import { request } from "../../request";
 import { GetTransactionByPaymentRefResponse, GetWalletTransactionsParams, GetWalletTransactionsResponse } from "../transactions/types";
 import {
-    AddAgentParams, AddAgentResponse, AgentTransactionHistoryByDateRangeParams, AgentTransactionHistoryByDateRangeResponse, DownloadReportParams, FreezeAgentParam, FreezeAgentResponse, FundWalletParams,
-    FundWalletResponse, GetAllAgentsParams, GetAllAgentsResponse, GetAllAgentsSummaryResponse, GetAllAgentsTransactionHistoryParams, GetAllAgentsTransactionHistoryResponse, ReprocessPaymentParams, ReprocessPaymentResponse, ReversePaymentResponse, SubAgentTotalTransactionHistoryParams, SubAgentTotalTransactionHistoryResponse, SubAgentTransactionHistoryByDateRangeResponse, SubAgentTransactionHistoryParams, SubAgentTransactionHistoryResponse, SuspendAgentParams, SuspendAgentResponse,
+    AddAgentParams, AddAgentResponse, AddLoanParams, AddLoanResponse, AgentTransactionHistoryByDateRangeParams, AgentTransactionHistoryByDateRangeResponse, DownloadReportParams, FreezeAgentParam, FreezeAgentResponse, FundWalletParams,
+    FundWalletResponse, GetAllAgentsParams, GetAllAgentsResponse, GetAllAgentsSummaryResponse, GetAllAgentsTransactionHistoryParams, GetAllAgentsTransactionHistoryResponse, GetAllLoanHistoryParams, ReprocessPaymentParams, ReprocessPaymentResponse, ReversePaymentResponse, SubAgentTotalTransactionHistoryParams, SubAgentTotalTransactionHistoryResponse, SubAgentTransactionHistoryByDateRangeResponse, SubAgentTransactionHistoryParams, SubAgentTransactionHistoryResponse, SuspendAgentParams, SuspendAgentResponse,
     TransactionHistoryParams,
     TransactionHistoryResponse,
     TransferToWalletParams,
     TransferToWalletResponse,
+    UpdateLoanRequestParams,
     UpdateWalletParams, UpdateWalletResponse,
     WithdrawWalletParams,
     WithdrawWalletResponse
@@ -65,6 +66,33 @@ export function AgentService() {
             body: payload,
         });
         return data as AddAgentResponse;
+    }
+
+    async function addNewLoanRequest(payload: AddLoanParams) {
+        const data = await request({
+            path: `v1/agent/loan/loanrequest`,
+            method: "POST",
+            body: payload,
+        });
+        return data as AddLoanResponse;
+    }
+
+    async function getAllLoanRequests(param: GetAllLoanHistoryParams) {
+        const data = await request({
+            path: `v1/agent/loan/viewagentloan?status=${param.status}`,
+            method: "GET",
+            body: "",
+        });
+        return data as any;
+    }
+
+    async function cancelLoanRequest(param: UpdateLoanRequestParams) {
+        const data = await request({
+            path: `v1/agent/loan/cancelloan`,
+            method: "PUT",
+            body: param,
+        });
+        return data as any;
     }
 
     async function downloadReport(payload: DownloadReportParams) {
@@ -214,6 +242,9 @@ export function AgentService() {
         getAllAgentsSummary,
         getAllAgentsTransactionHistory,
         ReProcessAgentPayment,
-        ReverseAgentPayment
+        ReverseAgentPayment,
+        addNewLoanRequest,
+        getAllLoanRequests,
+        cancelLoanRequest
     };
 }

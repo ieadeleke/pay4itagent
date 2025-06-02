@@ -18,7 +18,7 @@ import { useFetchUser } from "@/utils/apiHooks/profile/useFetchUser";
 import { useDashboardInfo } from "@/utils/apiHooks/transactions/useDashboardInfo";
 import { capitalizeText } from "@/utils/formatters/capitalizeText";
 import { formatAmount } from "@/utils/formatters/formatAmount";
-import { Dropdown, Modal, Select, Spin } from "antd";
+import { Dropdown, Modal, Select, Spin, Tabs } from "antd";
 import { useFetchBankList } from "@/utils/apiHooks/consultants/useFetchBankList"
 import { useVerifyBankList } from "@/utils/apiHooks/consultants/useVerifyBankLIst"
 import { useContext, useEffect, useState } from "react";
@@ -36,6 +36,8 @@ import { LoadingOutlined } from '@ant-design/icons';
 import TransferToWallet from "@/components/agents/transfertowallet";
 import { IoEyeSharp } from "react-icons/io5";
 import { HiEyeSlash } from "react-icons/hi2";
+import RequestLoanModal from "@/components/agents/requestloan";
+import { LoanRequestTable } from "@/components/mda-dashboard/transactions/LoanTransactionTable";
 
 
 function distributeCounts(data: DayData[]): { dayOfWeek: string; count: number }[] {
@@ -99,6 +101,9 @@ export default function MdaDashboard() {
     const [withDrawalType, setWithDrawalType] = useState("wallet");
     const [displayWalletActivationModal, setDisplayWalletActivationModal] = useState(false);
     const [displayWalletWithdrawalModal, setDisplayWalletWithdrawalModal] = useState(false);
+
+    const [openLoanModal, setOpenLoanModal] = useState(false);
+
     const [refreshCount, setRefreshCount] = useState(0);
     const [hideAmount, setHideAmount] = useState(typeof window !== 'undefined' && localStorage.getItem("displayAmount") ? localStorage.getItem("displayAmount") : true);
 
@@ -316,6 +321,10 @@ export default function MdaDashboard() {
         window.location.reload();
     }
 
+    const toggleLoanRequestModal = () => {
+        setOpenLoanModal(!openLoanModal);
+    }
+
     return <DashboardLayout>
         <NetworkRequestContainer isLoading={isLoading} error={error}>
             <div>
@@ -381,6 +390,7 @@ export default function MdaDashboard() {
                                                     >
                                                         <button className="bg-white px-8 py-3 text-base rounded-xl">Withdraw</button>
                                                     </Dropdown>
+                                                    <button onClick={toggleLoanRequestModal} className="bg-white px-8 py-3 text-base rounded-xl">Request Float</button>
                                                     {/* : ""} */}
                                                 </div>
                                             </div>
@@ -414,7 +424,14 @@ export default function MdaDashboard() {
                                     </div>
                                     <div className="flex items-start gap-8 mt-5">
                                         <div className="flex-1 border bg-white rounded-[16px] px-2 py-2">
-                                            <TransactionHistory walletId={profile?.wallet?._id ? profile.wallet._id : ""} refreshCount={refreshCount} />
+                                            <Tabs type="card" size="large" className="mt-10 w-full">
+                                                <Tabs.TabPane key={1} tab="Wallet Transaction History">
+                                                    <TransactionHistory walletId={profile?.wallet?._id ? profile.wallet._id : ""} refreshCount={refreshCount} />
+                                                </Tabs.TabPane>
+                                                <Tabs.TabPane key={2} tab="Float Requests">
+                                                    <LoanRequestTable walletId={profile?.wallet?._id ? profile.wallet._id : ""} />
+                                                </Tabs.TabPane>
+                                            </Tabs>
                                         </div>
                                         <Modal open={displayTransferModal} onCancel={toggleDisplayModal} footer={null}>
                                             <div className="md:w-[80%] mx-auto py-10">
@@ -507,6 +524,7 @@ export default function MdaDashboard() {
                         }
                     </div>
                 </Modal>
+                <RequestLoanModal openModal={openLoanModal} closeAction={toggleLoanRequestModal} />
             </div>
         </NetworkRequestContainer>
     </DashboardLayout >

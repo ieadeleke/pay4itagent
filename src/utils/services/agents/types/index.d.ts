@@ -40,6 +40,14 @@ export type GetAllAgentsTransactionHistoryParams = {
     perPage?: number
 }
 
+export type GetAllLoanHistoryParams = {
+    status?: string;
+}
+
+export type UpdateLoanRequestParams = {
+    loanId: string;
+}
+
 export type ReprocessPaymentParams = {
     paymentRef?: string;
 }
@@ -67,6 +75,15 @@ export type AddAgentParams = {
     phoneNumber: string,
     firstName: string,
     lastName: string
+}
+
+export type AddLoanParams = {
+    loanAmount: string,
+    endDate?: string
+}
+
+export type AddLoanResponse = {
+    LoanRequest?: any
 }
 
 export type AddAgentResponse = ApiResponse & {
