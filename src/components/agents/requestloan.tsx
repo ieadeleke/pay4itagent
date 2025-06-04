@@ -64,7 +64,7 @@ const RequestLoanModal = (props: PropType) => {
     useEffect(() => {
         if (data) {
             showSnackBar({
-                message: "Loan requested successfully",
+                message: "Float requested successfully",
                 severity: 'success'
             })
             closeModal();
@@ -85,7 +85,7 @@ const RequestLoanModal = (props: PropType) => {
     const handleLoanRequest = () => {
         if (!agentData.amount.length) {
             return showSnackBar({
-                message: "Please enter loan request amount",
+                message: "Please enter float request amount",
                 severity: 'error'
             })
         }

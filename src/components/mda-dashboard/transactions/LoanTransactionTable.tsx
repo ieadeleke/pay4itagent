@@ -109,8 +109,8 @@ export const LoanRequestTable = (props: TransactionTableProps) => {
             label: <Button className="bg-transparent py-3 h-max text-black px-6" onClick={() => handleLoanFilter('all')}>All</Button>,
         },
         {
-            key: 'success',
-            label: <Button className="bg-transparent py-3 h-max text-black px-6" onClick={() => handleLoanFilter('success')}>Successful</Button>,
+            key: 'active',
+            label: <Button className="bg-transparent py-3 h-max text-black px-6" onClick={() => handleLoanFilter('active')}>Active</Button>,
         },
         {
             key: 'cancelled',
@@ -180,7 +180,7 @@ export const LoanRequestTable = (props: TransactionTableProps) => {
         if (repayLoanData?.fetched) {
             showSnackBar({
                 severity: 'success',
-                message: 'Loan liquidated successfully'
+                message: 'Float liquidated successfully'
             })
             setLoadPage(false);
             window.location.reload();
@@ -275,7 +275,7 @@ export const LoanRequestTable = (props: TransactionTableProps) => {
                                                             {
                                                                 item.status === 'active' ?
                                                                     <div className="flex items-center gap-4">
-                                                                        <Button onClick={() => handleCompleteLoanRequestPayment(item._id)} className="text-xs w-max block py-3 h-max px-5 border-solid border-primary border-2 bg-transparent text-primary font-black text-sm">Repay Full Loan</Button>
+                                                                        <Button onClick={() => handleCompleteLoanRequestPayment(item._id)} className="text-xs w-max block py-3 h-max px-5 border-solid border-primary border-2 bg-transparent text-primary font-black text-sm">Repay Full Float</Button>
                                                                         <Button onClick={toggleHalfLoanPaymentModal} className="text-xs w-max block py-3 h-max px-5 border-solid border-primary border-2 bg-transparent text-primary font-black text-sm">Repay Partially</Button>
                                                                     </div>
                                                                     :
