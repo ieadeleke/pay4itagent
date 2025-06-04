@@ -46,6 +46,7 @@ export type GetAllLoanHistoryParams = {
 
 export type UpdateLoanRequestParams = {
     loanId: string;
+    amount?: number;
 }
 
 export type ReprocessPaymentParams = {

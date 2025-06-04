@@ -95,6 +95,24 @@ export function AgentService() {
         return data as any;
     }
 
+    async function repayLoanRequest(param: UpdateLoanRequestParams) {
+        const data = await request({
+            path: `v1/agent/loan/LiquidateLoan`,
+            method: "PUT",
+            body: param,
+        });
+        return data as any;
+    }
+
+    async function repayHalfLoanRequest(param: UpdateLoanRequestParams) {
+        const data = await request({
+            path: `v1/agent/loan/partialAmount`,
+            method: "PUT",
+            body: param,
+        });
+        return data as any;
+    }
+
     async function downloadReport(payload: DownloadReportParams) {
         const data = await request({
             path: `v1/subAgent/DownloadWalletTransaction?walletId=${payload.walletId}&startDate=${payload.startDate}&endDate=${payload.endDate}&category=${payload.category}&type=${payload.type}`,
@@ -245,6 +263,8 @@ export function AgentService() {
         ReverseAgentPayment,
         addNewLoanRequest,
         getAllLoanRequests,
-        cancelLoanRequest
+        cancelLoanRequest,
+        repayLoanRequest,
+        repayHalfLoanRequest
     };
 }

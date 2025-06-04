@@ -29,6 +29,9 @@ import Button from "@/components/buttons";
 import { useCancelLoanRequests } from "@/utils/apiHooks/agents/useCancelLoan";
 import { LoadingModal } from "@/components/states/LoadingModal";
 import Loader from "@/components/layouts/loader";
+import { useRepayLoanRequests } from "@/utils/apiHooks/agents/useRepayLoan";
+import { useRepayHalfLoanRequests } from "@/utils/apiHooks/agents/useLoanRepayPartPayment";
+import LoanPartPaymentModal from "@/components/agents/loanPartPayment";
 
 
 type TransactionTableProps = {
@@ -39,6 +42,10 @@ export const LoanRequestTable = (props: TransactionTableProps) => {
 
     const { isLoading, error, data, getAllRequests } = useGetLoanRequests();
     const { error: cancelLoanError, data: cancelLoanData, cancelLoanRequest } = useCancelLoanRequests();
+
+    const { error: repayLoanError, data: repayLoanData, repayLoanRequest } = useRepayLoanRequests();
+    const { error: repayHalfLoanError, data: repayHalfLoanData, repayHalfLoanRequest } = useRepayHalfLoanRequests();
+
 
     const [page, setPage] = useState<number>(1);
     const [count, setCount] = useState<number>(1);
@@ -54,6 +61,7 @@ export const LoanRequestTable = (props: TransactionTableProps) => {
     const [loadPage, setLoadPage] = useState<boolean>(false);
     const [loadHistory, setLoadHistory] = useState<boolean>(false);
     const [statusFilter, setStatusFilter] = useState<string>('');
+    const [halfPaymentModalDisplay, setHalfPaymentModalDisplay] = useState<boolean>(false);
 
 
     useEffect(() => {
@@ -130,6 +138,22 @@ export const LoanRequestTable = (props: TransactionTableProps) => {
         setLoadPage(true);
     }
 
+    const handleCompleteLoanRequestPayment = (loanId: string) => {
+        repayLoanRequest({
+            loanId
+        });
+        setLoadPage(true);
+    }
+
+    const handleHalfLoanRequestPayment = (loanId: string) => {
+        repayHalfLoanRequest({
+            loanId,
+            amount: 0
+        });
+        setLoadPage(true);
+    }
+
+
     useEffect(() => {
         if (cancelLoanData?.fetched) {
             showSnackBar({
@@ -141,6 +165,28 @@ export const LoanRequestTable = (props: TransactionTableProps) => {
         }
     }, [cancelLoanData])
 
+    useEffect(() => {
+        if (repayHalfLoanData?.fetched) {
+            showSnackBar({
+                severity: 'success',
+                message: 'Amount repaid successfully'
+            })
+            setLoadPage(false);
+            window.location.reload();
+        }
+    }, [repayHalfLoanData])
+
+    useEffect(() => {
+        if (repayLoanData?.fetched) {
+            showSnackBar({
+                severity: 'success',
+                message: 'Loan liquidated successfully'
+            })
+            setLoadPage(false);
+            window.location.reload();
+        }
+    }, [repayLoanData])
+
 
     useEffect(() => {
         if (cancelLoanError) {
@@ -151,6 +197,29 @@ export const LoanRequestTable = (props: TransactionTableProps) => {
             setLoadPage(false);
         }
     }, [cancelLoanError])
+
+    useEffect(() => {
+        if (repayHalfLoanError) {
+            showSnackBar({
+                severity: 'error',
+                message: repayHalfLoanError
+            })
+            setLoadPage(false);
+        }
+    }, [repayHalfLoanError])
+    useEffect(() => {
+        if (repayLoanError) {
+            showSnackBar({
+                severity: 'error',
+                message: repayLoanError
+            })
+            setLoadPage(false);
+        }
+    }, [repayLoanError])
+
+    const toggleHalfLoanPaymentModal = () => {
+        setHalfPaymentModalDisplay(!halfPaymentModalDisplay);
+    }
 
     return (
         <Spin spinning={loadPage} indicator={<LoadingOutlined spin />}>
@@ -179,8 +248,8 @@ export const LoanRequestTable = (props: TransactionTableProps) => {
                                         <TableRow>
                                             <TableHead className="font-black text-white rounded-tl-xl">Date</TableHead>
                                             <TableHead className="font-black text-white">Float Amount</TableHead>
-                                            <TableHead className="font-black text-white">Repayment Amount</TableHead>
                                             <TableHead className="font-black text-white">Interest</TableHead>
+                                            <TableHead className="font-black text-white">Repayment Amount</TableHead>
                                             <TableHead className="font-black text-white">End Date</TableHead>
                                             <TableHead className="font-black text-white">Status</TableHead>
                                             <TableHead className="font-black text-white rounded-tr-xl">Action</TableHead>
@@ -200,17 +269,17 @@ export const LoanRequestTable = (props: TransactionTableProps) => {
                                                         <TableCell className="text-left">{formatAmount(item?.repaymentAmount)}</TableCell>
                                                         <TableCell className="text-left">{formatDateWithoutTime(item?.endDate)}</TableCell>
                                                         <TableCell>
-                                                            <p className={`py-3 px-4 w-max ${item.status === "success" ? "bg-blue-200" : item.status === "pending" ? "bg-yellow-100" : "bg-red-100"} rounded-lg text-left`}>{item.status}</p>
+                                                            <p className={`py-3 px-4 w-max ${item.status === "active" ? "bg-blue-200" : item.status === "pending" ? "bg-yellow-100" : "bg-red-100"} rounded-lg text-left`}>{item.status}</p>
                                                         </TableCell>
                                                         <TableCell>
                                                             {
-                                                                item.status === 'success' ?
+                                                                item.status === 'active' ?
                                                                     <div className="flex items-center gap-4">
-                                                                        <Button className="text-xs w-max block py-3 h-max px-5 border-solid border-primary border-2 bg-transparent text-primary font-black text-sm">Repay Full Loan</Button>
-                                                                        <Button className="text-xs w-max block py-3 h-max px-5 border-solid border-primary border-2 bg-transparent text-primary font-black text-sm">Repay Partially</Button>
+                                                                        <Button onClick={() => handleCompleteLoanRequestPayment(item._id)} className="text-xs w-max block py-3 h-max px-5 border-solid border-primary border-2 bg-transparent text-primary font-black text-sm">Repay Full Loan</Button>
+                                                                        <Button onClick={toggleHalfLoanPaymentModal} className="text-xs w-max block py-3 h-max px-5 border-solid border-primary border-2 bg-transparent text-primary font-black text-sm">Repay Partially</Button>
                                                                     </div>
                                                                     :
-                                                                    item.status !== 'cancelled' ?
+                                                                    item.status === 'pending' ?
                                                                         <Button onClick={() => handleLoanRequestCancellation(item._id)} className="text-xs w-max block py-3 h-max px-5 border-solid border-primary border-2 bg-transparent text-primary font-black text-sm">Cancel Loan</Button>
                                                                         : ''
                                                             }
@@ -277,6 +346,7 @@ export const LoanRequestTable = (props: TransactionTableProps) => {
                             /> */}
                             </div>
                             <div className="h-20"></div>
+                            <LoanPartPaymentModal openModal={halfPaymentModalDisplay} closeAction={toggleHalfLoanPaymentModal} loanId={currentSelectedTransaction._id} />
                         </div>
                 }
             </div>
