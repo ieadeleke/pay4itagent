@@ -249,10 +249,9 @@ export const LoanRequestTable = (props: TransactionTableProps) => {
                                             <TableHead className="font-black text-white rounded-tl-xl">Date</TableHead>
                                             <TableHead className="font-black text-white">Float Amount</TableHead>
                                             <TableHead className="font-black text-white">Interest</TableHead>
+                                            <TableHead className="font-black text-white">Repayment Amount</TableHead>
                                             <TableHead className="font-black text-white">Amount to pay</TableHead>
-                                            <TableHead className="font-black text-white">Amount</TableHead>
                                             <TableHead className="font-black text-white">End Date</TableHead>
-                                            <TableHead className="font-black text-white">Balance</TableHead>
                                             <TableHead className="font-black text-white">Status</TableHead>
                                             <TableHead className="font-black text-white rounded-tr-xl">Action</TableHead>
                                         </TableRow>
