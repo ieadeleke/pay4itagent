@@ -249,8 +249,10 @@ export const LoanRequestTable = (props: TransactionTableProps) => {
                                             <TableHead className="font-black text-white rounded-tl-xl">Date</TableHead>
                                             <TableHead className="font-black text-white">Float Amount</TableHead>
                                             <TableHead className="font-black text-white">Interest</TableHead>
-                                            <TableHead className="font-black text-white">Repayment Amount</TableHead>
+                                            <TableHead className="font-black text-white">Amount to pay</TableHead>
+                                            <TableHead className="font-black text-white">Amount</TableHead>
                                             <TableHead className="font-black text-white">End Date</TableHead>
+                                            <TableHead className="font-black text-white">Balance</TableHead>
                                             <TableHead className="font-black text-white">Status</TableHead>
                                             <TableHead className="font-black text-white rounded-tr-xl">Action</TableHead>
                                         </TableRow>
@@ -267,9 +269,13 @@ export const LoanRequestTable = (props: TransactionTableProps) => {
                                                         <TableCell className="text-left">{formatAmount(item?.loanAmount)}</TableCell>
                                                         <TableCell className="text-left">{formatAmount(item?.interestAmount)}</TableCell>
                                                         <TableCell className="text-left">{formatAmount(item?.repaymentAmount)}</TableCell>
+                                                        <TableCell className="text-left">{formatAmount(+item?.repaymentAmount - +item?.amountPaid)}</TableCell>
                                                         <TableCell className="text-left">{formatDateWithoutTime(item?.endDate)}</TableCell>
-                                                        <TableCell>
+                                                        {/* <TableCell>
                                                             <p className={`py-3 px-4 w-max ${item.status === "active" ? "bg-blue-200" : item.status === "pending" ? "bg-yellow-100" : "bg-red-100"} rounded-lg text-left`}>{item.status}</p>
+                                                        </TableCell> */}
+                                                        <TableCell>
+                                                            <p className={`py-3 px-4 w-max ${item.status === "completed" ? 'bg-[#C9F2F0]' : item.status === "active" ? "bg-blue-200" : item.status === "pending" ? "bg-yellow-100" : "bg-red-100"} rounded-lg text-left`}>{item.status}</p>
                                                         </TableCell>
                                                         <TableCell>
                                                             {
