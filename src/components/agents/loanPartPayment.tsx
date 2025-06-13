@@ -103,7 +103,7 @@ const LoanPartPaymentModal = (props: PropType) => {
         <div>
             <Modal open={props.openModal} onCancel={closeModal} footer={null}>
                 <div>
-                    <h3 className="font-bold text-center text-xl mb-10">Request Float</h3>
+                    <h3 className="font-bold text-center text-xl mb-10">Repay Float Part Payment</h3>
 
                     <div className="form-group mb-5">
                         <div className="flex justify-between">

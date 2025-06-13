@@ -68,7 +68,8 @@ const RequestLoanModal = (props: PropType) => {
                 severity: 'success'
             })
             closeModal();
-            window.location.reload();
+            // window.location.reload();
+            window.location.href = "/wallet?activekey=2";
         }
     }, [data])
 

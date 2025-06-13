@@ -38,6 +38,7 @@ import { IoEyeSharp } from "react-icons/io5";
 import { HiEyeSlash } from "react-icons/hi2";
 import RequestLoanModal from "@/components/agents/requestloan";
 import { LoanRequestTable } from "@/components/mda-dashboard/transactions/LoanTransactionTable";
+import { useParams, useSearchParams } from "next/navigation";
 
 
 function distributeCounts(data: DayData[]): { dayOfWeek: string; count: number }[] {
@@ -89,6 +90,8 @@ function distributePieChartCounts(data: ({
 }
 
 export default function MdaDashboard() {
+
+    const params = useSearchParams();
     const { isLoading, error, data, getDashboardInfo } = useDashboardInfo();
 
     const { isLoading: isLoadingUser, error: userError, data: userFetchedData, fetchUser } = useFetchUser();
@@ -103,6 +106,7 @@ export default function MdaDashboard() {
     const [displayWalletWithdrawalModal, setDisplayWalletWithdrawalModal] = useState(false);
 
     const [openLoanModal, setOpenLoanModal] = useState(false);
+    const [currentDisplayKey, setCurrentDisplayKey] = useState<string>('1');
 
     const [refreshCount, setRefreshCount] = useState(0);
     const [hideAmount, setHideAmount] = useState(typeof window !== 'undefined' && localStorage.getItem("displayAmount") ? localStorage.getItem("displayAmount") : true);
@@ -116,6 +120,13 @@ export default function MdaDashboard() {
         month: "",
         date: ""
     });
+
+    useEffect(() => {
+        let key = params.get('activekey');
+        if (key) {
+            setCurrentDisplayKey(key);
+        }
+    }, [params.get('activekey')])
 
 
     const { showSnackBar } = useContext(GlobalActionContext);
@@ -424,7 +435,7 @@ export default function MdaDashboard() {
                                     </div>
                                     <div className="flex items-start gap-8 mt-5">
                                         <div className="flex-1 border bg-white rounded-[16px] px-2 py-2">
-                                            <Tabs type="card" size="large" className="mt-10 w-full">
+                                            <Tabs type="card" size="large" className="mt-10 w-full" activeKey={currentDisplayKey} onChange={(key: string) => setCurrentDisplayKey(key)}>
                                                 <Tabs.TabPane key={1} tab="Wallet Transaction History">
                                                     <TransactionHistory walletId={profile?.wallet?._id ? profile.wallet._id : ""} refreshCount={refreshCount} />
                                                 </Tabs.TabPane>

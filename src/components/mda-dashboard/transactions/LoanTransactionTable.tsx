@@ -161,7 +161,8 @@ export const LoanRequestTable = (props: TransactionTableProps) => {
                 message: 'Transaction cancelled successfully'
             })
             setLoadPage(false);
-            window.location.reload();
+            window.location.href = "/wallet?activekey=2";
+            // window.location.reload();
         }
     }, [cancelLoanData])
 
@@ -172,7 +173,8 @@ export const LoanRequestTable = (props: TransactionTableProps) => {
                 message: 'Amount repaid successfully'
             })
             setLoadPage(false);
-            window.location.reload();
+            window.location.href = "/wallet?activekey=2";
+            // window.location.reload();
         }
     }, [repayHalfLoanData])
 
@@ -183,7 +185,8 @@ export const LoanRequestTable = (props: TransactionTableProps) => {
                 message: 'Float liquidated successfully'
             })
             setLoadPage(false);
-            window.location.reload();
+            window.location.href = "/wallet?activekey=2";
+            // window.location.reload();
         }
     }, [repayLoanData])
 
