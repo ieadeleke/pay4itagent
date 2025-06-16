@@ -382,7 +382,7 @@ const TransferToWallet = (props: PropType) => {
                             </div>
                         </div>
                         <TextField.Input
-                            onChange={updateFormData} name="amount"
+                            onChange={updateFormData} name="amount" value={consultantData.amount}
                             className="outline-none px-2 rounded-lg" />
                     </div>
                     {
