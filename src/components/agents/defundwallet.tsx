@@ -30,6 +30,7 @@ interface PropType {
     hideDescription?: boolean
     closeAction?: () => void
     updateAgentData: (props: any) => void
+    currentPage?: number
 }
 
 const DefundWalletModal = (props: PropType) => {
@@ -108,7 +109,7 @@ const DefundWalletModal = (props: PropType) => {
         if (userRefreshData?.found) {
             setTimeout(() => {
                 getAgentList({
-                    page: 1
+                    page: props?.currentPage || 1
                 });
             }, 2000)
         }

@@ -67,6 +67,7 @@ export const AgentTableList = (props: AgentTableProps) => {
     const [isDateModalOpen, setIsDateModalOpen] = useState(false);
     const { showSnackBar } = useContext(GlobalActionContext);
     const [displayTransferModal, setDisplayTransferModal] = useState(false);
+    const [currentPage, setCurrentPage] = useState<number>(1);
     const [selectedAgent, setSelectedAgent] = useState<any>({});
     const [openModal, setOpenModal] = useState<boolean>(false);
     const [agentData, setAgentData] = useState<AllAgentType[]>([]);
@@ -113,6 +114,17 @@ export const AgentTableList = (props: AgentTableProps) => {
             ),
         }
     ]
+
+    function onPageChange(selectedItem: {
+        selected: number;
+    }) {
+        if (props.onPageChange) {
+            props.onPageChange({
+                selected: selectedItem.selected
+            });
+        }
+        setCurrentPage(selectedItem.selected + 1)
+    }
 
     return (
         <div className="flex flex-col gap-4">
@@ -278,7 +290,7 @@ export const AgentTableList = (props: AgentTableProps) => {
                                 <TablePagination
                                     breakLabel="..."
                                     nextLabel=">"
-                                    onPageChange={props.onPageChange}
+                                    onPageChange={onPageChange}
                                     pageRangeDisplayed={5}
                                     currentPage={props.page - 1}
                                     pageCount={Math.max(0, props.count / 20)}
@@ -296,11 +308,11 @@ export const AgentTableList = (props: AgentTableProps) => {
                             <Modal open={displayTransferModal} onCancel={() => setDisplayTransferModal(false)} footer={null}>
                                 <div className="md:w-[80%] mx-auto pt-10">
                                     <h3 className="font-bold text-center text-xl mb-10">Fund Agent Wallet</h3>
-                                    <TransferToWallet status="agent" accNum={selectedAgent?.wallet?.accountNumber} firstName={selectedAgent?.firstName} hideDescription={true}
+                                    <TransferToWallet status="agent" accNum={selectedAgent?.wallet?.accountNumber} firstName={selectedAgent?.firstName} hideDescription={true} currentPage={currentPage}
                                         lastName={selectedAgent?.lastName} closeAction={toggleTransferModal} agent={selectedAgent} updateAgentData={handleAgentDataFromTable} />
                                 </div>
                             </Modal>
-                            <DefundWalletModal openModal={openModal} closeModal={toggleWithdrawalModal} userData={selectedAgent} hideDescription={true} updateAgentData={handleAgentDataFromTable} />
+                            <DefundWalletModal openModal={openModal} closeModal={toggleWithdrawalModal} userData={selectedAgent} hideDescription={true} updateAgentData={handleAgentDataFromTable} currentPage={currentPage} />
                         </div>
                     </Tabs.TabPane>
                 </Tabs>

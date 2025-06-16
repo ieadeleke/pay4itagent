@@ -33,6 +33,7 @@ interface PropType {
     agent: any
     updateAgentData: (props: any) => void
     closeAction?: () => void
+    currentPage?: number
 }
 
 const TransferToWallet = (props: PropType) => {
@@ -266,7 +267,7 @@ const TransferToWallet = (props: PropType) => {
         if (userRefreshData?.found) {
             setTimeout(() => {
                 getAgentList({
-                    page: 1
+                    page: props?.currentPage || 1
                 });
             }, 2000)
         }
