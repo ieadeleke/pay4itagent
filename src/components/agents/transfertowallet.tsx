@@ -42,6 +42,7 @@ const TransferToWallet = (props: PropType) => {
     const { isLoading: isLoadingWalletTransfer, data: completeWalletTransferData, error: errorWalletTransfer, completeWalletTransfer } = useCompleteTransfer();
 
     const { isLoading: isLoadingWalletRefresh, error: userWalletRefreshError, data: userRefreshData, refreshWallet } = useRefreshWallet();
+    const { isLoading: isLoadingSuperAgentWalletRefresh, error: refreshSuperAgentWalletRefreshError, data: refreshSuperAgentRefreshData, refreshWallet: refreshSuperAgent } = useRefreshWallet();
     const { getAgentList, isLoading: loadingAgentSummary, error: errorSummary, data: dataSummary } = useGetAgents();
 
 
@@ -278,14 +279,13 @@ const TransferToWallet = (props: PropType) => {
     }, [user])
 
     const fetchAgentTransDetail = () => {
-        // getAgentList({
-        //     page: 1
-        // });
-        refreshWallet({
-            providerCustomerId: props?.agent?.wallet?.providerCustomerId
-        });
-        if (userData?.wallet?.providerCustomerId) {
+        setTimeout(() => {
             refreshWallet({
+                providerCustomerId: props?.agent?.wallet?.providerCustomerId
+            });
+        }, 2000)
+        if (userData?.wallet?.providerCustomerId) {
+            refreshSuperAgent({
                 providerCustomerId: userData?.wallet?.providerCustomerId
             });
         }
@@ -350,9 +350,9 @@ const TransferToWallet = (props: PropType) => {
             description: ""
         })
         setUserOTPValue("");
-        if (props.closeAction) props.closeAction();
         setLoadingCreditButton(false);
         setDisplayWalletPaymentInfo(true);
+        if (props.closeAction) props.closeAction();
     }
 
     const handleCurrentView = () => {

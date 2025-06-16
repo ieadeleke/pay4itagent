@@ -37,6 +37,7 @@ const DefundWalletModal = (props: PropType) => {
     const { isLoading: isLoadingWithdrawUser, error: userWithdrawError, data: userFetchedWithdrawData, withdrawWallet } = useWithdrawWallet();
     const { getAgentList, isLoading: loadingAgentSummary, error: errorSummary, data: dataSummary } = useGetAgents();
     const { isLoading: isLoadingWalletRefresh, error: userWalletRefreshError, data: userRefreshData, refreshWallet } = useRefreshWallet();
+    const { isLoading: isLoadingSuperAgentWalletRefresh, error: refreshSuperAgentWalletRefreshError, data: refreshSuperAgentRefreshData, refreshWallet: refreshSuperAgent } = useRefreshWallet();
 
 
     const [userOTPValue, setUserOTPValue] = useState("");
@@ -121,11 +122,13 @@ const DefundWalletModal = (props: PropType) => {
 
 
     const fetchAgentTransDetail = () => {
-        refreshWallet({
-            providerCustomerId: props?.userData?.wallet?.providerCustomerId
-        });
-        if (userData?.wallet?.providerCustomerId) {
+        setTimeout(() => {
             refreshWallet({
+                providerCustomerId: props?.userData?.wallet?.providerCustomerId
+            });
+        }, 2000)
+        if (userData?.wallet?.providerCustomerId) {
+            refreshSuperAgent({
                 providerCustomerId: userData?.wallet?.providerCustomerId
             });
         }
