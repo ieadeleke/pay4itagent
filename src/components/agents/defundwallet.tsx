@@ -110,7 +110,7 @@ const DefundWalletModal = (props: PropType) => {
                 getAgentList({
                     page: 1
                 });
-            }, 3000)
+            }, 2000)
         }
     }, [userRefreshData])
 
@@ -126,7 +126,7 @@ const DefundWalletModal = (props: PropType) => {
             refreshWallet({
                 providerCustomerId: props?.userData?.wallet?.providerCustomerId
             });
-        }, 2000)
+        }, 500)
         if (userData?.wallet?.providerCustomerId) {
             refreshSuperAgent({
                 providerCustomerId: userData?.wallet?.providerCustomerId
