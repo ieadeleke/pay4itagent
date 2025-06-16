@@ -14,6 +14,17 @@ import { useGetAgentsSummary } from "@/utils/apiHooks/agents/useGetAgentSummary"
 import { useGetAgents } from "@/utils/apiHooks/agents/useGetAgents";
 import { useAddNewLoan } from "@/utils/apiHooks/agents/useAddLoan";
 import dayjs from 'dayjs';
+import { format } from "date-fns"
+import { Calendar as CalendarIcon } from "lucide-react"
+ 
+import { cn } from "@/lib/utils"
+import { Button as DateButton } from "@/components/ui/button"
+import { Calendar } from "@/components/ui/calendar"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
 
 
 interface BankListInterface {
@@ -42,6 +53,7 @@ const RequestLoanModal = (props: PropType) => {
 
     const [loadingLoanButton, setLoadingLoanButton] = useState<boolean>(false);
     const { showSnackBar } = useContext(GlobalActionContext);
+    const [date, setDate] = useState<Date>()
     const [agentData, setAgentData] = useState<any>({
         amount: "",
     })
@@ -93,15 +105,19 @@ const RequestLoanModal = (props: PropType) => {
         const newDate = dayjs().add(1, 'day');
         addNewLoanRequest({
             loanAmount: agentData.amount,
-            endDate: newDate.format('YYYY-MM-DD')
+            endDate: date
         })
         setLoadingLoanButton(true);
     }
 
+    useEffect(() => {
+        console.log(date)
+    },[date])
+
     return (
         <div>
             <Modal open={props.openModal} onCancel={closeModal} footer={null}>
-                <div>
+                <div className="loan-request relative">
                     <h3 className="font-bold text-center text-xl mb-10">Request Float</h3>
 
                     <div className="form-group mb-5">
@@ -113,6 +129,28 @@ const RequestLoanModal = (props: PropType) => {
                         <TextField.Input
                             onChange={updateFormData} name="amount" value={agentData.amount}
                             className="outline-none px-2 rounded-lg" />
+                    </div>
+                    <div className="form-group mb-5">
+                        <div className="flex justify-between">
+                            <div>
+                                <h1>Loan Expiration Date</h1>
+                            </div>
+                        </div>
+                        <Popover>
+                            <PopoverTrigger asChild>
+                                <DateButton
+                                    variant="outline"
+                                    data-empty={!date}
+                                    className="data-[empty=true]:text-muted-foreground outline-none py-8 w-full justify-start text-left font-normal"
+                                >
+                                    <CalendarIcon />
+                                    {date ? format(date, "yyyy-MM-dd") : <span>Pick a date</span>}
+                                </DateButton>
+                            </PopoverTrigger>
+                            <PopoverContent className="loan-popover w-auto p-0">
+                                <Calendar mode="single" selected={date} onSelect={setDate} />
+                            </PopoverContent>
+                        </Popover>
                     </div>
                     <div>
                         <Button isLoading={loadingLoanButton} onClick={handleLoanRequest} className="w-full block mb-5 py-5 text-white rounded-lg">Continue</Button>

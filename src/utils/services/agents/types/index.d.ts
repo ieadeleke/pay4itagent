@@ -80,7 +80,7 @@ export type AddAgentParams = {
 
 export type AddLoanParams = {
     loanAmount: string,
-    endDate?: string
+    endDate?: string | Date
 }
 
 export type AddLoanResponse = {
