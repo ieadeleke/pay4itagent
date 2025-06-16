@@ -13,6 +13,7 @@ import { useRefreshWallet } from "@/utils/apiHooks/profile/useRefreshWallet";
 import { useGetAgentsSummary } from "@/utils/apiHooks/agents/useGetAgentSummary";
 import { useGetAgents } from "@/utils/apiHooks/agents/useGetAgents";
 import UserContext from "@/context/UserContext";
+import { Profile } from "@/models/profile";
 
 
 interface BankListInterface {
@@ -58,7 +59,44 @@ const TransferToWallet = (props: PropType) => {
         amount: "",
         settlementAccountNumber: props?.accNum,
         description: ""
-    })
+    });
+    const [userData, setUserData] = useState<Profile>({
+        name: "",
+        addedBy: "",
+        email: "",
+        firstName: "",
+        isActive: false,
+        lastName: "",
+        loginCount: 0,
+        loginDisabled: false,
+        loginReTryTime: "",
+        phoneNumber: "",
+        userName: "",
+        imgUrl: "",
+        wallet: {
+            _id: "",
+            accountName: "",
+            accountNumber: "",
+            accountReference: "",
+            availableBalance: 0,
+            bankName: "",
+            bookedBalance: 0,
+            country: "",
+            currency: "",
+            dailyTransactionLimit: 0,
+            email: "",
+            maxBalance: 0,
+            minBalance: 0,
+            phoneNumber: "",
+            previousBalance: 0,
+            provider: "",
+            providerCustomerId: "",
+            status: "",
+            tier: "",
+            type: "",
+            userId: "",
+        }
+    });
 
     // const fetchAllBankList = async () => {
     //     let allBanks = await fetchBankList();
@@ -233,6 +271,12 @@ const TransferToWallet = (props: PropType) => {
         }
     }, [userRefreshData])
 
+    useEffect(() => {
+        if (user) {
+            setUserData(user);
+        }
+    }, [user])
+
     const fetchAgentTransDetail = () => {
         // getAgentList({
         //     page: 1
@@ -240,9 +284,9 @@ const TransferToWallet = (props: PropType) => {
         refreshWallet({
             providerCustomerId: props?.agent?.wallet?.providerCustomerId
         });
-        if (user?.wallet) {
+        if (userData?.wallet?.providerCustomerId) {
             refreshWallet({
-                providerCustomerId: user?.wallet?.providerCustomerId
+                providerCustomerId: userData?.wallet?.providerCustomerId
             });
         }
         setCurrentFetchState(true);
@@ -284,7 +328,7 @@ const TransferToWallet = (props: PropType) => {
             description, settlementAccountNumber } = consultantData;
         if ((settlementAccountNumber.length) && (amount.length)) {
             let formData = {
-                amount, accountNumber: settlementAccountNumber, description, pin: userOTPValue
+                amount, accountNumber: settlementAccountNumber, description, pin: ''
             }
             completeWalletTransfer(formData);
             setLoadingCreditButton(true);
@@ -307,6 +351,7 @@ const TransferToWallet = (props: PropType) => {
         })
         setUserOTPValue("");
         if (props.closeAction) props.closeAction();
+        setLoadingCreditButton(false);
         setDisplayWalletPaymentInfo(true);
     }
 
@@ -368,7 +413,15 @@ const TransferToWallet = (props: PropType) => {
                             </div>
                     }
                     <div>
-                        <Button isLoading={loadingCreditButton} onClick={handleCurrentView} className="w-full block mb-5 py-5 text-white rounded-lg">Continue</Button>
+                        {/* <Button isLoading={loadingCreditButton} onClick={handleCurrentView} className="w-full block mb-5 py-5 text-white rounded-lg">Click here to Transfer</Button> */}
+                        <Button isLoading={loadingCreditButton} onClick={completeTransferToWallet} className="w-full block mb-5 py-5 text-white rounded-lg">Click here to Transfer</Button>
+                        <Button
+                            onClick={closeWalletModal}
+                            className="w-full py-5 self-center text-danger"
+                            variant="text"
+                        >
+                            Cancel
+                        </Button>
                     </div>
                 </div>
                 :

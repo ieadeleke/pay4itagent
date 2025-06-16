@@ -227,7 +227,7 @@ export type TransferToWalletParams = {
     accountNumber: string
     amount: number
     description?: string;
-    pin: string
+    pin?: string
 }
 
 export type TransferToWalletResponse = ApiResponse & {

@@ -113,14 +113,20 @@ const DefundWalletModal = (props: PropType) => {
         }
     }, [userRefreshData])
 
+    useEffect(() => {
+        if (user) {
+            setUserData(user);
+        }
+    }, [user])
+
 
     const fetchAgentTransDetail = () => {
         refreshWallet({
             providerCustomerId: props?.userData?.wallet?.providerCustomerId
         });
-        if (user?.wallet) {
+        if (userData?.wallet?.providerCustomerId) {
             refreshWallet({
-                providerCustomerId: user?.wallet?.providerCustomerId
+                providerCustomerId: userData?.wallet?.providerCustomerId
             });
         }
         setCurrentFetchState(true);
