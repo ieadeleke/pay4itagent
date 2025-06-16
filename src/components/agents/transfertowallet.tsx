@@ -415,13 +415,13 @@ const TransferToWallet = (props: PropType) => {
                     <div>
                         {/* <Button isLoading={loadingCreditButton} onClick={handleCurrentView} className="w-full block mb-5 py-5 text-white rounded-lg">Click here to Transfer</Button> */}
                         <Button isLoading={loadingCreditButton} onClick={completeTransferToWallet} className="w-full block mb-5 py-5 text-white rounded-lg">Click here to Transfer</Button>
-                        <Button
+                        {/* <Button
                             onClick={closeWalletModal}
                             className="w-full py-5 self-center text-danger"
                             variant="text"
                         >
                             Cancel
-                        </Button>
+                        </Button> */}
                     </div>
                 </div>
                 :
