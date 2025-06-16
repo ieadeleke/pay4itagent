@@ -284,6 +284,7 @@ const TransferToWallet = (props: PropType) => {
                 providerCustomerId: props?.agent?.wallet?.providerCustomerId
             });
         }, 500)
+        
         if (userData?.wallet?.providerCustomerId) {
             refreshSuperAgent({
                 providerCustomerId: userData?.wallet?.providerCustomerId
