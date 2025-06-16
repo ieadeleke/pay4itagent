@@ -5,13 +5,14 @@ import { useContext, useEffect, useState } from "react";
 import { Checkbox, Modal, Radio, Select, Spin } from "antd";
 import { request, RequestConfig } from "@/utils/request";
 import { TextField } from "@/components/input/InputText";
-import { useAddConsultant } from "@/utils/apiHooks/consultants/useAddConsultant";
 import Button from "../buttons";
 import { useCompleteTransfer } from "@/utils/apiHooks/agents/useCompleteTransfer";
 import { OTPInputBoxes } from "../auth/OTPInput";
 import { useWithdrawWallet } from "@/utils/apiHooks/agents/subagents/useWithdrawWallet";
 import { useGetAgents } from "@/utils/apiHooks/agents/useGetAgents";
 import { useRefreshWallet } from "@/utils/apiHooks/profile/useRefreshWallet";
+import { Profile } from "@/models/profile";
+import UserContext from "@/context/UserContext";
 
 
 interface BankListInterface {
@@ -41,9 +42,46 @@ const DefundWalletModal = (props: PropType) => {
     const [userOTPValue, setUserOTPValue] = useState("");
     const [loadingCreditButton, setLoadingCreditButton] = useState<boolean>(false);
     const { showSnackBar } = useContext(GlobalActionContext);
+    const { user } = useContext(UserContext);
     const [displayWalletPaymentInfo, setDisplayWalletPaymentInfo] = useState<boolean>(true);
     const [currentFetchState, setCurrentFetchState] = useState<boolean>(false);
-
+    const [userData, setUserData] = useState<Profile>({
+        name: "",
+        addedBy: "",
+        email: "",
+        firstName: "",
+        isActive: false,
+        lastName: "",
+        loginCount: 0,
+        loginDisabled: false,
+        loginReTryTime: "",
+        phoneNumber: "",
+        userName: "",
+        imgUrl: "",
+        wallet: {
+            _id: "",
+            accountName: "",
+            accountNumber: "",
+            accountReference: "",
+            availableBalance: 0,
+            bankName: "",
+            bookedBalance: 0,
+            country: "",
+            currency: "",
+            dailyTransactionLimit: 0,
+            email: "",
+            maxBalance: 0,
+            minBalance: 0,
+            phoneNumber: "",
+            previousBalance: 0,
+            provider: "",
+            providerCustomerId: "",
+            status: "",
+            tier: "",
+            type: "",
+            userId: "",
+        }
+    });
 
     const [withdrawalFormInput, setWithdrawalFormInput] = useState({
         amount: "",
@@ -67,9 +105,11 @@ const DefundWalletModal = (props: PropType) => {
     }, [dataSummary])
     useEffect(() => {
         if (userRefreshData?.found) {
-            getAgentList({
-                page: 1
-            });
+            setTimeout(() => {
+                getAgentList({
+                    page: 1
+                });
+            }, 3000)
         }
     }, [userRefreshData])
 
@@ -78,6 +118,11 @@ const DefundWalletModal = (props: PropType) => {
         refreshWallet({
             providerCustomerId: props?.userData?.wallet?.providerCustomerId
         });
+        if (user?.wallet) {
+            refreshWallet({
+                providerCustomerId: user?.wallet?.providerCustomerId
+            });
+        }
         setCurrentFetchState(true);
     }
 

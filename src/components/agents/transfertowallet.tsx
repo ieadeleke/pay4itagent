@@ -5,13 +5,14 @@ import { useContext, useEffect, useState } from "react";
 import { Checkbox, Radio, Select, Spin } from "antd";
 import { request, RequestConfig } from "@/utils/request";
 import { TextField } from "@/components/input/InputText";
-import { useAddConsultant } from "@/utils/apiHooks/consultants/useAddConsultant";
+import { useWithdrawFromBank } from "@/utils/apiHooks/consultants/useWithdrawFromBank";
 import Button from "../buttons";
 import { useCompleteTransfer } from "@/utils/apiHooks/agents/useCompleteTransfer";
 import { OTPInputBoxes } from "../auth/OTPInput";
 import { useRefreshWallet } from "@/utils/apiHooks/profile/useRefreshWallet";
 import { useGetAgentsSummary } from "@/utils/apiHooks/agents/useGetAgentSummary";
 import { useGetAgents } from "@/utils/apiHooks/agents/useGetAgents";
+import UserContext from "@/context/UserContext";
 
 
 interface BankListInterface {
@@ -35,7 +36,7 @@ interface PropType {
 
 const TransferToWallet = (props: PropType) => {
 
-    const { isLoading, data, error, addNewConsultant } = useAddConsultant();
+    const { isLoading, data, error, withdrawFromBank } = useWithdrawFromBank();
     const { isLoading: isLoadingBankList, data: fetchBankListData, error: fetchBankListError, fetchBankList } = useFetchBankList();
     const { isLoading: isLoadingWalletTransfer, data: completeWalletTransferData, error: errorWalletTransfer, completeWalletTransfer } = useCompleteTransfer();
 
@@ -51,6 +52,7 @@ const TransferToWallet = (props: PropType) => {
     const [loadAccountVerificationData, setLoadAccountVerificationData] = useState(false);
     const [loadingCreditButton, setLoadingCreditButton] = useState<boolean>(false);
     const { showSnackBar } = useContext(GlobalActionContext);
+    const { user } = useContext(UserContext);
     const [displayWalletPaymentInfo, setDisplayWalletPaymentInfo] = useState<boolean>(true);
     const [consultantData, setConsultantData] = useState<any>({
         amount: "",
@@ -223,9 +225,11 @@ const TransferToWallet = (props: PropType) => {
     }, [dataSummary])
     useEffect(() => {
         if (userRefreshData?.found) {
-            getAgentList({
-                page: 1
-            });
+            setTimeout(() => {
+                getAgentList({
+                    page: 1
+                });
+            }, 3000)
         }
     }, [userRefreshData])
 
@@ -236,6 +240,11 @@ const TransferToWallet = (props: PropType) => {
         refreshWallet({
             providerCustomerId: props?.agent?.wallet?.providerCustomerId
         });
+        if (user?.wallet) {
+            refreshWallet({
+                providerCustomerId: user?.wallet?.providerCustomerId
+            });
+        }
         setCurrentFetchState(true);
     }
     useEffect(() => {

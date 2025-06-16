@@ -18,6 +18,7 @@ import ViewSubAgent from "@/components/agents/subagents/ViewSubAgent";
 import { capitalizeText } from "@/utils/formatters/capitalizeText";
 import { useGetAgentsSummary } from "@/utils/apiHooks/agents/useGetAgentSummary";
 import { useGetAgentsTransactionHistory } from "@/utils/apiHooks/agents/useGetAgentsTransactionHistory";
+import { AllAgentType } from "@/models/agents";
 
 interface WalletInterface {
     accountName: string;
@@ -382,7 +383,9 @@ export default function Agents() {
     //     });
     // }
 
-
+    const handleAgentDataFromTable = (props: AllAgentType[]) => {
+        setMDAList(props);
+    }
 
     return (
         <DashboardLayout>
@@ -393,7 +396,7 @@ export default function Agents() {
                             {
                                 viewAgentsList ?
                                     <AgentTableList name="List of Agents" mdaList={mdaList} isLoading={isLoading} error={error} page={page} summaryData={summaryData}
-                                        count={count} handleClick={handleMDASelection} firstName={""} lastName={""} phoneNumber={""} onPageChange={onPageChange} />
+                                        count={count} handleClick={handleMDASelection} firstName={""} lastName={""} phoneNumber={""} onPageChange={onPageChange} updateAgentData={handleAgentDataFromTable} />
                                     :
                                     <ViewSubAgent agentID={selectedAgent._id} agentData={selectedAgent} viewAction={toggleViewAgentList} />
                             }

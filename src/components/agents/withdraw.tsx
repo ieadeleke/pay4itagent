@@ -5,7 +5,7 @@ import { useContext, useEffect, useState } from "react";
 import { Checkbox, Radio, Select, Spin } from "antd";
 import { request, RequestConfig } from "@/utils/request";
 import { TextField } from "@/components/input/InputText";
-import { useAddConsultant } from "@/utils/apiHooks/consultants/useAddConsultant";
+import { useWithdrawFromBank } from "@/utils/apiHooks/consultants/useWithdrawFromBank";
 import Button from "../buttons";
 import { OTPInputBoxes } from "../auth/OTPInput";
 
@@ -24,7 +24,7 @@ interface WithdrawalProps {
 
 const WithdrawToBank = (props: WithdrawalProps) => {
 
-    const { isLoading, data, error, addNewConsultant } = useAddConsultant();
+    const { isLoading, data, error, withdrawFromBank } = useWithdrawFromBank();
     const { isLoading: isLoadingBankList, data: fetchBankListData, error: fetchBankListError, fetchBankList } = useFetchBankList();
     const { isLoading: isLoadingVerifyDataList, data: verifyBankDataData, error: VerifyBankDataError, verifyBankData } = useVerifyBankList();
 
@@ -194,7 +194,7 @@ const WithdrawToBank = (props: WithdrawalProps) => {
             let formData = {
                 amount, accountNumber: settlementAccountNumber, accountName: settlementBankName, description, sortCode, pin: userOTPValue
             }
-            addNewConsultant(formData);
+            withdrawFromBank(formData);
             setLoadingCreditButton(true);
         } else {
             showSnackBar({

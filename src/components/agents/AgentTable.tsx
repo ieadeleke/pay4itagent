@@ -59,6 +59,7 @@ type AgentTableProps = {
     count: number,
     summaryData?: any
     handleClick: (e: any) => void
+    updateAgentData: (e: any) => void
 };
 
 export const AgentTableList = (props: AgentTableProps) => {
@@ -87,8 +88,9 @@ export const AgentTableList = (props: AgentTableProps) => {
         setOpenModal(!openModal);
     }
 
-    const handleAgentDataFromTable = (props: AllAgentType[]) => {
-        setAgentData(props);
+    const handleAgentDataFromTable = (data: AllAgentType[]) => {
+        setAgentData(data);
+        props.updateAgentData(data);
         setDisplayTransferModal(false)
         setOpenModal(false);
     }

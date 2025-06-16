@@ -5,7 +5,7 @@ import { useContext, useEffect, useState } from "react";
 import { Checkbox, Modal, Radio, Select, Spin } from "antd";
 import { request, RequestConfig } from "@/utils/request";
 import { TextField } from "@/components/input/InputText";
-import { useAddConsultant } from "@/utils/apiHooks/consultants/useAddConsultant";
+import { useAddConsultant } from "@/utils/apiHooks/consultants/useWithdrawFromBank";
 import Button from "../buttons";
 import { useCompleteTransfer } from "@/utils/apiHooks/agents/useCompleteTransfer";
 import { OTPInputBoxes } from "../auth/OTPInput";
@@ -109,10 +109,6 @@ const RequestLoanModal = (props: PropType) => {
         })
         setLoadingLoanButton(true);
     }
-
-    useEffect(() => {
-        console.log(date)
-    },[date])
 
     return (
         <div>

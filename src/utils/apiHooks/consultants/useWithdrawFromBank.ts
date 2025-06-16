@@ -6,11 +6,11 @@ import { ConsultantService } from "@/utils/services/consultant/index"
 import { AddConsultantType } from "@/utils/services/consultant/types"
 
 
-export const useAddConsultant = () => {
+export const useWithdrawFromBank = () => {
     const [data, setData] = useState<any>(null);
     const { isLoading, error, execute } = useApi();
 
-    async function addNewConsultant(param: AddConsultantType) {
+    async function withdrawFromBank(param: AddConsultantType) {
         // setData(null)
         const response = await execute(async () => await ConsultantService().addConsultant(param))
         if (response) {
@@ -20,5 +20,5 @@ export const useAddConsultant = () => {
         }
     }
 
-    return { isLoading, error, data, addNewConsultant }
+    return { isLoading, error, data, withdrawFromBank }
 }
