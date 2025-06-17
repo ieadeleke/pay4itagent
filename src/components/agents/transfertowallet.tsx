@@ -57,6 +57,7 @@ const TransferToWallet = (props: PropType) => {
     const { showSnackBar } = useContext(GlobalActionContext);
     const { user } = useContext(UserContext);
     const [displayWalletPaymentInfo, setDisplayWalletPaymentInfo] = useState<boolean>(true);
+    const [errorOccurred, setErrorOccurred] = useState<boolean>(false);
     const [consultantData, setConsultantData] = useState<any>({
         amount: "",
         // settlementAccountNumber: props?.accNum,
@@ -162,10 +163,17 @@ const TransferToWallet = (props: PropType) => {
 
     useEffect(() => {
         if (userWalletRefreshError) {
-            showSnackBar({
-                message: userWalletRefreshError,
-                severity: 'error'
-            })
+            getAgentList({
+                page: props?.currentPage || 1
+            });
+            setErrorOccurred(true);
+            setTimeout(() => {
+                showSnackBar({
+                    message: userWalletRefreshError,
+                    severity: 'error'
+                })
+                setLoadingCreditButton(false);
+            }, 3000)
         }
     }, [userWalletRefreshError]);
 
@@ -229,14 +237,32 @@ const TransferToWallet = (props: PropType) => {
             [e.target.name]: e.target.value
         })
     }
+    const fetchAgentTransDetail = () => {
+        setTimeout(() => {
+            refreshWallet({
+                providerCustomerId: props?.agent?.wallet?.providerCustomerId
+            });
+        }, 2000)
+
+        if (userData?.wallet?.providerCustomerId) {
+            refreshSuperAgent({
+                providerCustomerId: userData?.wallet?.providerCustomerId
+            });
+        }
+        setCurrentFetchState(true);
+    }
 
     useEffect(() => {
         if (errorWalletTransfer) {
-            showSnackBar({
-                message: errorWalletTransfer,
-                severity: 'error'
-            })
-            setLoadingCreditButton(false);
+            fetchAgentTransDetail();
+            setErrorOccurred(true);
+            setTimeout(() => {
+                showSnackBar({
+                    message: errorWalletTransfer,
+                    severity: 'error'
+                })
+                setLoadingCreditButton(false);
+            }, 3000)
         }
     }, [errorWalletTransfer]);
 
@@ -244,10 +270,12 @@ const TransferToWallet = (props: PropType) => {
         if (dataSummary?.Agents && currentFetchState) {
             props.updateAgentData(dataSummary?.Agents);
             setCurrentFetchState(false);
-            showSnackBar({
-                message: "Account funded successfully",
-                severity: 'success'
-            })
+            if (!errorOccurred) {
+                showSnackBar({
+                    message: "Account funded successfully",
+                    severity: 'success'
+                })
+            }
             setLoadingCreditButton(false);
             setConsultantData({
                 ...consultantData,
@@ -272,20 +300,6 @@ const TransferToWallet = (props: PropType) => {
         }
     }, [user])
 
-    const fetchAgentTransDetail = () => {
-        setTimeout(() => {
-            refreshWallet({
-                providerCustomerId: props?.agent?.wallet?.providerCustomerId
-            });
-        }, 2000)
-
-        if (userData?.wallet?.providerCustomerId) {
-            refreshSuperAgent({
-                providerCustomerId: userData?.wallet?.providerCustomerId
-            });
-        }
-        setCurrentFetchState(true);
-    }
     useEffect(() => {
         if (completeWalletTransferData?.message?.length) {
             // showSnackBar({
