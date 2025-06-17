@@ -59,7 +59,8 @@ const TransferToWallet = (props: PropType) => {
     const [displayWalletPaymentInfo, setDisplayWalletPaymentInfo] = useState<boolean>(true);
     const [consultantData, setConsultantData] = useState<any>({
         amount: "",
-        settlementAccountNumber: props?.accNum,
+        // settlementAccountNumber: props?.accNum,
+        settlementAccountNumber: '',
         description: ""
     });
     const [userData, setUserData] = useState<Profile>({
@@ -178,14 +179,6 @@ const TransferToWallet = (props: PropType) => {
         }
     }, [consultantData.settlementAccountNumber, consultantData.settlementBankName])
 
-    const updateBankData = (e: any) => {
-        setConsultantData({
-            ...consultantData,
-            settlementBankName: e.split("----")[0],
-            settlementAccountCBNCode: e.split("----")[1]
-        })
-    }
-
     const gett = async (bankName: string, accNum: string) => {
         setLoadAccountVerificationData(true);
         setConsultantData({
@@ -269,7 +262,7 @@ const TransferToWallet = (props: PropType) => {
                 getAgentList({
                     page: props?.currentPage || 1
                 });
-            }, 2000)
+            }, 3000)
         }
     }, [userRefreshData])
 
@@ -284,8 +277,8 @@ const TransferToWallet = (props: PropType) => {
             refreshWallet({
                 providerCustomerId: props?.agent?.wallet?.providerCustomerId
             });
-        }, 500)
-        
+        }, 2000)
+
         if (userData?.wallet?.providerCustomerId) {
             refreshSuperAgent({
                 providerCustomerId: userData?.wallet?.providerCustomerId
@@ -327,10 +320,13 @@ const TransferToWallet = (props: PropType) => {
     const completeTransferToWallet = (e: any) => {
         e.preventDefault();
         let { amount,
-            description, settlementAccountNumber } = consultantData;
+            description } = consultantData;
+        let settlementAccountNumber = props?.agent?.wallet?.accountNumber ? props?.agent?.wallet?.accountNumber : props?.accNum ? props?.accNum : consultantData.settlementAccountNumber;
         if ((settlementAccountNumber.length) && (amount.length)) {
             let formData = {
-                amount, accountNumber: settlementAccountNumber, description, pin: ''
+                amount,
+                accountNumber: settlementAccountNumber,
+                description, pin: ''
             }
             completeWalletTransfer(formData);
             setLoadingCreditButton(true);
