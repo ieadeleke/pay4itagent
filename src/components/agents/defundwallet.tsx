@@ -241,7 +241,7 @@ const DefundWalletModal = (props: PropType) => {
         <div>
             <Modal open={props.openModal} onCancel={closeWalletModal} footer={null}>
                 <div className="pt-5 mb-5">
-                    <h3 className="font-bold text-center text-xl mb-10">Defund Sub-Agent Wallet</h3>
+                    <h3 className="font-bold text-center text-xl mb-10">Defund {props?.userData?.firstName}&apos;s Wallet</h3>
                 </div>
                 <form action="" onSubmit={completePaymentWithdrawal} autoComplete="false">
                     <div className="mb-5">

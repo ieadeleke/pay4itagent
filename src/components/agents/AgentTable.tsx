@@ -208,6 +208,7 @@ export const AgentTableList = (props: AgentTableProps) => {
                                                 <TableCell>
                                                     <div className="flex items-center gap-2">
                                                         <button onClick={() => {
+                                                            setSelectedAgent({});
                                                             setSelectedAgent(item);
                                                             toggleTransferModal();
                                                         }}
@@ -215,6 +216,7 @@ export const AgentTableList = (props: AgentTableProps) => {
                                                         {/* <button onClick={() => handleClick(item)}
                                                             className="block bg-transparent border-2 border-[#6A22B2] text-sm border-solid py-3 px-6 rounded-lg bg-gray-800">View Details</button> */}
                                                         <button onClick={() => {
+                                                            setSelectedAgent({});
                                                             setSelectedAgent(item);
                                                             toggleWithdrawalModal();
                                                         }}
@@ -258,11 +260,13 @@ export const AgentTableList = (props: AgentTableProps) => {
                                                 <div className="mb-3">
                                                     <div className="grid grid-cols-2 gap-4">
                                                         <button onClick={() => {
+                                                            setSelectedAgent({});
                                                             setSelectedAgent(item)
                                                             toggleTransferModal();
                                                         }}
                                                             className="block bg-[#6A22B2] border-2 border-[#6A22B2] text-sm border-solid py-3 px-6 rounded-lg text-white">Fund Wallet</button>
                                                         <button onClick={() => {
+                                                            setSelectedAgent({});
                                                             setSelectedAgent(item)
                                                             toggleWithdrawalModal();
                                                         }}
@@ -307,7 +311,7 @@ export const AgentTableList = (props: AgentTableProps) => {
                             {props.isLoading ? <Loading /> : props.error && <Error onRetry={props.fetchData} message={props.error} />}
                             <Modal open={displayTransferModal} onCancel={() => setDisplayTransferModal(false)} footer={null}>
                                 <div className="md:w-[80%] mx-auto pt-10">
-                                    <h3 className="font-bold text-center text-xl mb-10">Fund Agent Wallet</h3>
+                                    <h3 className="font-bold text-center text-xl mb-10">Fund {selectedAgent.firstName}&apos;s Wallet</h3>
                                     <TransferToWallet status="agent" accNum={selectedAgent?.wallet?.accountNumber} firstName={selectedAgent?.firstName} hideDescription={true} currentPage={currentPage}
                                         lastName={selectedAgent?.lastName} closeAction={toggleTransferModal} agent={selectedAgent} updateAgentData={handleAgentDataFromTable} />
                                 </div>
