@@ -221,7 +221,7 @@ export const AgentTableList = (props: AgentTableProps) => {
                                                             setSelectedAgent({});
                                                             setSelectedAgent(item);
                                                             setTimeout(() => {
-                                                                toggleTransferModal();
+                                                                toggleWithdrawalModal();
                                                             }, 1000);
                                                         }}
                                                             className="block bg-transparent border-2 border-[#6A22B2] text-sm border-solid py-3 px-6 rounded-lg bg-gray-800">Defund Wallet</button>
@@ -275,7 +275,7 @@ export const AgentTableList = (props: AgentTableProps) => {
                                                             setSelectedAgent({});
                                                             setSelectedAgent(item)
                                                             setTimeout(() => {
-                                                                toggleTransferModal();
+                                                                toggleWithdrawalModal();
                                                             }, 1000);
                                                         }}
                                                             className="block bg-[#ff0000] border-2 border-[#ff0000] text-sm border-solid py-3 px-6 rounded-lg text-white">Defund Wallet</button>
