@@ -47,6 +47,8 @@ const DefundWalletModal = (props: PropType) => {
     const { user } = useContext(UserContext);
     const [displayWalletPaymentInfo, setDisplayWalletPaymentInfo] = useState<boolean>(true);
     const [currentFetchState, setCurrentFetchState] = useState<boolean>(false);
+    const [errorOccurred, setErrorOccurred] = useState<boolean>(false);
+
     const [userData, setUserData] = useState<Profile>({
         name: "",
         addedBy: "",
@@ -94,10 +96,12 @@ const DefundWalletModal = (props: PropType) => {
         if (dataSummary?.Agents && currentFetchState) {
             props.updateAgentData(dataSummary?.Agents);
             setCurrentFetchState(false);
-            showSnackBar({
-                message: "Account defunded successfully",
-                severity: 'success'
-            })
+            if (!errorOccurred) {
+                showSnackBar({
+                    message: "Account defunded successfully",
+                    severity: 'success'
+                })
+            }
             setLoadingCreditButton(false);
             setWithdrawalFormInput({
                 amount: '',
@@ -162,19 +166,36 @@ const DefundWalletModal = (props: PropType) => {
 
     useEffect(() => {
         if (userWithdrawError) {
-            showSnackBar({
-                message: userWithdrawError,
-                severity: 'error'
-            })
-            setLoadingCreditButton(false);
+            // showSnackBar({
+            //     message: userWithdrawError,
+            //     severity: 'error'
+            // })
+            // setLoadingCreditButton(false);
+
+            fetchAgentTransDetail();
+            setErrorOccurred(true);
+            setTimeout(() => {
+                showSnackBar({
+                    message: userWithdrawError,
+                    severity: 'error'
+                })
+                setLoadingCreditButton(false);
+            }, 3000)
         }
     }, [userWithdrawError])
     useEffect(() => {
         if (userWalletRefreshError) {
-            showSnackBar({
-                message: userWalletRefreshError,
-                severity: 'error'
-            })
+            getAgentList({
+                page: props?.currentPage || 1
+            });
+            setErrorOccurred(true);
+            setTimeout(() => {
+                showSnackBar({
+                    message: userWalletRefreshError,
+                    severity: 'error'
+                })
+                setLoadingCreditButton(false);
+            }, 3000)
         }
     }, [userWalletRefreshError]);
 
