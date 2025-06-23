@@ -617,7 +617,11 @@ export const TransactionTable = (props: TransactionTableProps) => {
                                             </li>
                                             <li className="flex justify-between items-center mb-2">
                                                 <p className="text-sm">Amount Paid:</p>
-                                                <p className="text-sm">{item?.amountPaid ? formatAmount(String(item?.amountPaid)) : ""}</p>
+                                                <p className="text-sm">{item?.amountPaid ? formatAmount(item?.amountPaid) : ""}</p>
+                                            </li>
+                                            <li className="flex justify-between items-center mb-2">
+                                                <p className="text-sm">Service Charge:</p>
+                                                <p className="text-sm text-right">{item?.serviceCharge ? formatAmount(+item?.serviceCharge) : ""}</p>
                                             </li>
                                             <li className="flex justify-between items-center mb-2">
                                                 <p className="text-sm">Payer Name:</p>
