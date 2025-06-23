@@ -97,6 +97,7 @@ export type AgentTransaction = AgentTransactionType;
 
 export type WalletTransactionType = {
     createdAt: string,
+    serviceCharge?: string,
     amount: number
     balance_after: number
     balance_before: number

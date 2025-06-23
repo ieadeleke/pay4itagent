@@ -47,6 +47,7 @@ import { useReprocessPayment } from "@/utils/apiHooks/agents/useReprocessPayment
 
 
 type TransactionTabType = {
+    serviceCharge?: string;
     PayerName?: string;
     PaymentChannel?: string
     createdAt: string
@@ -548,7 +549,8 @@ export const TransactionTable = (props: TransactionTableProps) => {
                                 <TableRow>
                                     <TableHead className="font-black text-white rounded-tl-xl">Date</TableHead>
                                     <TableHead className="font-black text-white">Amount Paid</TableHead>
-                                    <TableHead className="font-black text-white">Revenue Name</TableHead>
+                                    <TableHead className="font-black text-white">Service Charge</TableHead>
+                                    {/* <TableHead className="font-black text-white">Revenue Name</TableHead> */}
                                     <TableHead className="font-black text-white">Payer Name</TableHead>
                                     <TableHead className="font-black text-white">Payment Channel</TableHead>
                                     <TableHead className="font-black text-white">Agent Name</TableHead>
@@ -565,8 +567,9 @@ export const TransactionTable = (props: TransactionTableProps) => {
                                         }} key={index} className="bg-[#FAFAFA] mb-5 rounded-2xl cursor-pointer">
                                             <TableRow>
                                                 <TableCell className="text-left">{formatDateWithoutTime(item.createdAt)}</TableCell>
-                                                <TableCell className="text-left">{item.amountPaid ? formatAmount(String(item?.amountPaid)) : ""}</TableCell>
-                                                <TableCell className="text-left">{item?.Webguid?.length ? item?.Webguid[0]?.RevName : ""}</TableCell>
+                                                <TableCell className="text-left">{item.amountPaid ? formatAmount(item?.amountPaid) : "-"}</TableCell>
+                                                <TableCell className="text-left">{item.serviceCharge ? formatAmount(+item?.serviceCharge) : "-"}</TableCell>
+                                                {/* <TableCell className="text-left">{item?.Webguid?.length ? item?.Webguid[0]?.RevName : ""}</TableCell> */}
                                                 <TableCell>
                                                     <p className="text-left">{item.PayerName}</p>
                                                 </TableCell>
