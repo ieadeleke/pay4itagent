@@ -439,12 +439,6 @@ const ViewSubAgent = (props: AgentDataInterface) => {
                                     }
                                 </div>
                                 <div className="flex flex-col md:flex-row items-center gap-2 md:gap-5 w-full md:w-[90%] block mx-auto mt-10">
-                                    {/* <button
-                                        onClick={() => setDisplayTransferModal(true)}
-                                        className="w-full py-5 text-white bg-primary border-primary border-2 rounded-lg">Fund Wallet</button>
-                                    <button
-                                        onClick={toggleDisplayWithdrawModal}
-                                        className="w-full py-5 text-white bg-danger border-danger border-2 rounded-lg">Defund Wallet</button> */}
                                     {
                                         agentSuspensionStatus ?
                                             <button disabled={isLoadingSuspendUser ? true : false} onClick={handleSuspendAgent}
@@ -479,27 +473,7 @@ const ViewSubAgent = (props: AgentDataInterface) => {
                                         </div>
                                     </Tabs.TabPane>
                                     <Tabs.TabPane key={2} tab="Wallet History">
-                                        {/* <div className="grid grid-cols-1 gap-8 md:grid-cols-3 mt-10">
-                                            <TransactionPill data={{
-                                                title: "Total Amount",
-                                                description: userTransactionData?.TotalAmount?.toString() ? userTransactionData?.TotalAmount : "0.00"
-                                            }} />
-                                            <TransactionPill data={{
-                                                title: "Total Amount Successful",
-                                                description: userTransactionData?.TotalAmountSuccessful?.toString() ? userTransactionData?.TotalAmountSuccessful : "0.00"
-                                            }} />
-                                            <TransactionPill data={{
-                                                title: "Failed Transactions",
-                                                description: userTransactionData?.FailTransaction?.toString() ? userTransactionData?.FailTransaction : "0.00"
-                                            }} />
-                                        </div> */}
-                                        {/* <div className="flex items-start flex-col w-[100%] gap-8">
-                                            <Tabs type="card" size="large" className="mt-5">
-                                                <Tabs.TabPane key={"inner1"} tab="Wallet History"> */}
                                         <SubAgentTransactionTable walletId={props.agentData?.wallet?._id} refreshCount={refreshCount} />
-                                        {/* </Tabs.TabPane> */}
-                                        {/* </Tabs> */}
-                                        {/* </div> */}
                                     </Tabs.TabPane>
                                     <Tabs.TabPane key={3} tab="Transaction History">
                                         <SubAgentTotalTransactionTable walletId={props.agentData?.wallet?._id} userId={props.agentData?._id} refreshCount={refreshCount} />
@@ -526,12 +500,6 @@ const ViewSubAgent = (props: AgentDataInterface) => {
                         <TextField.Input type="tel" name="amount" value={withdrawalFormInput.amount} className="outline-none px-2 text-sm rounded-lg"
                             onChange={handleFormInput} />
                     </div>
-                    {/* <div>
-                        <h5 className="text-base">Description</h5>
-                        <TextField.TextArea rows={4} name="description" value={withdrawalFormInput.description} className="outline-none px-2 py-2 text-sm rounded-lg"
-                            onChange={handleTextAreaInput} />
-                    </div> */}
-
                     <div className="mt-10">
                         <Button isLoading={loadingWithdrawalButton} className="w-full">Complete Defund</Button>
                     </div>
@@ -547,65 +515,11 @@ const ViewSubAgent = (props: AgentDataInterface) => {
                         <TextField.Input type="tel" name="amount" value={fundFormInput.amount} className="outline-none px-2 text-sm rounded-lg"
                             onChange={handleFundWalletFormInput} />
                     </div>
-                    {/* <div>
-                        <h5 className="text-base">Description</h5>
-                        <TextField.TextArea rows={4} name="description" value={fundFormInput.description} className="outline-none px-2 py-2 text-sm rounded-lg"
-                            onChange={handleFundWalletTextAreaInput} />
-                    </div> */}
-
                     <div className="mt-10">
                         <Button isLoading={isLoadingFundUser} className="w-full">Complete Fund Wallet</Button>
                     </div>
                 </form>
             </Modal>
-
-            <Modal open={displayTransferModal} onCancel={() => setDisplayTransferModal(false)} footer={null}>
-                {/* <div className="md:w-[80%] mx-auto pt-10">
-                    <h3 className="font-bold text-center text-xl mb-10">Fund Agent Wallet</h3>
-                    <TransferToWallet status="agent" accNum={props?.agentData?.wallet?.accountNumber} firstName={props.agentData.firstName}
-                        lastName={props.agentData.lastName} closeAction={closeTransferModal} hideDescription={true} />
-                </div> */}
-            </Modal>
-
-            {/* <Modal footer={null} open={payWithWalletModal} onClose={closeWalletModal} className="payment-modal">
-                <div>
-                    <div className="modal-header">
-                        <div className="pt-5 px-5 pb-2">
-                            <div>
-                                <h4 className="text-2xl mb-4 font-bold text-center">Complete Payment</h4>
-                                <p className="text-center text-lg">You have {formatAmount(user?.wallet?.availableBalance ? user?.wallet?.availableBalance : "")} in your wallet balance.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="px-5 pb-0">
-                        <div>
-                            <div className="mt-10">
-                                <p className="font-medium text-sm mb-2">Enter Transaction PIN</p>
-                                <OTPInputBoxes updateOTP={updateOTPValue} count={4} value={userOTPValue} />
-                            </div>
-                            <div>
-                                <div className="flex flex-col justify-center">
-                                    <Button
-                                        disabled={isWalletPaymentLoading}
-                                        onClick={completePayment}
-                                        className="w-full py-5 mt-10 self-center"
-                                        variant="contained"
-                                    >
-                                        {isWalletPaymentLoading ? `Please wait...` : `Complete Payment`}
-                                    </Button>
-                                    <Button
-                                        onClick={closeWalletModal}
-                                        className="w-full py-5 self-center text-danger"
-                                        variant="text"
-                                    >
-                                        Cancel
-                                    </Button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </Modal > */}
         </div>
     )
 }

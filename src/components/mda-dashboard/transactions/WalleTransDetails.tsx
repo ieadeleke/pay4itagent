@@ -17,6 +17,9 @@ import Button from "@/components/buttons";
 import { GlobalActionContext } from "@/context/GlobalActionContext";
 
 type TransactionTabType = {
+    metadata?: {
+        originatorAccountName?: string
+    }
     createdAt: string
     amount: number
     balance_after: number
@@ -142,6 +145,13 @@ export const TransactionDetails = forwardRef<
                         title: "Payment Description",
                         value: transaction.description
                     }} />
+                    {
+                        transaction?.category === "NIP_CREDIT" &&
+                        <DetailItem data={{
+                            title: "Sender",
+                            value: transaction?.metadata?.originatorAccountName || ''
+                        }} />
+                    }
                 </div>
                 <DialogFooter className="gap-4">
                     {/* <Button variant="outlined" onClick={handlePrintReceipt} type="submit">Print Receipt</Button> */}

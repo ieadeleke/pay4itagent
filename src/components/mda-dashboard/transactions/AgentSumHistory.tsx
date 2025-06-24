@@ -597,7 +597,7 @@ export const TransactionTable = (props: TransactionTableProps) => {
                         <Collapse defaultActiveKey={['0']}>
                             {
                                 filteredTransactions.map((item, index) => (
-                                    <Collapse.Panel header={`${item.amountPaid ? formatAmount(String(item?.amountPaid)) : ""} transaction on ${formatDateWithoutTime(item.createdAt)}`} key={index}>
+                                    <Collapse.Panel header={`${item.amountPaid ? formatAmount(item?.amountPaid) : ""} transaction on ${formatDateWithoutTime(item.createdAt)}`} key={index}>
                                         <ul>
                                             <li className="flex justify-between items-center mb-2">
                                                 <p className="text-sm">Date:</p>

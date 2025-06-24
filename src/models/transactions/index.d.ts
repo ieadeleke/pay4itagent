@@ -79,6 +79,9 @@ type DataType = {
 export type Transaction = DataType;
 
 type AgentTransactionType = {
+    metadata?: {
+        originatorAccountName?: string
+    }
     createdAt: string,
     amount: number
     balance_after: number
@@ -96,6 +99,9 @@ type AgentTransactionType = {
 export type AgentTransaction = AgentTransactionType;
 
 export type WalletTransactionType = {
+    metadata?: {
+        originatorAccountName?: string
+    }
     createdAt: string,
     serviceCharge?: string,
     amount: number

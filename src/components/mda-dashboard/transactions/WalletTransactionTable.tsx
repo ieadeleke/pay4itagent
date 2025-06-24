@@ -47,6 +47,9 @@ import { useReprocessPayment } from "@/utils/apiHooks/agents/useReprocessPayment
 
 
 type TransactionTabType = {
+    metadata?: {
+        originatorAccountName?: string
+    }
     createdAt: string
     amount: number
     balance_after: number

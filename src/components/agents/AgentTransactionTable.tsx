@@ -573,6 +573,13 @@ export const AgentTransactionTable = (props: TransactionTableProps) => {
                             title: "Description",
                             value: currentTransactionData.description
                         }} />
+                        {
+                            currentTransactionData?.category === "NIP_CREDIT" &&
+                            <DetailItem data={{
+                                title: "Sender",
+                                value: currentTransactionData?.metadata?.originatorAccountName || ''
+                            }} />
+                        }
                     </div>
                 </Modal>
             </div>
