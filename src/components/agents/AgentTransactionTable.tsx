@@ -491,6 +491,13 @@ export const AgentTransactionTable = (props: TransactionTableProps) => {
                                                 <p className="text-sm">Amount:</p>
                                                 <p className="text-sm">{formatAmount(item.amount)}</p>
                                             </li>
+                                            {
+                                                item?.category === "NIP_CREDIT" &&
+                                                <li className="flex justify-between items-center mb-2">
+                                                    <p className="text-sm">Sender:</p>
+                                                    <p className="text-sm">{item?.metadata?.originatorAccountName || ''}</p>
+                                                </li>
+                                            }
                                             <li className="flex justify-between items-center mb-2">
                                                 <p className="text-sm">Status:</p>
                                                 {
