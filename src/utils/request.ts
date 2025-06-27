@@ -10,7 +10,6 @@ export type RequestConfig = {
     headers?: any
 }
 
-
 export async function request(params: RequestConfig, type="") {
     const url = `${BASE_URL}/${params.path}`
     const token = AuthToken().retrieveToken()
