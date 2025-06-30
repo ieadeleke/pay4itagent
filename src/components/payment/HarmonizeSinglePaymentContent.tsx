@@ -455,23 +455,16 @@ export default function HarmonizePaymentContent(
                   <p className="font-medium">Amount to Pay</p>
                   <p className="text-base text-green-500">
                     Service charge: #{serviceCharge.toFixed(2)}
-                    {/* {calculatedServiceCharge.toLocaleString("en-US", {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
-                      })}{" "} */}
                   </p>
                 </div>
-                <TextInput className="h-[4rem]" type="number" value={amountToPay} name="amountToPay"
-                  onChange={updateAmountToPay} />
-
-                {/* <p className="text-sm text-green-500">
-                    Service charge: #
-                    {calculatedServiceCharge.toLocaleString("en-US", {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    })}{" "}
-                    and stamp duty : #{stampDuty}
-                  </p> */}
+                <TextInput className="h-[4rem]"
+                  inputMode="numeric"
+                  disabled
+                  value={amountToPay}
+                  placeholder="Enter your amount"
+                />
+                {/* <TextInput className="h-[4rem]" type="number" value={amountToPay} name="amountToPay"
+                  onChange={updateAmountToPay} /> */}
               </div>
             </div>
             <div className="flex gap-4 flex-col-reverse md:gap-8 md:flex-row justify-center mt-10">

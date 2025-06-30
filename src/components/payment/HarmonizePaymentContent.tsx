@@ -471,13 +471,9 @@ export default function HarmonizePaymentContent(
                     })}{" "} */}
                   </p>
                 </div>
-                <TextInput className="h-[4rem]" type="number" value={amountToPay} name="amountToPay"
-                  // onInput={(event: Event) => {
-                  //   const target = event.target as HTMLInputElement;
-                  //   const value = target.value;
-                  //   target.value = value.replace(/[^0-9]/g, '');
-                  // }}
-                  onChange={updateAmountToPay} />
+                <TextInput className="h-[4rem]" disabled value={amountToPay} placeholder="" />
+                {/* <TextInput className="h-[4rem]" type="number" value={amountToPay} name="amountToPay"
+                  onChange={updateAmountToPay} /> */}
 
                 {/* <p className="text-sm text-green-500">
                   Service charge: #
