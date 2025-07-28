@@ -135,7 +135,7 @@ export const AgentTableList = (props: AgentTableProps) => {
                 }} />
                 <TransactionPill data={{
                     title: "Total Transacted Amount",
-                    description: props?.summaryData?.TotalAmount ? formatAmount(+props?.summaryData?.TotalAmount) : ""
+                    description: props?.summaryData?.TotalAmountSuccessful ? formatAmount(+props?.summaryData?.TotalAmountSuccessful) : ""
                 }} />
                 <TransactionPill data={{
                     title: "Today's Transactions",
