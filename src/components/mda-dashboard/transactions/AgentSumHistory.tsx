@@ -115,6 +115,8 @@ export const TransactionTable = (props: TransactionTableProps) => {
     const [filterEnabled, setFilterEnabled] = useState(false);
     const [pageCount, setPage] = useState<number>(0);
     const [loadPage, setLoadPage] = useState<boolean>(false);
+    const [status, setStatus] = useState('');
+
     const [categoryEnum, setCategoryEnum] = useState({
         key: "", label: ""
     });
@@ -322,6 +324,35 @@ export const TransactionTable = (props: TransactionTableProps) => {
         downloadReport(dateRange)
     }
 
+    const handleStatusFilter = (status: string) => {
+        setStatus(status);
+        getAgentTransactionHistory({
+            startDate: dayjs(date.from).format('YYYY-MM-DD'),
+            endDate: dayjs(date.to).format('YYYY-MM-DD'),
+            page: String(currPage),
+            status
+        });
+        setFilterEnabled(true);
+    }
+
+    const statusItems: MenuProps['items'] = [
+        {
+            key: '1',
+            label: <div onClick={() => handleStatusFilter('Successful')} className="py-3 px-6 text-sm">Successful</div>
+        },
+        {
+            type: 'divider',
+        },
+        {
+            key: '2',
+            label: <div onClick={() => handleStatusFilter('Pending')} className="py-3 px-6 text-sm">Pending</div>
+        },
+        {
+            key: '3',
+            label: <div onClick={() => handleStatusFilter('Fail')} className="py-3 px-6 text-sm">Fail</div>
+        }
+    ];
+
     const onChangeStatusView = (e: string) => {
         // let val = e.target.value;
         let val = e;
@@ -417,7 +448,8 @@ export const TransactionTable = (props: TransactionTableProps) => {
             getAgentTransactionHistory({
                 startDate,
                 endDate,
-                page: String(currPage)
+                page: String(currPage),
+                status
             });
             setDate({
                 from: dayjs(dates[0]).toDate(),
@@ -469,7 +501,8 @@ export const TransactionTable = (props: TransactionTableProps) => {
             startDate: dayjs(date.from).format('YYYY-MM-DD'),
             endDate: dayjs(date.to).format('YYYY-MM-DD'),
             page: e?.selected + 1,
-            perPage: selectedPerPage
+            perPage: selectedPerPage,
+            status
         });
         setFilterEnabled(true);
     }
@@ -497,16 +530,11 @@ export const TransactionTable = (props: TransactionTableProps) => {
                         props.loadHistory ? <Spin indicator={<LoadingOutlined spin />} /> : ""
                     }
                     <div className="flex flex-col md:flex-row gap-5 md:items-end">
-                        {/* <div className="py-3 px-5 border-2 border-[#EFEFEF] w-max flex items-center border-solid gap-5 cursor-pointer">
-                            <Dropdown
-                                menu={menuProps}
-                                placement="bottomLeft"
-                            >
-                                <Space>
-                                    Filter: <IoFilter className="text-2xl" />
-                                </Space>
-                            </Dropdown>
-                        </div> */}
+                        <Dropdown menu={{ items: statusItems }} className="py-3 px-8 block border cursor-pointer border-solid border-black rounded-lg">
+                            <div>
+                                Filter by Status: {status}
+                            </div>
+                        </Dropdown>
                         <div className="flex items-end gap-5">
                             {/* <div>
                                 <Select onChange={handlePerPageChange} className="py-4 border-2 border-black border-solid">

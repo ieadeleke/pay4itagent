@@ -37,7 +37,8 @@ export type GetAllAgentsTransactionHistoryParams = {
     page?: string;
     startDate: string;
     endDate: string;
-    perPage?: number
+    perPage?: number;
+    status?: string;
 }
 
 export type GetAllLoanHistoryParams = {
