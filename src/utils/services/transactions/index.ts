@@ -99,7 +99,7 @@ export function TransactionService() {
 
     async function downloadAgentConsolidatedTable(payload: DownloadConsolidatedReportParams) {
         const data = await request({
-            path: `v1/subagent/DownloadConsolidatedTable?&startDate=${payload.startDate}&endDate=${payload.endDate}&format=${payload.format}`,
+            path: `v1/subagent/DownloadConsolidatedTable?&startDate=${payload.startDate}&endDate=${payload.endDate}&format=${payload.format}&status=${payload.status}`,
             body: payload,
             headers: {
                 Accept: 'text/csv'

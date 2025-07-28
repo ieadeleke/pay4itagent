@@ -154,7 +154,6 @@ export const TransactionTable = (props: TransactionTableProps) => {
 
     useEffect(() => {
         if (props.page) {
-            console.log(props.page)
             setCurrPage(props.page - 1);
         }
     }, [props.page])
@@ -320,6 +319,7 @@ export const TransactionTable = (props: TransactionTableProps) => {
             startDate: convertDateToSecondFormat(date.from),
             endDate: convertDateToSecondFormat(date.to ?? new Date()),
             format,
+            status
         });
         downloadReport(dateRange)
     }

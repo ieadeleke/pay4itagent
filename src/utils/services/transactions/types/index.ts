@@ -46,6 +46,7 @@ export type DownloadConsolidatedReportParams = {
     startDate?: string,
     endDate?: string
     format?: string
+    status?: string
 }
 
 export type DownloadSubAgentReportParams = {
